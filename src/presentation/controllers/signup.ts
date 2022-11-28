@@ -5,7 +5,7 @@ export class SignUpController {
       return {
         statusCode: 400,
         body: new Error('missing param: name')
-      }
+      };
     }
 
     if (!httpRequest.body.email) {

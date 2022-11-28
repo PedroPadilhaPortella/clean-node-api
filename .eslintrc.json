@@ -9,7 +9,6 @@
         "comma-dangle": "off",
         "eol-last": "off",
         "no-trailing-spaces": "off",
-        "padded-blocks": "off",
-        "@typescript-eslint/semi": "off"
+        "padded-blocks": "off"
     }
 }

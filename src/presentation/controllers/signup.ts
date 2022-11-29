@@ -1,4 +1,5 @@
-import { InvalidParamError } from '../errors/invalid-param-error copy'
+import { InternalServerError } from '../errors/internal-server-error'
+import { InvalidParamError } from '../errors/invalid-param-error'
 import { MissingParamError } from '../errors/missing-param-error'
 import { BadRequest } from '../helpers/http.helper'
 import { Controller } from '../protocols/controller'
@@ -14,22 +15,24 @@ export class SignUpController implements Controller {
   }
 
   handle (httpRequest: HttpRequest): HttpResponse {
-    const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+    try {
+      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
 
-    for (const field of requiredFields) {
-      if (!httpRequest.body[field]) {
-        return BadRequest(new MissingParamError(field))
+      for (const field of requiredFields) {
+        if (!httpRequest.body[field]) {
+          return BadRequest(new MissingParamError(field))
+        }
       }
-    }
 
-    const isEmailValid = this.emailValidator.isValid(httpRequest.body.email)
-    if (!isEmailValid) {
-      return BadRequest(new InvalidParamError('email'))
-    }
+      const isEmailValid = this.emailValidator.isValid(httpRequest.body.email)
+      if (!isEmailValid) {
+        return BadRequest(new InvalidParamError('email'))
+      }
 
-    return {
-      statusCode: 200,
-      body: {}
+      return { statusCode: 200, body: {} }
+
+    } catch (error) {
+      return { statusCode: 500, body: new InternalServerError() }
     }
   }
 }

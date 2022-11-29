@@ -3,6 +3,21 @@ import { SignUpController } from './signup'
 
 describe('SignUp Controller', () => {
 
+  it('should return 200 when all fields are provided', () => {
+    const sut = new SignUpController()
+    const httpRequest = {
+      body: {
+        name: 'user',
+        email: 'email@mail.com',
+        password: 'user123',
+        passwordConfirmation: 'user123'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({})
+  })
+
   it('should return 400 if no name is provided', () => {
     const sut = new SignUpController()
     const httpRequest = {

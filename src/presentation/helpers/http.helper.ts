@@ -1,9 +1,9 @@
 import { InternalServerError } from "../errors/internal-server-error"
 import { HttpResponse } from "../protocols/http"
 
-export const Created = (body: any): HttpResponse => ({
+export const Ok = (data: any): HttpResponse => ({
   statusCode: 200,
-  body
+  body: data
 })
 
 export const BadRequest = (error: Error): HttpResponse => ({

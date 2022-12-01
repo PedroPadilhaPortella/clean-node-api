@@ -7,9 +7,12 @@
   "keywords": [],
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
-    "test:commit": "jest",
-    "test:staged": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --runInBand",
+    "test:unit": "npm test -- --watch -c jest-unit.config.js",
+    "test:integration": "npm test -- --watch -c jest-e2e.config.js",
+    "test:commit": "npm test",
+    "test:ci": "npm test -- --coverage",
     "prepare": "husky install"
   },
   "devDependencies": {

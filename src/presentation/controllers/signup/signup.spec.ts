@@ -29,7 +29,7 @@ const createEmailValidator = (): EmailValidator => {
 const createAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     add (account: AddAccountModel): AccountModel {
-      const fakeAccount = { id: '1', name: 'username', email: 'email@mail.com', password: 'pass123' }
+      const fakeAccount = { id: '1', name: 'user', email: 'email@mail.com', password: 'pass123' }
       return fakeAccount
     }
   }
@@ -37,21 +37,6 @@ const createAddAccount = (): AddAccount => {
 }
 
 describe('SignUp Controller', () => {
-  it('should return 200 when all fields are provided', () => {
-    const { sut } = createSignUpController()
-    const httpRequest = {
-      body: {
-        name: 'user',
-        email: 'email@mail.com',
-        password: 'pass123',
-        passwordConfirmation: 'pass123'
-      }
-    }
-    const httpResponse = sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(200)
-    expect(httpResponse.body).toEqual({})
-  })
-
   it('should return 400 if no name is provided', () => {
     const { sut } = createSignUpController()
     const httpRequest = {
@@ -175,7 +160,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(400)
     expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'))
   })
-  
+
   it('should call AddAccount with correct values', () => {
     const { sut, addAccountStub } = createSignUpController()
     const AddAccountSpy = jest.spyOn(addAccountStub, 'add')
@@ -195,7 +180,7 @@ describe('SignUp Controller', () => {
       password: 'pass123'
     })
   })
-  
+
   it('should return 500 if AddAccount throws', () => {
     const { sut, addAccountStub } = createSignUpController()
 
@@ -214,5 +199,25 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
     expect(httpResponse.body).toEqual(new InternalServerError())
+  })
+
+  it('should return 200 when all fields are provided', () => {
+    const { sut } = createSignUpController()
+    const httpRequest = {
+      body: {
+        name: 'user',
+        email: 'email@mail.com',
+        password: 'pass123',
+        passwordConfirmation: 'pass123'
+      }
+    }
+    const httpResponse = sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body).toEqual({
+      id: '1',
+      name: 'user',
+      email: 'email@mail.com',
+      password: 'pass123'
+    })
   })
 })

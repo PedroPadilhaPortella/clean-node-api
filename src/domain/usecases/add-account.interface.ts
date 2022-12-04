@@ -1,4 +1,5 @@
-import { AccountModel } from "../models/account"
+/* istanbul ignore file */
+import { AccountModel } from "../models/account.model"
 
 export interface AddAccountModel {
   name: string

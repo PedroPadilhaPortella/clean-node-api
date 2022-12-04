@@ -9,6 +9,8 @@ module.exports = {
     ".protocols.ts",
     ".model.ts",
     "index.ts",
+    "server.ts",
+    "app.ts",
   ],
   coverageDirectory: "coverage",
   coverageProvider: "v8",

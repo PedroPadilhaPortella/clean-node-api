@@ -4,12 +4,12 @@ import { AddAccount, Controller, EmailValidator, HttpRequest, HttpResponse } fro
 
 export class SignUpController implements Controller {
 
-  private readonly emailValidator: EmailValidator
   private readonly addAccount: AddAccount
+  private readonly emailValidator: EmailValidator
 
-  constructor (emailValidator: EmailValidator, addAccount: AddAccount) {
-    this.emailValidator = emailValidator
+  constructor (addAccount: AddAccount, emailValidator: EmailValidator) {
     this.addAccount = addAccount
+    this.emailValidator = emailValidator
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {

@@ -28,7 +28,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const encrypterStub = createEncrypterStub()
   const addAccountRepositoryStub = createAddAccountRepositoryStub()
-  const sut = new DbAddAccount(encrypterStub, addAccountRepositoryStub)
+  const sut = new DbAddAccount(addAccountRepositoryStub, encrypterStub)
   return { sut, encrypterStub, addAccountRepositoryStub }
 }
 

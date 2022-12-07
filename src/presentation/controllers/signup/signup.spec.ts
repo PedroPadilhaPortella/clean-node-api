@@ -130,7 +130,7 @@ describe('SignUp Controller', () => {
     const { sut, emailValidatorStub } = makeSut()
 
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(() => {
-      throw new InternalServerError()
+      throw new InternalServerError('Erro')
     })
 
     const httpRequest = {
@@ -143,7 +143,7 @@ describe('SignUp Controller', () => {
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new InternalServerError())
+    expect(httpResponse.body).toEqual(new InternalServerError('Erro'))
   })
 
   it('should return 400 if passwordConfirmation is diferent from the password', async () => {
@@ -185,7 +185,7 @@ describe('SignUp Controller', () => {
     const { sut, addAccountStub } = makeSut()
 
     jest.spyOn(addAccountStub, 'add').mockImplementation(async () => {
-      return await new Promise((resolve, reject) => reject(new InternalServerError()))
+      return await new Promise((resolve, reject) => reject(new InternalServerError('Erro')))
     })
 
     const httpRequest = {
@@ -198,7 +198,7 @@ describe('SignUp Controller', () => {
     }
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse.statusCode).toBe(500)
-    expect(httpResponse.body).toEqual(new InternalServerError())
+    expect(httpResponse.body).toEqual(new InternalServerError('Erro'))
   })
 
   it('should return 200 when all fields are provided', async () => {

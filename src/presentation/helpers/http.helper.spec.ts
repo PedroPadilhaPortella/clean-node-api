@@ -2,18 +2,18 @@ import { InternalServerError, MissingParamError } from '../errors'
 import { Ok, BadRequest, ServerError } from './http.helper'
 describe('HttpHelper', () => {
 
-  it('Ok should statusCode200 and a body', () => {
+  it('Ok should return statusCode 200 and a body', () => {
     expect(Ok({}))
       .toEqual({ statusCode: 200, body: {} })
   })
 
-  it('BadRequest should statusCode200 and a body', () => {
+  it('BadRequest should return statusCode 400 and an error', () => {
     expect(BadRequest(new MissingParamError('name')))
       .toEqual({ statusCode: 400, body: new MissingParamError('name') })
   })
 
-  it('BadRequest should statusCode200 and a body', () => {
-    expect(ServerError())
-      .toEqual({ statusCode: 500, body: new InternalServerError() })
+  it('ServerError should return statusCode 500 and an error', () => {
+    expect(ServerError(new Error('Mensagem de erro')))
+      .toEqual({ statusCode: 500, body: new InternalServerError('Unknown Error') })
   })
 })

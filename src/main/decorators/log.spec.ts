@@ -6,15 +6,18 @@ interface SutTypes {
   controllerStub: Controller
 }
 
-const makeSut = (): SutTypes => {
+const makeController = (): Controller => {
   class ControllerStub implements Controller {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
       const httpResponse: HttpResponse = { body: {}, statusCode: 200 }
       return await new Promise(resolve => resolve(httpResponse))
     }
   }
+  return new ControllerStub()
+}
 
-  const controllerStub = new ControllerStub()
+const makeSut = (): SutTypes => {
+  const controllerStub = makeController()
   const sut = new LogControllerDecorator(controllerStub)
   return { sut, controllerStub }
 }
@@ -24,11 +27,11 @@ describe('LogControllerDecorator', () => {
   it('should call controller handle', async () => {
     const { sut, controllerStub } = makeSut()
     const handleSpy = jest.spyOn(controllerStub, 'handle')
-    const httpRequest: HttpRequest = { 
-      body: { 
-        name: 'pedro', 
-        email: 'mail@gmail.com', 
-        password: 'pedro123', 
+    const httpRequest: HttpRequest = {
+      body: {
+        name: 'pedro',
+        email: 'mail@gmail.com',
+        password: 'pedro123',
         passwordConfirmation: 'pedro123'
       }
     }

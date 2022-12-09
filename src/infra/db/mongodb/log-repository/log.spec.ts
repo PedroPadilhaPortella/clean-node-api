@@ -11,7 +11,7 @@ describe('LogMongoRepository', () => {
   let errorCollection: Collection
 
   beforeAll(async () => {
-    await MongoHelper.connect(env.mongoUrl)
+    await MongoHelper.connect(env.mongoUrlTest)
   })
   
   afterAll(async () => {
@@ -25,7 +25,7 @@ describe('LogMongoRepository', () => {
 
   it('should create an error log on success', async () => {
     const sut = makeSut()
-    await sut.logError('any error')
+    await sut.logError('An test exception occured')
     const count = await errorCollection.countDocuments()
     expect(count).toBe(1)
   })

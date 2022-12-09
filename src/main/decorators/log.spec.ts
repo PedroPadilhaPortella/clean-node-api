@@ -1,4 +1,5 @@
 import { LogErrorRepository } from "../../data/protocols/log-error-repository.interface"
+import { InternalServerError } from "../../presentation/errors"
 import { Ok, ServerError } from "../../presentation/helpers/http.helper"
 import { Controller, HttpRequest, HttpResponse } from "../../presentation/protocols"
 import { LogControllerDecorator } from "./log"
@@ -58,16 +59,15 @@ describe('LogControllerDecorator', () => {
   it('should call LogErrorRepository when controller returns a InternalServerError', async () => {
     const { sut, controllerStub, logErrorRepositoryStub } = makeSut()
 
-    const fakeError = new Error()
-    fakeError.message = 'Error Stack'
-
+    const error = new InternalServerError('Error Stack')
+    
     const logSpy = jest.spyOn(logErrorRepositoryStub, 'logError')
     jest.spyOn(controllerStub, 'handle')
-      .mockReturnValueOnce(new Promise(resolve => resolve(ServerError(fakeError))))
+      .mockReturnValueOnce(new Promise(resolve => resolve(ServerError(error))))
 
     const httpRequest = makeFakeRequest()
     const response = await sut.handle(httpRequest)
     expect(logSpy).toHaveBeenCalledWith('Error Stack')
-    expect(response).toEqual(ServerError(new Error('Error Stack')))
+    expect(response).toEqual(ServerError(error))
   })
 })

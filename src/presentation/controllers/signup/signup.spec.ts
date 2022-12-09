@@ -145,7 +145,7 @@ describe('SignUp Controller', () => {
     })
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new Error('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
   })
 
   it('should call AddAccount with correct values', async () => {
@@ -167,7 +167,7 @@ describe('SignUp Controller', () => {
     })
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new Error('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
   })
 
   it('should return 200 when all fields are provided', async () => {

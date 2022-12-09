@@ -1,7 +1,7 @@
+import { AddAccountRepository } from '../../../../data/protocols/add-account-repository.interface'
 import { AccountModel } from '../../../../domain/models/account.model'
 import { AddAccountModel } from '../../../../domain/usecases/add-account.interface'
-import { AddAccountRepository } from '../../../../data/protocols/add-account-repository.interface'
-import { MongoHelper } from "../helpers/mongo.helper"
+import { MongoHelper } from '../helpers/mongo.helper'
 
 export class AccountMongoRepository implements AddAccountRepository {
 

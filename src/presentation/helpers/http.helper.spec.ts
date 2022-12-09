@@ -14,6 +14,6 @@ describe('HttpHelper', () => {
 
   it('ServerError should return statusCode 500 and an error', () => {
     expect(ServerError(new Error('Mensagem de erro')))
-      .toEqual({ statusCode: 500, body: new InternalServerError('Unknown Error') })
+      .toEqual({ statusCode: 500, body: new InternalServerError('Mensagem de erro') })
   })
 })

@@ -32,13 +32,18 @@ const makeSut = (): SutTypes => {
   return { sut, encrypterStub, addAccountRepositoryStub }
 }
 
+const makeFakeAccount = (): AddAccountModel => ({
+  name: 'name', 
+  email: 'email@mail.com', 
+  password: 'pass123'
+})
+
 describe('DbAddAccount', () => {
   
   it('should call encripter with correct password', async () => {
     const { sut, encrypterStub } = makeSut()
     const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
-    const account = { name: 'name', email: 'email@mail.com', password: 'pass123' }
-
+    const account = makeFakeAccount()
     await sut.add(account)
     expect(encryptSpy).toHaveBeenCalledWith('pass123')
   })
@@ -47,8 +52,7 @@ describe('DbAddAccount', () => {
     const { sut, encrypterStub } = makeSut()
     jest.spyOn(encrypterStub, 'encrypt')
       .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const account = { name: 'name', email: 'email@mail.com', password: 'pass123' }
-
+    const account = makeFakeAccount()
     const response = sut.add(account)
     await expect(response).rejects.toThrow()
   })
@@ -56,8 +60,7 @@ describe('DbAddAccount', () => {
   it('should call AddAccountRepository', async () => {
     const { sut, addAccountRepositoryStub } = makeSut()
     const addAccountRepositorySpy = jest.spyOn(addAccountRepositoryStub, 'add')
-    const account = { name: 'name', email: 'email@mail.com', password: 'pass123' }
-
+    const account = makeFakeAccount()
     await sut.add(account)
     expect(addAccountRepositorySpy).toHaveBeenCalledWith({ ...account, password: 'hashed_password' })
   })
@@ -66,16 +69,14 @@ describe('DbAddAccount', () => {
     const { sut, addAccountRepositoryStub } = makeSut()
     jest.spyOn(addAccountRepositoryStub, 'add')
       .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const account = { name: 'name', email: 'email@mail.com', password: 'pass123' }
-
+    const account = makeFakeAccount()
     const response = sut.add(account)
     await expect(response).rejects.toThrow()
   })
     
   it('should return an account on success', async () => {
     const { sut } = makeSut()
-    const account = { name: 'name', email: 'email@mail.com', password: 'pass123' }
-
+    const account = makeFakeAccount()
     const response = await sut.add(account)
     expect(response).toEqual({ id: '1', ...account, password: 'hashed_password' })
   })

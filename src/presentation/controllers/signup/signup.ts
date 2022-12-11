@@ -22,7 +22,7 @@ export class SignUpController implements Controller {
         return BadRequest(error)
       }
 
-      const { name, email, password, passwordConfirmation } = httpRequest.body
+      const { name, email, password } = httpRequest.body
       
       // const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
       // for (const field of requiredFields) {
@@ -36,9 +36,9 @@ export class SignUpController implements Controller {
         return BadRequest(new InvalidParamError('email'))
       }
 
-      if (password !== passwordConfirmation) {
-        return BadRequest(new InvalidParamError('passwordConfirmation'))
-      }
+      // if (password !== passwordConfirmation) {
+      //   return BadRequest(new InvalidParamError('passwordConfirmation'))
+      // }
 
       const account = await this.addAccount.add({ name, email, password })
       return Ok(account)

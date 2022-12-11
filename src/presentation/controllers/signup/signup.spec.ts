@@ -118,19 +118,19 @@ describe('SignUp Controller', () => {
   //   expect(httpResponse).toEqual(BadRequest(new MissingParamError('passwordConfirmation')))
   // })
 
-  it('should return 400 if passwordConfirmation is diferent from the password', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'user',
-        email: 'email@mail.com',
-        password: 'pass123',
-        passwordConfirmation: 'client123'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(BadRequest(new InvalidParamError('passwordConfirmation')))
-  })
+  // it('should return 400 if passwordConfirmation is diferent from the password', async () => {
+  //   const { sut } = makeSut()
+  //   const httpRequest = {
+  //     body: {
+  //       name: 'user',
+  //       email: 'email@mail.com',
+  //       password: 'pass123',
+  //       passwordConfirmation: 'client123'
+  //     }
+  //   }
+  //   const httpResponse = await sut.handle(httpRequest)
+  //   expect(httpResponse).toEqual(BadRequest(new InvalidParamError('passwordConfirmation')))
+  // })
 
   it('should return 400 if an invalid email is provided', async () => {
     const { sut, emailValidatorStub } = makeSut()

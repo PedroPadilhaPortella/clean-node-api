@@ -1,28 +1,35 @@
-import { InvalidParamError, MissingParamError } from '../../errors'
+import { InvalidParamError } from '../../errors'
 import { BadRequest, Ok, ServerError } from '../../helpers/http.helper'
-import { AddAccount, Controller, EmailValidator, HttpRequest, HttpResponse } from './signup.protocols'
+import { AddAccount, Controller, EmailValidator, HttpRequest, HttpResponse, Validation } from './signup.protocols'
 
 export class SignUpController implements Controller {
 
   private readonly addAccount: AddAccount
   private readonly emailValidator: EmailValidator
+  private readonly validation: Validation
 
-  constructor (addAccount: AddAccount, emailValidator: EmailValidator) {
+  constructor (addAccount: AddAccount, emailValidator: EmailValidator, validation: Validation) {
     this.addAccount = addAccount
     this.emailValidator = emailValidator
+    this.validation = validation
   }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { name, email, password, passwordConfirmation } = httpRequest.body
 
-      const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
-
-      for (const field of requiredFields) {
-        if (!httpRequest.body[field]) {
-          return BadRequest(new MissingParamError(field))
-        }
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return BadRequest(error)
       }
+
+      const { name, email, password, passwordConfirmation } = httpRequest.body
+      
+      // const requiredFields = ['name', 'email', 'password', 'passwordConfirmation']
+      // for (const field of requiredFields) {
+      //   if (!httpRequest.body[field]) {
+      //     return BadRequest(new MissingParamError(field))
+      //   }
+      // }
 
       const isEmailValid = this.emailValidator.isValid(email)
       if (!isEmailValid) {
@@ -34,7 +41,6 @@ export class SignUpController implements Controller {
       }
 
       const account = await this.addAccount.add({ name, email, password })
-
       return Ok(account)
 
     } catch (error) {

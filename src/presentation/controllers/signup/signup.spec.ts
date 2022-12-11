@@ -2,7 +2,7 @@ import { HttpRequest } from './../../protocols/http.interface'
 import { AccountModel } from '../../../domain/models/account.model'
 import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.interface'
 import { InternalServerError, InvalidParamError, MissingParamError } from '../../errors'
-import { EmailValidator } from './signup.protocols'
+import { EmailValidator, Validation } from './signup.protocols'
 import { SignUpController } from './signup'
 import { BadRequest, Ok, ServerError } from '../../helpers/http.helper'
 
@@ -10,13 +10,15 @@ interface SutTypes {
   sut: SignUpController
   emailValidatorStub: EmailValidator
   addAccountStub: AddAccount
+  validationStub: Validation
 }
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = createEmailValidator()
   const addAccountStub = createAddAccount()
-  const sut = new SignUpController(addAccountStub, emailValidatorStub)
-  return { sut, emailValidatorStub, addAccountStub }
+  const validationStub = createValidation()
+  const sut = new SignUpController(addAccountStub, emailValidatorStub, validationStub)
+  return { sut, emailValidatorStub, addAccountStub, validationStub }
 }
 
 const createEmailValidator = (): EmailValidator => {
@@ -38,6 +40,15 @@ const createAddAccount = (): AddAccount => {
   return new AddAccountStub()
 }
 
+const createValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate (input: any): Error | null {
+      return null
+    }
+  }
+  return new ValidationStub()
+}
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'user',
@@ -55,57 +66,57 @@ const makeFakeAccount = (): AccountModel => ({
 })
 
 describe('SignUp Controller', () => {
-  it('should return 400 if no name is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        email: 'email@mail.com',
-        password: 'pass123',
-        passwordConfirmation: 'pass123'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(BadRequest(new MissingParamError('name')))
-  })
+  // it('should return 400 if no name is provided', async () => {
+  //   const { sut } = makeSut()
+  //   const httpRequest = {
+  //     body: {
+  //       email: 'email@mail.com',
+  //       password: 'pass123',
+  //       passwordConfirmation: 'pass123'
+  //     }
+  //   }
+  //   const httpResponse = await sut.handle(httpRequest)
+  //   expect(httpResponse).toEqual(BadRequest(new MissingParamError('name')))
+  // })
 
-  it('should return 400 if no email is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'user',
-        password: 'pass123',
-        passwordConfirmation: 'pass123'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(BadRequest(new MissingParamError('email')))
-  })
+  // it('should return 400 if no email is provided', async () => {
+  //   const { sut } = makeSut()
+  //   const httpRequest = {
+  //     body: {
+  //       name: 'user',
+  //       password: 'pass123',
+  //       passwordConfirmation: 'pass123'
+  //     }
+  //   }
+  //   const httpResponse = await sut.handle(httpRequest)
+  //   expect(httpResponse).toEqual(BadRequest(new MissingParamError('email')))
+  // })
 
-  it('should return 400 if no password is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'user',
-        email: 'email@mail.com',
-        passwordConfirmation: 'pass123'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(BadRequest(new MissingParamError('password')))
-  })
+  // it('should return 400 if no password is provided', async () => {
+  //   const { sut } = makeSut()
+  //   const httpRequest = {
+  //     body: {
+  //       name: 'user',
+  //       email: 'email@mail.com',
+  //       passwordConfirmation: 'pass123'
+  //     }
+  //   }
+  //   const httpResponse = await sut.handle(httpRequest)
+  //   expect(httpResponse).toEqual(BadRequest(new MissingParamError('password')))
+  // })
 
-  it('should return 400 if no passwordConfirmation is provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = {
-      body: {
-        name: 'user',
-        email: 'email@mail.com',
-        password: 'pass123'
-      }
-    }
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(BadRequest(new MissingParamError('passwordConfirmation')))
-  })
+  // it('should return 400 if no passwordConfirmation is provided', async () => {
+  //   const { sut } = makeSut()
+  //   const httpRequest = {
+  //     body: {
+  //       name: 'user',
+  //       email: 'email@mail.com',
+  //       password: 'pass123'
+  //     }
+  //   }
+  //   const httpResponse = await sut.handle(httpRequest)
+  //   expect(httpResponse).toEqual(BadRequest(new MissingParamError('passwordConfirmation')))
+  // })
 
   it('should return 400 if passwordConfirmation is diferent from the password', async () => {
     const { sut } = makeSut()
@@ -167,6 +178,22 @@ describe('SignUp Controller', () => {
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+  })
+  
+  it('should call validation with correct body', async () => {
+    const { sut, validationStub } = makeSut()
+    const validateSpy = jest.spyOn(validationStub, 'validate')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body)
+  })
+  
+  it('should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut()
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(BadRequest(new MissingParamError('any_field')))
   })
 
   it('should return 200 when all fields are provided', async () => {

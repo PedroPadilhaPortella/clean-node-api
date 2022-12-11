@@ -78,7 +78,6 @@ describe('SignUp Controller', () => {
       }
     }
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse)
     expect(httpResponse).toEqual(BadRequest(new MissingParamError('email')))
   })
 

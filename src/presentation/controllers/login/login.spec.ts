@@ -92,13 +92,6 @@ describe('Login Controller', () => {
     expect(authSpy).toHaveBeenCalledWith(makeFakeRequest().body.email, makeFakeRequest().body.password)
   })
   
-  it('should return 200 when all fields are provided', async () => {
-    const { sut } = makeSut()
-    const httpRequest = makeFakeRequest()
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(Ok('login_token'))
-  })
-  
   it('should return 401 if invalid credentials provided', async () => {
     const { sut, authenticationStub } = makeSut()
     jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(new Promise(resolve => resolve('')))
@@ -109,13 +102,17 @@ describe('Login Controller', () => {
 
   it('should return 500 if authenticate throws', async () => {
     const { sut, authenticationStub } = makeSut()
-    // jest.spyOn(authenticationStub, 'authenticate')
-    //   .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
-    jest.spyOn(authenticationStub, 'authenticate').mockImplementationOnce(() => {
-      throw new InternalServerError('Erro')
-    })
+    jest.spyOn(authenticationStub, 'authenticate')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+  })
+    
+  it('should return 200 when valid fields are provided', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(Ok({ accessToken: 'login_token' }))
   })
 })

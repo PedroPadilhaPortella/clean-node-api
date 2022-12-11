@@ -1,5 +1,6 @@
 import { InternalServerError, MissingParamError } from '../errors'
-import { Ok, BadRequest, ServerError } from './http.helper'
+import { UnauthorizedError } from '../errors/unauthorized-error'
+import { Ok, BadRequest, ServerError, Unauthorized } from './http.helper'
 describe('HttpHelper', () => {
 
   it('Ok should return statusCode 200 and a body', () => {
@@ -16,5 +17,10 @@ describe('HttpHelper', () => {
     const error = new Error('Mensagem de erro')
     expect(ServerError(error))
       .toEqual({ statusCode: 500, body: new InternalServerError(error.stack ?? 'Unknown Error') })
+  })
+
+  it('Unauthorized should return statusCode 401 and an error', () => {
+    expect(Unauthorized())
+      .toEqual({ statusCode: 401, body: new UnauthorizedError() })
   })
 })

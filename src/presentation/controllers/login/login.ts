@@ -1,5 +1,5 @@
 import { InvalidParamError, MissingParamError } from '../../errors'
-import { BadRequest, Ok, ServerError } from '../../helpers/http.helper'
+import { BadRequest, Ok, ServerError, Unauthorized } from '../../helpers/http.helper'
 import { Authentication, Controller, EmailValidator, HttpRequest, HttpResponse } from './login.protocols'
 
 export class LoginController implements Controller {
@@ -30,6 +30,10 @@ export class LoginController implements Controller {
       }
 
       const token = await this.authentication.authenticate(email, password)
+      if (token === '') {
+        return Unauthorized()
+      }
+
       return Ok(token)
 
     } catch (error) {

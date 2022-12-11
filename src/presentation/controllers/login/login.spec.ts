@@ -1,3 +1,4 @@
+import { HttpRequest } from './../../protocols/http.interface'
 import { InternalServerError, MissingParamError } from '../../errors'
 import { BadRequest, Ok, ServerError } from '../../helpers/http.helper'
 import { LoginController } from './login'
@@ -23,6 +24,13 @@ const makeSut = (): SutTypes => {
   return { sut, emailValidatorStub }
 }
 
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    email: 'pedro@gmail.com', 
+    password: 'senha123'
+  }
+})
+
 describe('Login Controller', () => {
 
   it('should return 400 if no email is provided', async () => {
@@ -42,7 +50,7 @@ describe('Login Controller', () => {
   it('should call email validator with correct email', async () => {
     const { sut, emailValidatorStub } = makeSut()
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid')
-    const httpRequest = { body: { email: 'pedro@gmail.com', password: 'senha123' } }
+    const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email)
   })
@@ -52,15 +60,15 @@ describe('Login Controller', () => {
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(() => {
       throw new InternalServerError('Erro')
     })
-    const httpRequest = { body: { email: 'pedro@gmail.com', password: 'senha123' } }
+    const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
   })
   
   it('should return 200 when all fields are provided', async () => {
     const { sut } = makeSut()
-    const httpRequest = { body: { email: 'pedro@gmail.com', password: 'senha123' } }
+    const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(Ok({ email: 'pedro@gmail.com', password: 'senha123' }))
+    expect(httpResponse).toEqual(Ok(makeFakeRequest().body))
   })
 })

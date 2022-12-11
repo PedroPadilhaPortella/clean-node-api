@@ -2,7 +2,16 @@ import { HttpRequest } from './../../protocols/http.interface'
 import { InternalServerError, InvalidParamError, MissingParamError } from '../../errors'
 import { BadRequest, Ok, ServerError } from '../../helpers/http.helper'
 import { LoginController } from './login'
-import { EmailValidator } from './login.protocols'
+import { Authentication, EmailValidator } from './login.protocols'
+
+const createAuthenticationStub = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async authenticate (email: string, password: string): Promise<string> {
+      return 'login_token'
+    }
+  }
+  return new AuthenticationStub()
+}
 
 const createEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -16,12 +25,14 @@ const createEmailValidator = (): EmailValidator => {
 interface SutTypes {
   sut: LoginController
   emailValidatorStub: EmailValidator
+  authenticationStub: Authentication
 }
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = createEmailValidator()
-  const sut = new LoginController(emailValidatorStub)
-  return { sut, emailValidatorStub }
+  const authenticationStub = createAuthenticationStub()
+  const sut = new LoginController(authenticationStub, emailValidatorStub)
+  return { sut, emailValidatorStub, authenticationStub }
 }
 
 const makeFakeRequest = (): HttpRequest => ({
@@ -73,10 +84,18 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
   })
   
+  it('should call authenticate with correct values', async () => {
+    const { sut, authenticationStub } = makeSut()
+    const authSpy = jest.spyOn(authenticationStub, 'authenticate')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(authSpy).toHaveBeenCalledWith(makeFakeRequest().body.email, makeFakeRequest().body.password)
+  })
+  
   it('should return 200 when all fields are provided', async () => {
     const { sut } = makeSut()
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(Ok(makeFakeRequest().body))
+    expect(httpResponse).toEqual(Ok('login_token'))
   })
 })

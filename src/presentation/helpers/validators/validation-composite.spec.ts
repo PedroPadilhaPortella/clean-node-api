@@ -10,8 +10,8 @@ interface SutTypes {
 
 const makeSut = (): SutTypes => {
   const validators = [
-    new RequiredFieldValidation('field2Compare'),
-    new RequiredFieldValidation('field')
+    new RequiredFieldValidation('field'),
+    new RequiredFieldValidation('field2Compare')
   ]
   const sut = new ValidationComposite(validators)
   return { sut, validators }
@@ -29,5 +29,11 @@ describe('ValidationComposite ', () => {
     const { sut } = makeSut()
     const error = sut.validate({ field: 'value', field2Compare: 'valueToCompare' })
     expect(error).toBeNull()
+  })
+
+  it('should return the first Error if it validation fails', () => {
+    const { sut } = makeSut()
+    const error = sut.validate({ })
+    expect(error).toEqual(new MissingParamError('field'))
   })
 })

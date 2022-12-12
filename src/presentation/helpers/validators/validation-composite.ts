@@ -1,4 +1,4 @@
-import { Validation } from "./validation"
+import { Validation } from "./validation.interface"
 
 export class ValidationComposite implements Validation {
 

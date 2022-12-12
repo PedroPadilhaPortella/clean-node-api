@@ -1,5 +1,5 @@
-import { InternalServerError, MissingParamError } from '../errors'
-import { UnauthorizedError } from '../errors/unauthorized-error'
+import { InternalServerError, MissingParamError } from '../../errors'
+import { UnauthorizedError } from '../../errors/unauthorized-error'
 import { Ok, BadRequest, ServerError, Unauthorized } from './http.helper'
 describe('HttpHelper', () => {
 

@@ -12,6 +12,8 @@ module.exports = {
     ".model.ts",
     "index.ts",
     "server.ts",
+    "app.ts",
+    "env.ts",
   ],
   coverageDirectory: "coverage",
   coverageProvider: "v8",

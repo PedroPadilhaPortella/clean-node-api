@@ -1,10 +1,9 @@
 import { AccountModel } from '../../../domain/models/account.model'
 import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.interface'
 import { InternalServerError, MissingParamError } from '../../errors'
-import { BadRequest, Ok, ServerError } from '../../helpers/http.helper'
 import { HttpRequest } from './../../protocols/http.interface'
 import { SignUpController } from './signup'
-import { Validation } from './signup.protocols'
+import { Validation, BadRequest, Ok, ServerError } from './signup.protocols'
 
 interface SutTypes {
   sut: SignUpController

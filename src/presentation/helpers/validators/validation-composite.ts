@@ -1,4 +1,4 @@
-import { Validation } from "./validation.interface"
+import { Validation } from "../../protocols/validation.interface"
 
 export class ValidationComposite implements Validation {
 

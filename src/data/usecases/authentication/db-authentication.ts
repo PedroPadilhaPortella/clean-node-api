@@ -12,5 +12,4 @@ export class DbAuthentication implements Authentication {
   async authenticate (authentication: AuthenticationModel): Promise<string> {
     return (await this.loadAccountByEmailRepositoryStub.load(authentication.email)).email
   }
-
 }

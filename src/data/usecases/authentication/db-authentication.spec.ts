@@ -33,4 +33,12 @@ describe('DbAuthentication', () => {
     await sut.authenticate(autentication)
     expect(loadSpy).toBeCalledWith(autentication.email)
   })
+  
+  it('should throw if loadAccountByEmailRepository throws', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error('error'))))
+    const response = sut.authenticate(autentication)
+    await expect(response).rejects.toThrow()
+  })
 })

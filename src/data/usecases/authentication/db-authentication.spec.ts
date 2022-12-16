@@ -106,4 +106,18 @@ describe('DbAuthentication', () => {
     await sut.authenticate(autentication)
     expect(tokenSpy).toHaveBeenCalledWith('1')
   })
+
+  it('should throw if tokenGenerator throws', async () => {
+    const { sut, tokenGeneratorStub } = makeSut()
+    jest.spyOn(tokenGeneratorStub, 'generate')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error('error'))))
+    const response = sut.authenticate(autentication)
+    await expect(response).rejects.toThrow()
+  })
+
+  it('should return the token generated on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.authenticate(autentication)
+    expect(response).toBe('token')
+  })
 })

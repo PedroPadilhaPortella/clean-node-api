@@ -1,6 +1,7 @@
 import { Authentication } from '../../../domain/usecases/authentication.interface'
 import { HashComparer } from '../../protocols/hash-comparer.interface'
 import { LoadAccountByEmailRepository } from '../../protocols/load-account-repository.interface'
+import { TokenGenerator } from '../../protocols/token-generator.interface'
 import { AccountModel } from './../../../domain/models/account.model'
 import { DbAuthentication } from './db-authentication'
 
@@ -24,17 +25,32 @@ const createHashCompare = (): HashComparer => {
   return new HashCompareStub()
 }
 
+const createTokenGenerator = (): TokenGenerator => {
+  class TokenGeneratorStub implements TokenGenerator {
+    async generate (id: string): Promise<string> {
+      return 'token'
+    }
+  }
+  return new TokenGeneratorStub()
+}
+
 interface SutTypes {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   hashCompareStub: HashComparer
+  tokenGeneratorStub: TokenGenerator
   sut: Authentication
 }
 
 const makeSut = (): SutTypes => {
   const loadAccountByEmailRepositoryStub = createLoadAccount()
   const hashCompareStub = createHashCompare()
-  const sut = new DbAuthentication(loadAccountByEmailRepositoryStub, hashCompareStub)
-  return { sut, loadAccountByEmailRepositoryStub, hashCompareStub }
+  const tokenGeneratorStub = createTokenGenerator()
+  const sut = new DbAuthentication(
+    loadAccountByEmailRepositoryStub, 
+    hashCompareStub, 
+    tokenGeneratorStub
+  )
+  return { sut, loadAccountByEmailRepositoryStub, hashCompareStub, tokenGeneratorStub }
 }
 
 describe('DbAuthentication', () => { 
@@ -82,5 +98,12 @@ describe('DbAuthentication', () => {
     jest.spyOn(hashCompareStub, 'compare').mockReturnValue(new Promise(resolve => resolve(false)))
     const response = await sut.authenticate(autentication)
     expect(response).toBeNull()
+  })
+
+  it('should call tokenGenerator with correct id', async () => {
+    const { sut, tokenGeneratorStub } = makeSut()
+    const tokenSpy = jest.spyOn(tokenGeneratorStub, 'generate')
+    await sut.authenticate(autentication)
+    expect(tokenSpy).toHaveBeenCalledWith('1')
   })
 })

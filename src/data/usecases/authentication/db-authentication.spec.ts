@@ -1,10 +1,5 @@
-import { Authentication } from '../../../domain/usecases/authentication.interface'
-import { HashComparer } from '../../protocols/hash-comparer.interface'
-import { LoadAccountByEmailRepository } from '../../protocols/load-account-repository.interface'
-import { TokenGenerator } from '../../protocols/token-generator.interface'
-import { UpdateAccessTokenRepository } from '../../protocols/update-access-token-repository.interface'
-import { AccountModel } from './../../../domain/models/account.model'
 import { DbAuthentication } from './db-authentication'
+import { AccountModel, Authentication, HashComparer, LoadAccountByEmailRepository, TokenGenerator, UpdateAccessTokenRepository } from './db.authentication.protocols'
 
 const autentication = { email: 'email@mail.com', password: 'pass123' }
 

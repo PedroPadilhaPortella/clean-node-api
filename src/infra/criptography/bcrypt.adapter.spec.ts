@@ -9,8 +9,8 @@ jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
     return await new Promise(resolve => resolve(hashedPassword))
   },
-  async compare (): Promise<boolean> {
-    return await new Promise(resolve => resolve(true))
+  async compare (a: string, b: string): Promise<boolean> {
+    return await new Promise(resolve => resolve(a === b))
   }
 }))
 
@@ -43,10 +43,16 @@ describe('BCryptAdapter', () => {
       expect(compareSpy).toHaveBeenCalledWith(password, hashedPassword)
     })
     
-    it('should return a boolean on success', async () => {
+    it('should return true when compare success', async () => {
+      const sut = makeSut()
+      const compare = await sut.compare(password, password)
+      expect(compare).toBeTruthy()
+    })
+    
+    it('should return false when compare fails', async () => {
       const sut = makeSut()
       const compare = await sut.compare(password, hashedPassword)
-      expect(compare).toBeTruthy()
+      expect(compare).toBeFalsy()
     })
   })
 })

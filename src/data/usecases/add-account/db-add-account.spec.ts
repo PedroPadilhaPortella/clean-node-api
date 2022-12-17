@@ -40,7 +40,7 @@ const makeFakeAccount = (): AddAccountModel => ({
 
 describe('DbAddAccount', () => {
   
-  it('should call encripter with correct password', async () => {
+  it('should call Hasher with correct password', async () => {
     const { sut, hasherStub } = makeSut()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
     const account = makeFakeAccount()
@@ -48,7 +48,7 @@ describe('DbAddAccount', () => {
     expect(hashSpy).toHaveBeenCalledWith('pass123')
   })
 
-  it('should throw if encrypter throws', async () => {
+  it('should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut()
     jest.spyOn(hasherStub, 'hash')
       .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))

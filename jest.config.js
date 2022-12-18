@@ -14,6 +14,7 @@ module.exports = {
     "server.ts",
     "app.ts",
     "env.ts",
+    "express.route.adapter.ts",
   ],
   coverageDirectory: "coverage",
   coverageProvider: "v8",

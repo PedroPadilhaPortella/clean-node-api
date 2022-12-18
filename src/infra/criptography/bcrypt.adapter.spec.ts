@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
+import env from '../../main/config/env'
 import { BCryptAdapter } from './bcrypt.adapter'
 
-const salt = 12
 const password = 'pass'
 const hashedPassword = 'hashed_pass'
 
@@ -15,7 +15,7 @@ jest.mock('bcrypt', () => ({
 }))
 
 const makeSut = (): BCryptAdapter => {
-  return new BCryptAdapter(salt)
+  return new BCryptAdapter(env.salt)
 }
 
 describe('BCryptAdapter', () => {
@@ -25,7 +25,7 @@ describe('BCryptAdapter', () => {
       const sut = makeSut()
       const hashSpy = jest.spyOn(bcrypt, 'hash')
       await sut.hash(password)
-      expect(hashSpy).toHaveBeenCalledWith(password, salt)
+      expect(hashSpy).toHaveBeenCalledWith(password, env.salt)
     })
     
     it('should return a hash on success', async () => {

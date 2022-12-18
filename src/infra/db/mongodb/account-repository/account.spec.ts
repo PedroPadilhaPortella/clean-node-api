@@ -3,7 +3,7 @@ import env from "../../../../main/config/env"
 import { MongoHelper } from "../helpers/mongo.helper"
 import { AccountMongoRepository } from "./account"
 
-const account = { name: 'user', email: 'email@mail.com', password: 'pass123' }
+const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123' }
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -31,7 +31,7 @@ describe('Account Mongo Repository', () => {
 
     expect(accountDb).toBeTruthy()
     expect(accountDb.id).toBeTruthy()
-    expect(accountDb.name).toBe('user')
+    expect(accountDb.name).toBe('pedro')
     expect(accountDb.email).toBe('email@mail.com')
     expect(accountDb.password).toBe('pass123')
   })
@@ -44,7 +44,7 @@ describe('Account Mongo Repository', () => {
 
     expect(accountDb).toBeTruthy()
     expect(accountDb?.id).toBeTruthy()
-    expect(accountDb?.name).toBe('user')
+    expect(accountDb?.name).toBe('pedro')
     expect(accountDb?.email).toBe('email@mail.com')
     expect(accountDb?.password).toBe('pass123')
   })
@@ -53,5 +53,17 @@ describe('Account Mongo Repository', () => {
     const sut = makeSut()
     const accountDb = await sut.loadByEmail(account.email)
     expect(accountDb).toBeNull()
+  })
+  
+  it('should update the accountAccessToken on updateAccessToken success', async () => {
+    const sut = makeSut()
+
+    const result = await accountCollection.insertOne(account)
+    await sut.updateToken(result.insertedId, 'token')
+
+    const accountDb = await accountCollection.findOne({ _id: result.insertedId })
+
+    expect(accountDb).toBeTruthy()
+    expect(accountDb?.accessToken).toEqual('token')
   })
 })

@@ -2,7 +2,7 @@ import { LogErrorRepository } from "../../data/protocols/log-error-repository.in
 import { InternalServerError } from "../../presentation/errors"
 import { Ok, ServerError } from "../../presentation/helpers/http/http.helper"
 import { Controller, HttpRequest, HttpResponse } from "../../presentation/protocols"
-import { LogControllerDecorator } from "./log"
+import { LogControllerDecorator } from "./log-controller.decorator"
 
 const makeController = (): Controller => {
   class ControllerStub implements Controller {

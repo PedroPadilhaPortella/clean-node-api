@@ -1,8 +1,8 @@
 import { AccountModel } from '../../../domain/models/account.model'
 import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.interface'
 import { InternalServerError, MissingParamError } from '../../errors'
-import { HttpRequest } from './../../protocols/http.interface'
-import { SignUpController } from './signup'
+import { HttpRequest } from '../../protocols/http.interface'
+import { SignUpController } from './signup.controller'
 import { BadRequest, Ok, ServerError, Validation } from './signup.protocols'
 
 interface SutTypes {

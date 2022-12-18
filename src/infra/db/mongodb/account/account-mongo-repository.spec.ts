@@ -1,7 +1,7 @@
 import { Collection } from "mongodb"
 import env from "../../../../main/config/env"
 import { MongoHelper } from "../helpers/mongo.helper"
-import { AccountMongoRepository } from "./account"
+import { AccountMongoRepository } from "./account-mongo-repository"
 
 const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123' }
 

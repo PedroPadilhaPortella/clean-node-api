@@ -4,4 +4,4 @@
 # Commit Type: feat|fix|docs|style|refactor|test|chore|perf|ci|build|temp
 
 npm run test:commit
-# ./node_modules/.bin/eslint 'src/**/*.ts' --fix
+./node_modules/.bin/eslint './src/**/*.ts' --fix

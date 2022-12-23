@@ -11,6 +11,6 @@ FROM node:16
 WORKDIR /usr/projects/clean-node-api
 COPY ./package.json .
 RUN npm install --production
-COPY ./dist ./dist
-EXPOSE 5000
-CMD npm start
+# COPY ./dist ./dist
+# EXPOSE 5000
+# CMD npm start

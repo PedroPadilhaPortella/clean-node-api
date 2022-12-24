@@ -11,11 +11,12 @@ services:
   api:
     container_name: api-container
     build: .
-    image: clean-node-api
+    image: node:12
+    working_dir: /usr/projects/clean-node-api
     restart: always
-    command: npm run debug
+    command: bash -c "npm install --production && npm run debug" 
     volumes:
-      - ./dist:/usr/projects/clean-node-api/dist
+      - ./dist/:/usr/projects/clean-node-api/dist
       - ./package.json:/usr/projects/clean-node-api/package.json
     ports:
       - "5050:5050"

@@ -1,4 +1,6 @@
-import { AddAccount, Controller, HttpRequest, HttpResponse, Validation, BadRequest, Ok, ServerError, Authentication, Unauthorized } from './signup.protocols'
+import { EmailAlreadyTaken } from './../../errors/email-already-taken-error'
+import { Forbidden } from './../../helpers/http/http.helper'
+import { AddAccount, Authentication, BadRequest, Controller, HttpRequest, HttpResponse, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
 export class SignUpController implements Controller {
   
@@ -17,8 +19,11 @@ export class SignUpController implements Controller {
         return BadRequest(error)
       }
 
-      await this.addAccount.add({ name, email, password })
-      
+      const account = await this.addAccount.add({ name, email, password })
+      if (!account) {
+        return Forbidden(new EmailAlreadyTaken())
+      } 
+
       const token = await this.authentication.authenticate({ email, password })
       if (!token) {
         return Unauthorized()

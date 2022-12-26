@@ -1,9 +1,10 @@
 import { AccountModel } from '../../../domain/models/account.model'
 import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.interface'
 import { InternalServerError, MissingParamError } from '../../errors'
+import { EmailAlreadyTaken } from '../../errors/email-already-taken-error'
 import { HttpRequest } from '../../protocols/http.interface'
 import { SignUpController } from './signup.controller'
-import { Authentication, AuthenticationModel, BadRequest, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
+import { Authentication, AuthenticationModel, BadRequest, Forbidden, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
 interface SutTypes {
   sut: SignUpController
@@ -22,7 +23,7 @@ const makeSut = (): SutTypes => {
 
 const createAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+    async add (account: AddAccountModel): Promise<AccountModel | null> {
       const fakeAccount: AccountModel = makeFakeAccount()
       return await new Promise(resolve => resolve(fakeAccount))
     }
@@ -119,6 +120,14 @@ describe('SignUp Controller', () => {
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(Unauthorized())
+  })
+
+  it('should return 403 if the email is already taken', async () => {
+    const { sut, addAccountStub } = makeSut()
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(Forbidden(new EmailAlreadyTaken()))
   })
 
   it('should return 500 if authenticate throws', async () => {

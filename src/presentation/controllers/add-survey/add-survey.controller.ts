@@ -1,7 +1,4 @@
-import { HttpRequest, HttpResponse } from '../../protocols/http.interface'
-import { Validation } from '../../protocols/validation.interface'
-import { Controller } from './../../protocols/controller.interface'
-import { BadRequest, ServerError } from './add-survey.protocols'
+import { BadRequest, Controller, HttpRequest, HttpResponse, ServerError, Validation } from './add-survey.protocols'
 
 export class AddSurveyController implements Controller {
 
@@ -17,7 +14,7 @@ export class AddSurveyController implements Controller {
       if (error) {
         return BadRequest(error)
       }
-      
+
     } catch (error) {
       return ServerError(error)
     }

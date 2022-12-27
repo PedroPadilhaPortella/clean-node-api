@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { DbAuthentication } from './db-authentication'
-import { AccountModel, Authentication, Encrypter, HashComparer, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from './db.authentication.protocols'
+import { AccountModel, Authentication, Encrypter, HashComparer, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from './db-authentication.protocols'
 
 const autentication = { email: 'email@mail.com', password: 'pass123' }
 
@@ -33,7 +33,7 @@ const createEncrypter = (): Encrypter => {
 
 const createAccessTokenRepository = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateToken (id: ObjectId, token: string): Promise<void> {
+    async updateToken (id: ObjectId | string, token: string): Promise<void> {
       return await new Promise(resolve => resolve())
     }
   }

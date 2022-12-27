@@ -7,5 +7,5 @@ import { AddAccount } from '../../../domain/usecases/add-account.interface'
 export const createDbAddAccountFactory = (): AddAccount => {
   const bCryptAdapter = new BCryptAdapter(env.salt)
   const accountMongoRepository = new AccountMongoRepository()
-  return new DbAddAccount(accountMongoRepository, bCryptAdapter)
+  return new DbAddAccount(accountMongoRepository, accountMongoRepository, bCryptAdapter)
 }

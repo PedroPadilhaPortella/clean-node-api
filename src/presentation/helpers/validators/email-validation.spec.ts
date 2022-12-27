@@ -1,5 +1,5 @@
 import { InternalServerError, InvalidParamError } from '../../errors'
-import { EmailValidator } from '../../protocols/email.validator.interface'
+import { EmailValidator } from '../../protocols'
 import { EmailValidation } from './email-validation'
 
 const createEmailValidator = (): EmailValidator => {

@@ -3,6 +3,7 @@ import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
+import { CollectionsEnum } from './../../domain/enums/collections.enum'
 import { AddSurveyModel } from './../../domain/usecases/add-survey.interface'
 
 const survey: AddSurveyModel = {
@@ -26,7 +27,7 @@ describe('Survey Routes', () => {
   })
 
   beforeEach(async () => {
-    surveyCollection = MongoHelper.getCollection('surveys')
+    surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
     await surveyCollection.deleteMany({})
   })
 

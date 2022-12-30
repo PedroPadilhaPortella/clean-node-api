@@ -2,6 +2,7 @@ import { Collection } from 'mongodb'
 import env from "../../../../main/config/env"
 import { MongoHelper } from "../helpers/mongo.helper"
 import { LogMongoRepository } from "./log-mongo-repository"
+import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
 
 const makeSut = (): LogMongoRepository => {
   return new LogMongoRepository()
@@ -19,7 +20,7 @@ describe('LogMongoRepository', () => {
   })
 
   beforeEach(async () => {
-    errorCollection = MongoHelper.getCollection('errors')
+    errorCollection = MongoHelper.getCollection(CollectionsEnum.ERRORS)
     await errorCollection.deleteMany({})
   })
 

@@ -4,6 +4,7 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
 import { hash } from 'bcrypt'
+import { CollectionsEnum } from './../../domain/enums/collections.enum'
 
 const user = {
   name: 'pedro',
@@ -24,7 +25,7 @@ describe('Authentication Routes', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = MongoHelper.getCollection('accounts')
+    accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     await accountCollection.deleteMany({})
   })
 

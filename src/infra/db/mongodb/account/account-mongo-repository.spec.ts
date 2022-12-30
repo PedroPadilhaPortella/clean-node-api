@@ -1,6 +1,7 @@
 import { Collection } from "mongodb"
 import env from "../../../../main/config/env"
 import { MongoHelper } from "../helpers/mongo.helper"
+import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
 import { AccountMongoRepository } from "./account-mongo-repository"
 
 const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123' }
@@ -21,7 +22,7 @@ describe('Account Mongo Repository', () => {
   })
 
   beforeEach(async () => {
-    accountCollection = MongoHelper.getCollection('accounts')
+    accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     await accountCollection.deleteMany({})
   })
 

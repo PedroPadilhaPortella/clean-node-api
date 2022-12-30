@@ -3,6 +3,7 @@ import env from "../../../../main/config/env"
 import { MongoHelper } from "../helpers/mongo.helper"
 import { AddSurveyModel } from './../../../../domain/usecases/add-survey.interface'
 import { SurveyMongoRepository } from "./survey-mongo-repository"
+import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
 
 const survey: AddSurveyModel = {
   question: 'question?', 
@@ -29,7 +30,7 @@ describe('Survey Mongo Repository', () => {
   })
 
   beforeEach(async () => {
-    surveyCollection = MongoHelper.getCollection('surveys')
+    surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
     await surveyCollection.deleteMany({})
   })
 

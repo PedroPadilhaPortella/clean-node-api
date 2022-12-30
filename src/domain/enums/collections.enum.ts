@@ -1,4 +1,5 @@
-export enum Collections {
-  SURVEY = 'surveys',
+export enum CollectionsEnum {
   ACCOUNTS = 'accounts',
+  SURVEYS = 'surveys',
+  ERRORS = 'errors',
 }

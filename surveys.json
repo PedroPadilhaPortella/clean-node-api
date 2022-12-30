@@ -1,0 +1,36 @@
+[
+  {
+    "question": "qual linguagem de programação mais antiga?",
+    "answers": [
+      {
+        "answer": "cobol"
+      },
+      {
+        "answer": "assembly"
+      },
+      {
+        "answer": "fortran"
+      },
+      {
+        "answer": "lisp"
+      }
+    ]
+  },
+  {
+    "question": "qual linguagem de programação foi criada por Guido van Rossum?",
+    "answers": [
+      {
+        "answer": "python"
+      },
+      {
+        "answer": "c++"
+      },
+      {
+        "answer": "java"
+      },
+      {
+        "answer": "ruby"
+      }
+    ]
+  }
+]

@@ -69,6 +69,25 @@ describe('Account Mongo Repository', () => {
     expect(accountDb?.password).toBe('pass123')
   })
   
+  it('should return an account on loadByToken success without role', async () => {
+    const sut = makeSut()
+
+    await accountCollection.insertOne({ ...account, role: 'admin' })
+    const accountDb = await sut.loadByToken('token', 'admin')
+
+    expect(accountDb).toBeTruthy()
+    expect(accountDb?.id).toBeTruthy()
+    expect(accountDb?.name).toBe('pedro')
+    expect(accountDb?.email).toBe('email@mail.com')
+    expect(accountDb?.password).toBe('pass123')
+  })
+
+  it('should return null if loadByToken fails', async () => {
+    const sut = makeSut()
+    const accountDb = await sut.loadByEmail('token')
+    expect(accountDb).toBeNull()
+  })
+  
   it('should update the accountAccessToken on updateAccessToken success', async () => {
     const sut = makeSut()
 

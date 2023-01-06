@@ -32,11 +32,11 @@ describe('Survey Routes', () => {
   })
 
   describe('POST / Surveys', () => {
-    test('should return 204 on add survey success', async () => {
+    test('should return 403 on add survey success if not authenticated', async () => {
       await request(app)
         .post('/api/surveys')
         .send(survey)
-        .expect(204)
+        .expect(403)
     })
   })
 })

@@ -4,7 +4,7 @@ import { MongoHelper } from "../helpers/mongo.helper"
 import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
 import { AccountMongoRepository } from "./account-mongo-repository"
 
-const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123' }
+const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123', accessToken: 'token' }
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -54,6 +54,19 @@ describe('Account Mongo Repository', () => {
     const sut = makeSut()
     const accountDb = await sut.loadByEmail(account.email)
     expect(accountDb).toBeNull()
+  })
+
+  it('should return an account on loadByToken success without role', async () => {
+    const sut = makeSut()
+
+    await accountCollection.insertOne(account)
+    const accountDb = await sut.loadByToken('token')
+
+    expect(accountDb).toBeTruthy()
+    expect(accountDb?.id).toBeTruthy()
+    expect(accountDb?.name).toBe('pedro')
+    expect(accountDb?.email).toBe('email@mail.com')
+    expect(accountDb?.password).toBe('pass123')
   })
   
   it('should update the accountAccessToken on updateAccessToken success', async () => {

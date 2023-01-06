@@ -1,9 +1,5 @@
-import { HttpRequest } from './../protocols'
-import { AccessDeniedError } from '../errors'
-import { Forbidden } from './../helpers/http/http.helper'
 import { AuthMiddleware } from './auth.middleware'
-import { LoadAccountByToken } from '../../domain/usecases/load-account-by-token.interface'
-import { AccountModel } from '../../domain/models/account.model'
+import { AccessDeniedError, AccountModel, Forbidden, HttpRequest, LoadAccountByToken } from "./middlewares.protocols"
 
 const account = { id: '1', email: 'pedro@gmail.com', name: 'pedro', password: 'pedro123' }
 
@@ -23,9 +19,9 @@ interface SutTypes {
   loadAccountByTokenStub: LoadAccountByToken
 }
 
-const makeSut = (): SutTypes => {
+const makeSut = (role?: string): SutTypes => {
   const loadAccountByTokenStub = createLoadAccountByTokenStub()
-  const sut = new AuthMiddleware(loadAccountByTokenStub)
+  const sut = new AuthMiddleware(loadAccountByTokenStub, role)
   return { sut, loadAccountByTokenStub }
 }
 
@@ -38,10 +34,11 @@ describe('Auth Middleware', () => {
   })
 
   it('should call loadAccountByToken with correct accessToken', async () => {
-    const { sut, loadAccountByTokenStub } = makeSut()
+    const role = 'admin'
+    const { sut, loadAccountByTokenStub } = makeSut(role)
     const loadSpy = jest.spyOn(loadAccountByTokenStub, 'load')
     await sut.handle(fakeRequest)
-    expect(loadSpy).toHaveBeenCalledWith('_token_')
+    expect(loadSpy).toHaveBeenCalledWith('_token_', 'admin')
   })
 
   it('should return 403 if loadAccountByToken returns null', async () => {
@@ -55,5 +52,13 @@ describe('Auth Middleware', () => {
     const { sut } = makeSut()
     const response = await sut.handle(fakeRequest)
     expect(response.statusCode).toEqual(200)
+  })
+
+  it('should return 500 if loadAccountByToken throws', async () => {
+    const { sut, loadAccountByTokenStub } = makeSut()
+    jest.spyOn(loadAccountByTokenStub, 'load')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const response = await sut.handle(fakeRequest)
+    expect(response.statusCode).toEqual(500)
   })
 })

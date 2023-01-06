@@ -1,8 +1,8 @@
+import { LoadAccountByTokenRepository } from './../../../data/protocols/load-account-by-token-repository.interface'
 import { AccountModel } from './../../../domain/models/account.model'
 import { LoadAccountByToken } from './../../../domain/usecases/load-account-by-token.interface'
-import { DbLoadAcccountByToken } from './db-load-account-by-token'
 import { Decrypter } from './../../protocols/decrypter.interface'
-import { LoadAccountByTokenRepository } from './../../../data/protocols/load-account-by-token-repository.interface'
+import { DbLoadAcccountByToken } from './db-load-account-by-token'
 
 const account: AccountModel = {
   id: '1',
@@ -58,6 +58,14 @@ describe('DbLoadAccountByToken', () => {
     expect(response).toBeNull()
   })
 
+  it('should throw if decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const response = sut.load('token', 'role')
+    await expect(response).rejects.toThrow()
+  })
+
   it('should call loadAccountByTokenRepository with correct values', async () => {
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
@@ -77,5 +85,13 @@ describe('DbLoadAccountByToken', () => {
     const { sut } = makeSut()
     const response = await sut.load('token', 'role')
     expect(response).toEqual(account)
+  })
+  
+  it('should throw if loadAccountByTokenRepository throws', async () => {
+    const { sut, loadAccountByTokenRepositoryStub } = makeSut()
+    jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const response = sut.load('token', 'role')
+    await expect(response).rejects.toThrow()
   })
 })

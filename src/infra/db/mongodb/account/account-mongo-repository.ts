@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { AddAccountRepository } from '../../../../data/protocols/add-account-repository.interface'
-import { LoadAccountByEmailRepository } from '../../../../data/protocols/load-account-repository.interface'
+import { LoadAccountByEmailRepository } from '../../../../data/protocols/load-account-by-email-repository.interface'
 import { UpdateAccessTokenRepository } from '../../../../data/protocols/update-access-token-repository.interface'
 import { AccountModel } from '../../../../domain/models/account.model'
 import { AddAccountModel } from '../../../../domain/usecases/add-account.interface'

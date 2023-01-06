@@ -72,4 +72,10 @@ describe('DbLoadAccountByToken', () => {
     const response = await sut.load('token', 'role')
     expect(response).toBeNull()
   })
+
+  it('should return an account on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.load('token', 'role')
+    expect(response).toEqual(account)
+  })
 })

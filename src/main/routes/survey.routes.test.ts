@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
@@ -15,8 +16,11 @@ const survey: AddSurveyModel = {
   ]
 }
 
+const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123', role: 'admin' }
+
 describe('Survey Routes', () => {
   let surveyCollection: Collection
+  let accountCollection: Collection
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrlTest)
@@ -28,15 +32,35 @@ describe('Survey Routes', () => {
 
   beforeEach(async () => {
     surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
+    accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     await surveyCollection.deleteMany({})
+    await accountCollection.deleteMany({})
   })
 
   describe('POST / Surveys', () => {
-    test('should return 403 on add survey success if not authenticated', async () => {
+    test('should return 403 if not authenticated', async () => {
       await request(app)
         .post('/api/surveys')
         .send(survey)
         .expect(403)
+    })
+
+    test('should return 204 on add survey with valid token', async () => {
+      const result = await accountCollection.insertOne(account)
+      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
+      await accountCollection.updateOne(
+        { _id: result.insertedId }, { 
+          $set: { 
+            accessToken: token 
+          } 
+        }
+      )
+
+      await request(app)
+        .post('/api/surveys')
+        .set('x-access-token', token)
+        .send(survey)
+        .expect(204)
     })
   })
 })

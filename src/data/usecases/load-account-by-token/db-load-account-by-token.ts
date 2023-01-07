@@ -1,7 +1,4 @@
-import { Decrypter } from '../../protocols/decrypter.interface'
-import { LoadAccountByTokenRepository } from '../../protocols/load-account-by-token-repository.interface'
-import { AccountModel } from '../add-account/db-add-account.protocols'
-import { LoadAccountByToken } from './../../../domain/usecases/load-account-by-token.interface'
+import { LoadAccountByToken, AccountModel, LoadAccountByTokenRepository, Decrypter } from './db-load-account-by-token.protocols'
 
 export class DbLoadAcccountByToken implements LoadAccountByToken {
 
@@ -14,7 +11,7 @@ export class DbLoadAcccountByToken implements LoadAccountByToken {
     const accessToken = await this.decrypter.decrypt(token)
     if (!accessToken) return null
 
-    const account = await this.loadAccountByTokenRepository.loadByToken(accessToken, role)
+    const account = await this.loadAccountByTokenRepository.loadByToken(token, role)
     if (!account) return null
     
     return account

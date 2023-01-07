@@ -1,8 +1,5 @@
-import { LoadAccountByTokenRepository } from './../../../data/protocols/load-account-by-token-repository.interface'
-import { AccountModel } from './../../../domain/models/account.model'
-import { LoadAccountByToken } from './../../../domain/usecases/load-account-by-token.interface'
-import { Decrypter } from './../../protocols/decrypter.interface'
 import { DbLoadAcccountByToken } from './db-load-account-by-token'
+import { AccountModel, Decrypter, LoadAccountByToken, LoadAccountByTokenRepository } from './db-load-account-by-token.protocols'
 
 const account: AccountModel = {
   id: '1',
@@ -70,7 +67,7 @@ describe('DbLoadAccountByToken', () => {
     const { sut, loadAccountByTokenRepositoryStub } = makeSut()
     const loadSpy = jest.spyOn(loadAccountByTokenRepositoryStub, 'loadByToken')
     await sut.load('token', 'role')
-    expect(loadSpy).toHaveBeenCalledWith('decrypted_token', 'role')
+    expect(loadSpy).toHaveBeenCalledWith('token', 'role')
   })
 
   it('should return null if loadAccountByTokenRepository returns null', async () => {

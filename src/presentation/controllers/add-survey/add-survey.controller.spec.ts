@@ -1,3 +1,4 @@
+import MockDate from 'mockdate'
 import { AddSurveyController } from './add-survey.controller'
 import { AddSurvey, AddSurveyModel, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation } from './add-survey.protocols'
 
@@ -36,12 +37,21 @@ const makeFakeRequest = (): HttpRequest => {
   return { 
     body: { 
       question: 'question', 
-      answers: ['answer1', 'answer2', 'answer3']
+      answers: ['answer1', 'answer2', 'answer3'],
+      date: new Date()
     }
   }
 }
 
 describe('AddSurveyController', () => {
+
+  beforeAll(() => {
+    MockDate.set(new Date())
+  })
+
+  afterAll(() => {
+    MockDate.reset()
+  })
 
   it('should call validation with correct body', async () => {
     const { sut, validationStub } = makeSut()

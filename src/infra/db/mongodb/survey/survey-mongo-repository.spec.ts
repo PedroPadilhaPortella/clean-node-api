@@ -11,7 +11,8 @@ const survey: AddSurveyModel = {
     { answer: 'answer1', image: 'image1' },
     { answer: 'answer2', image: 'image2' },
     { answer: 'answer3', image: 'image3' }
-  ]
+  ],
+  date: new Date()
 }
 
 const makeSut = (): SurveyMongoRepository => {

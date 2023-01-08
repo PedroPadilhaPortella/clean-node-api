@@ -1,6 +1,7 @@
 import MockDate from 'mockdate'
+import { InternalServerError } from '../../errors'
 import { LoadSurveysController } from './load-surveys.controller'
-import { LoadSurveys, SurveyModel } from './load-surveys.protocols'
+import { LoadSurveys, Ok, ServerError, SurveyModel } from './load-surveys.protocols'
 
 const surveys: SurveyModel[] = [
   {
@@ -60,5 +61,19 @@ describe('LoadSurveysController', () => {
     const loadSpy = jest.spyOn(loadSurveysStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
+  })
+  
+  it('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.handle({})
+    expect(response).toEqual(Ok(surveys))
+  })
+  
+  it('should return 500 on fails', async () => {
+    const { sut, loadSurveysStub } = makeSut()
+    jest.spyOn(loadSurveysStub, 'load')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+    const response = await sut.handle({})
+    expect(response).toEqual(ServerError(new InternalServerError('Erro')))
   })
 })

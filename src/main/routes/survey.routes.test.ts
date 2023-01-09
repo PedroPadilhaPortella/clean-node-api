@@ -5,17 +5,7 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
 import { CollectionsEnum } from './../../domain/enums/collections.enum'
-
-const survey = {
-  question: 'question?', 
-  answers: [
-    { answer: 'answer1', image: 'image1' },
-    { answer: 'answer2', image: 'image2' },
-    { answer: 'answer3', image: 'image3' }
-  ]
-}
-
-const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123', role: 'admin' }
+import { ACCOUNT, SURVEY } from './../../utils/constants'
 
 describe('Survey Routes', () => {
   let surveyCollection: Collection
@@ -40,12 +30,12 @@ describe('Survey Routes', () => {
     test('should return 403 if not authenticated', async () => {
       await request(app)
         .post('/api/surveys')
-        .send(survey)
+        .send(SURVEY)
         .expect(403)
     })
 
     test('should return 204 on add survey with valid token', async () => {
-      const result = await accountCollection.insertOne(account)
+      const result = await accountCollection.insertOne({ ...ACCOUNT, role: 'admin' })
       const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
       await accountCollection.updateOne(
         { _id: result.insertedId }, { 
@@ -58,7 +48,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', token)
-        .send(survey)
+        .send(SURVEY)
         .expect(204)
     })
   })

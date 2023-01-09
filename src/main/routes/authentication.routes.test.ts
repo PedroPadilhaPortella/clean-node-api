@@ -1,17 +1,11 @@
+import { hash } from 'bcrypt'
 import { Collection } from 'mongodb'
 import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
+import { SIGNUP } from '../../utils/constants'
 import app from '../config/app'
 import env from '../config/env'
-import { hash } from 'bcrypt'
 import { CollectionsEnum } from './../../domain/enums/collections.enum'
-
-const user = {
-  name: 'pedro',
-  email: 'pedro@gmail.com',
-  password: 'pedro123',
-  passwordConfirmation: 'pedro123'
-}
 
 describe('Authentication Routes', () => {
   let accountCollection: Collection
@@ -33,30 +27,30 @@ describe('Authentication Routes', () => {
     test('should return 200 on signup', async () => {
       await request(app)
         .post('/api/signup')
-        .send(user)
+        .send(SIGNUP)
         .expect(200)
     })
   })
 
   describe('POST / Login', () => {
     test('should return 200 on login', async () => {
-      const password = await hash(user.password, env.salt)
+      const password = await hash(SIGNUP.password, env.salt)
       await accountCollection.insertOne({ 
-        name: user.name, 
-        email: user.email, 
+        name: SIGNUP.name, 
+        email: SIGNUP.email, 
         password 
       })
 
       await request(app)
         .post('/api/login')
-        .send({ email: user.email, password: user.password })
+        .send({ email: SIGNUP.email, password: SIGNUP.password })
         .expect(200)
     })
 
     test('should return 401 on login', async () => {
       await request(app)
         .post('/api/login')
-        .send({ email: user.email, password: user.password })
+        .send({ email: SIGNUP.email, password: SIGNUP.password })
         .expect(401)
     })
   })

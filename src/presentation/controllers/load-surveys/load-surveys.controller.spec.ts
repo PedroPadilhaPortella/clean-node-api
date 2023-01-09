@@ -1,35 +1,12 @@
 import MockDate from 'mockdate'
 import { InternalServerError } from '../../errors'
 import { LoadSurveysController } from './load-surveys.controller'
-import { LoadSurveys, NoContent, Ok, ServerError, SurveyModel } from './load-surveys.protocols'
-
-const surveys: SurveyModel[] = [
-  {
-    id: '1',
-    question: 'question1',
-    date: new Date(),
-    answers: [
-      { answer: 'answer1', image: 'image1' },
-      { answer: 'answer2', image: 'image2' },
-      { answer: 'answer3' }
-    ]
-  },
-  {
-    id: '2',
-    question: 'question2',
-    date: new Date(),
-    answers: [
-      { answer: 'answer1', image: 'image1' },
-      { answer: 'answer2' },
-      { answer: 'answer3', image: 'image3' }
-    ]
-  }
-]
+import { LoadSurveys, NoContent, Ok, ServerError, SurveyModel, SURVEYS } from './load-surveys.protocols'
 
 const createLoadSurveysStub = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {
     async load (): Promise<SurveyModel[]> {
-      return await new Promise(resolve => resolve(surveys))
+      return await new Promise(resolve => resolve(SURVEYS))
     }
   }
   return new LoadSurveysStub()
@@ -66,7 +43,7 @@ describe('LoadSurveysController', () => {
   it('should return 200 on success', async () => {
     const { sut } = makeSut()
     const response = await sut.handle({})
-    expect(response).toEqual(Ok(surveys))
+    expect(response).toEqual(Ok(SURVEYS))
   })
   
   it('should return 500 on fails', async () => {

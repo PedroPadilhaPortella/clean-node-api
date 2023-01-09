@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { AddSurveyController } from './add-survey.controller'
-import { AddSurvey, AddSurveyModel, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation } from './add-survey.protocols'
+import { AddSurvey, AddSurveyModel, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation, SURVEY } from './add-survey.protocols'
 
 const createAddSurveyStub = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
@@ -34,13 +34,7 @@ const makeSut = (): SutTypes => {
 }
 
 const makeFakeRequest = (): HttpRequest => {
-  return { 
-    body: { 
-      question: 'question', 
-      answers: ['answer1', 'answer2', 'answer3'],
-      date: new Date()
-    }
-  }
+  return { body: { ...SURVEY, date: new Date() } }
 }
 
 describe('AddSurveyController', () => {

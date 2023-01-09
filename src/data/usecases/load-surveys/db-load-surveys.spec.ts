@@ -2,34 +2,12 @@ import { DbLoadSurveys } from './db-load-surveys'
 import { SurveyModel } from '../../../domain/models/survey.model'
 import { LoadSurveys } from './../../../domain/usecases/load-surveys.interface'
 import { LoadSurveysRepository } from './../../protocols/load-surveys-repository.interface'
-
-const surveys: SurveyModel[] = [
-  {
-    id: '1',
-    question: 'question1',
-    date: new Date(),
-    answers: [
-      { answer: 'answer1', image: 'image1' },
-      { answer: 'answer2', image: 'image2' },
-      { answer: 'answer3' }
-    ]
-  },
-  {
-    id: '2',
-    question: 'question2',
-    date: new Date(),
-    answers: [
-      { answer: 'answer1', image: 'image1' },
-      { answer: 'answer2' },
-      { answer: 'answer3', image: 'image3' }
-    ]
-  }
-]
+import { SURVEYS } from './../../../utils/constants'
 
 const createLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {
     async loadAll (): Promise<SurveyModel[]> {
-      return surveys
+      return SURVEYS
     }
   }
   return new LoadSurveysRepositoryStub()

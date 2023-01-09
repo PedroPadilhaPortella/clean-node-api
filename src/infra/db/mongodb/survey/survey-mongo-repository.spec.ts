@@ -1,19 +1,9 @@
 import { Collection } from "mongodb"
 import env from "../../../../main/config/env"
+import { SURVEY } from "../../../../utils/constants"
 import { MongoHelper } from "../helpers/mongo.helper"
-import { AddSurveyModel } from './../../../../domain/usecases/add-survey.interface'
-import { SurveyMongoRepository } from "./survey-mongo-repository"
 import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
-
-const survey: AddSurveyModel = {
-  question: 'question?', 
-  answers: [
-    { answer: 'answer1', image: 'image1' },
-    { answer: 'answer2', image: 'image2' },
-    { answer: 'answer3', image: 'image3' }
-  ],
-  date: new Date()
-}
+import { SurveyMongoRepository } from "./survey-mongo-repository"
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
@@ -37,8 +27,8 @@ describe('Survey Mongo Repository', () => {
 
   it('should save the survey on add success', async () => {
     const sut = makeSut()
-    await sut.add(survey)
-    const surveyDb = await surveyCollection.findOne({ question: survey.question })
+    await sut.add(SURVEY)
+    const surveyDb = await surveyCollection.findOne({ question: SURVEY.question })
     expect(surveyDb).toBeTruthy()
   })
 })

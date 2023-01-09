@@ -1,10 +1,5 @@
-import { AccountModel } from '../../../domain/models/account.model'
-import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account.interface'
-import { InternalServerError, MissingParamError } from '../../errors'
-import { EmailAlreadyTaken } from '../../errors/email-already-taken-error'
-import { HttpRequest } from '../../protocols/http.interface'
 import { SignUpController } from './signup.controller'
-import { Authentication, AuthenticationModel, BadRequest, Forbidden, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
+import { ACCOUNT, AccountModel, AddAccount, AddAccountModel, Authentication, AuthenticationModel, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
 interface SutTypes {
   sut: SignUpController
@@ -24,8 +19,7 @@ const makeSut = (): SutTypes => {
 const createAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add (account: AddAccountModel): Promise<AccountModel | null> {
-      const fakeAccount: AccountModel = makeFakeAccount()
-      return await new Promise(resolve => resolve(fakeAccount))
+      return await new Promise(resolve => resolve(ACCOUNT))
     }
   }
   return new AddAccountStub()
@@ -50,19 +44,7 @@ const createAuthenticationStub = (): Authentication => {
 }
 
 const makeFakeRequest = (): HttpRequest => ({
-  body: {
-    name: 'user',
-    email: 'email@mail.com',
-    password: 'pass123',
-    passwordConfirmation: 'pass123'
-  }
-})
-
-const makeFakeAccount = (): AccountModel => ({
-  id: '1', 
-  name: 'user', 
-  email: 'email@mail.com', 
-  password: 'pass123'
+  body: { ...ACCOUNT }
 })
 
 describe('SignUp Controller', () => {
@@ -73,9 +55,9 @@ describe('SignUp Controller', () => {
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(AddAccountSpy).toHaveBeenCalledWith({
-      name: 'user',
-      email: 'email@mail.com',
-      password: 'pass123'
+      name: ACCOUNT.name,
+      email: ACCOUNT.email,
+      password: ACCOUNT.password
     })
   })
 

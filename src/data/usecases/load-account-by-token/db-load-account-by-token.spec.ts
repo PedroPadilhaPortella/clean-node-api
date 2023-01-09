@@ -29,7 +29,7 @@ const createLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository 
 interface SutTypes {
   sut: LoadAccountByToken
   decrypterStub: Decrypter
-  loadAccountByTokenRepositoryStub: any
+  loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
 }
 
 const makeSut = (): SutTypes => {

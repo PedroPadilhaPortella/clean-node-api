@@ -23,7 +23,7 @@ const createValidationStub = (): Validation => {
 interface SutTypes {
   sut: AddSurveyController
   validationStub: Validation
-  addSurveyStub: any
+  addSurveyStub: AddSurvey
 }
 
 const makeSut = (): SutTypes => {

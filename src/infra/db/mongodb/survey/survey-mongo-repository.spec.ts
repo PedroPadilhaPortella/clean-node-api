@@ -31,4 +31,17 @@ describe('Survey Mongo Repository', () => {
     const surveyDb = await surveyCollection.findOne({ question: SURVEY.question })
     expect(surveyDb).toBeTruthy()
   })
+  
+  it('should load surveys from repository', async () => {
+    const sut = makeSut()
+    await sut.add(SURVEY)
+    const surveys = await sut.loadAll()
+    expect(surveys.length).toBe(1)
+  })
+  
+  it('should return no surveys cause no surveys have been added', async () => {
+    const sut = makeSut()
+    const surveys = await sut.loadAll()
+    expect(surveys.length).toBe(0)
+  })
 })

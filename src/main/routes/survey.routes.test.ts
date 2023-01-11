@@ -52,4 +52,12 @@ describe('Survey Routes', () => {
         .expect(204)
     })
   })
+
+  describe('GET / Surveys', () => {
+    test('should return 403 if not authenticated', async () => {
+      await request(app)
+        .get('/api/surveys')
+        .expect(403)
+    })
+  })
 })

@@ -1,12 +1,5 @@
 import { DbLoadAcccountByToken } from './db-load-account-by-token'
-import { AccountModel, Decrypter, LoadAccountByToken, LoadAccountByTokenRepository } from './db-load-account-by-token.protocols'
-
-const account: AccountModel = {
-  id: '1',
-  name: 'pedro',
-  email: 'email@mail.com',
-  password: 'pass123'
-}
+import { ACCOUNT, AccountModel, Decrypter, LoadAccountByToken, LoadAccountByTokenRepository } from './db-load-account-by-token.protocols'
 
 const createDecrypterStub = (): Decrypter => {
   class DecrypterStub implements Decrypter {
@@ -20,7 +13,7 @@ const createDecrypterStub = (): Decrypter => {
 const createLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository => {
   class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
     async loadByToken (token: string, role?: string): Promise<AccountModel> {
-      return account
+      return ACCOUNT
     }
   }
   return new LoadAccountByTokenRepositoryStub()
@@ -29,7 +22,7 @@ const createLoadAccountByTokenRepositoryStub = (): LoadAccountByTokenRepository 
 interface SutTypes {
   sut: LoadAccountByToken
   decrypterStub: Decrypter
-  loadAccountByTokenRepositoryStub: any
+  loadAccountByTokenRepositoryStub: LoadAccountByTokenRepository
 }
 
 const makeSut = (): SutTypes => {
@@ -81,7 +74,7 @@ describe('DbLoadAccountByToken', () => {
   it('should return an account on success', async () => {
     const { sut } = makeSut()
     const response = await sut.load('token', 'role')
-    expect(response).toEqual(account)
+    expect(response).toEqual(ACCOUNT)
   })
   
   it('should throw if loadAccountByTokenRepository throws', async () => {

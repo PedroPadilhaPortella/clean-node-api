@@ -1,6 +1,4 @@
-import { EmailAlreadyTaken } from './../../errors/email-already-taken-error'
-import { Forbidden } from './../../helpers/http/http.helper'
-import { AddAccount, Authentication, BadRequest, Controller, HttpRequest, HttpResponse, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
+import { AddAccount, Authentication, BadRequest, Controller, EmailAlreadyTaken, Forbidden, HttpRequest, HttpResponse, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
 export class SignUpController implements Controller {
   

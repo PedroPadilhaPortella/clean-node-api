@@ -2,6 +2,7 @@ import { LogErrorRepository } from "../../data/protocols/log-error-repository.in
 import { InternalServerError } from "../../presentation/errors"
 import { Ok, ServerError } from "../../presentation/helpers/http/http.helper"
 import { Controller, HttpRequest, HttpResponse } from "../../presentation/protocols"
+import { SIGNUP } from './../../utils/constants'
 import { LogControllerDecorator } from "./log-controller.decorator"
 
 const makeController = (): Controller => {
@@ -37,12 +38,7 @@ const makeSut = (): SutTypes => {
 }
 
 const makeFakeRequest = (): HttpRequest => ({
-  body: {
-    name: 'pedro',
-    email: 'email@gmail.com',
-    password: 'pedro123',
-    passwordConfirmation: 'pedro123'
-  }
+  body: { SIGNUP }
 })
 
 describe('LogControllerDecorator', () => {

@@ -5,22 +5,25 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
 import { CollectionsEnum } from './../../domain/enums/collections.enum'
-import { AddSurveyModel } from './../../domain/usecases/add-survey.interface'
+import { ACCOUNT, SURVEY } from './../../utils/constants'
 
-const survey: AddSurveyModel = {
-  question: 'question?', 
-  answers: [
-    { answer: 'answer1', image: 'image1' },
-    { answer: 'answer2', image: 'image2' },
-    { answer: 'answer3', image: 'image3' }
-  ]
+let surveyCollection: Collection
+let accountCollection: Collection
+
+const makeAccessToken = async (result: any): Promise<string> => {
+  const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
+  await accountCollection.updateOne(
+    { _id: result.insertedId }, { 
+      $set: { 
+        accessToken: token 
+      } 
+    }
+  )
+
+  return token
 }
 
-const account = { name: 'pedro', email: 'email@mail.com', password: 'pass123', role: 'admin' }
-
 describe('Survey Routes', () => {
-  let surveyCollection: Collection
-  let accountCollection: Collection
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrlTest)
@@ -41,26 +44,48 @@ describe('Survey Routes', () => {
     test('should return 403 if not authenticated', async () => {
       await request(app)
         .post('/api/surveys')
-        .send(survey)
+        .send(SURVEY)
         .expect(403)
     })
 
     test('should return 204 on add survey with valid token', async () => {
-      const result = await accountCollection.insertOne(account)
-      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
-      await accountCollection.updateOne(
-        { _id: result.insertedId }, { 
-          $set: { 
-            accessToken: token 
-          } 
-        }
-      )
+      const result = await accountCollection.insertOne({ ...ACCOUNT, role: 'admin' })
+      const token = await makeAccessToken(result)
 
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', token)
-        .send(survey)
+        .send(SURVEY)
         .expect(204)
+    })
+  })
+
+  describe('GET / Surveys', () => {
+    test('should return 403 if not authenticated', async () => {
+      await request(app)
+        .get('/api/surveys')
+        .expect(403)
+    })
+
+    test('should return 204 on load surveys with valid token and no surveys enrolled', async () => {
+      const result = await accountCollection.insertOne(ACCOUNT)
+      const token = await makeAccessToken(result)
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', token)
+        .expect(204)
+    })
+
+    test('should return 200 on load surveys with valid token', async () => {
+      const result = await accountCollection.insertOne(ACCOUNT)
+      await surveyCollection.insertOne(SURVEY)
+      const token = await makeAccessToken(result)
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', token)
+        .expect(200)
     })
   })
 })

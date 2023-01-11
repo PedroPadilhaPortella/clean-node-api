@@ -1,7 +1,9 @@
+import { AddSurveyController } from '../../../../presentation/controllers/add-survey/add-survey.controller'
+import { LoadSurveysController } from '../../../../presentation/controllers/load-surveys/load-surveys.controller'
 import { Controller } from '../../../../presentation/protocols'
 import { createDbAddSurveyFactory } from '../../usecases/db-add-survey.factory'
+import { createDbLoadSurveyFactory } from '../../usecases/db-load-surveys.factory'
 import { createLogControllerDecoratorFactory } from '../../usecases/log-controller.factory'
-import { AddSurveyController } from './../../../../presentation/controllers/add-survey/add-survey.controller'
 import { createAddSurveyValidations } from './add-survey-validation'
 
 export const AddSurveyControllerFactory = (): Controller => {
@@ -9,4 +11,10 @@ export const AddSurveyControllerFactory = (): Controller => {
   const validations = createAddSurveyValidations()
   const addSurveyController = new AddSurveyController(dbAddSurvey, validations)
   return createLogControllerDecoratorFactory(addSurveyController)
+}
+
+export const LoadSurveysControllerFactory = (): Controller => {
+  const dbLoadSurvey = createDbLoadSurveyFactory()
+  const loadSurveysController = new LoadSurveysController(dbLoadSurvey)
+  return createLogControllerDecoratorFactory(loadSurveysController)
 }

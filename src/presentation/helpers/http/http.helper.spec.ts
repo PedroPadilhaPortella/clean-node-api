@@ -1,6 +1,7 @@
 import { InternalServerError, MissingParamError } from '../../errors'
 import { UnauthorizedError } from '../../errors/unauthorized-error'
 import { Ok, BadRequest, ServerError, Unauthorized } from './http.helper'
+
 describe('HttpHelper', () => {
 
   it('Ok should return statusCode 200 and a body', () => {

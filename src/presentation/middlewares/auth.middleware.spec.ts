@@ -1,14 +1,12 @@
 import { AuthMiddleware } from './auth.middleware'
-import { AccessDeniedError, AccountModel, Forbidden, HttpRequest, LoadAccountByToken } from "./middlewares.protocols"
-
-const account = { id: '1', email: 'pedro@gmail.com', name: 'pedro', password: 'pedro123' }
+import { AccessDeniedError, AccountModel, Forbidden, HttpRequest, LoadAccountByToken, ACCOUNT } from "./middlewares.protocols"
 
 const fakeRequest: HttpRequest = { headers: { 'x-access-token': '_token_' }, body: {} }
 
 const createLoadAccountByTokenStub = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
     async load (token: string, role?: string | undefined): Promise<AccountModel | null> {
-      return account
+      return ACCOUNT
     }
   }
   return new LoadAccountByTokenStub()

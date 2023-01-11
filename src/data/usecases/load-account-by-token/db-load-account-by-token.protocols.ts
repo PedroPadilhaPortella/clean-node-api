@@ -5,3 +5,4 @@ export * from './../../../data/protocols/load-account-by-token-repository.interf
 export * from './../../../domain/models/account.model'
 export * from './../../../domain/usecases/load-account-by-token.interface'
 export * from './../../protocols/decrypter.interface'
+export * from './../../../utils/constants'

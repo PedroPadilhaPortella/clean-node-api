@@ -7,9 +7,23 @@ import env from '../config/env'
 import { CollectionsEnum } from './../../domain/enums/collections.enum'
 import { ACCOUNT, SURVEY } from './../../utils/constants'
 
+let surveyCollection: Collection
+let accountCollection: Collection
+
+const makeAccessToken = async (result: any): Promise<string> => {
+  const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
+  await accountCollection.updateOne(
+    { _id: result.insertedId }, { 
+      $set: { 
+        accessToken: token 
+      } 
+    }
+  )
+
+  return token
+}
+
 describe('Survey Routes', () => {
-  let surveyCollection: Collection
-  let accountCollection: Collection
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrlTest)
@@ -36,14 +50,7 @@ describe('Survey Routes', () => {
 
     test('should return 204 on add survey with valid token', async () => {
       const result = await accountCollection.insertOne({ ...ACCOUNT, role: 'admin' })
-      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
-      await accountCollection.updateOne(
-        { _id: result.insertedId }, { 
-          $set: { 
-            accessToken: token 
-          } 
-        }
-      )
+      const token = await makeAccessToken(result)
 
       await request(app)
         .post('/api/surveys')
@@ -62,14 +69,7 @@ describe('Survey Routes', () => {
 
     test('should return 204 on load surveys with valid token and no surveys enrolled', async () => {
       const result = await accountCollection.insertOne(ACCOUNT)
-      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
-      await accountCollection.updateOne(
-        { _id: result.insertedId }, { 
-          $set: { 
-            accessToken: token 
-          } 
-        }
-      )
+      const token = await makeAccessToken(result)
 
       await request(app)
         .get('/api/surveys')
@@ -80,14 +80,7 @@ describe('Survey Routes', () => {
     test('should return 200 on load surveys with valid token', async () => {
       const result = await accountCollection.insertOne(ACCOUNT)
       await surveyCollection.insertOne(SURVEY)
-      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
-      await accountCollection.updateOne(
-        { _id: result.insertedId }, { 
-          $set: { 
-            accessToken: token 
-          } 
-        }
-      )
+      const token = await makeAccessToken(result)
 
       await request(app)
         .get('/api/surveys')

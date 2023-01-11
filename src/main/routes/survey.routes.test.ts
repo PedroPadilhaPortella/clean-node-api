@@ -59,5 +59,40 @@ describe('Survey Routes', () => {
         .get('/api/surveys')
         .expect(403)
     })
+
+    test('should return 204 on load surveys with valid token and no surveys enrolled', async () => {
+      const result = await accountCollection.insertOne(ACCOUNT)
+      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
+      await accountCollection.updateOne(
+        { _id: result.insertedId }, { 
+          $set: { 
+            accessToken: token 
+          } 
+        }
+      )
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', token)
+        .expect(204)
+    })
+
+    test('should return 200 on load surveys with valid token', async () => {
+      const result = await accountCollection.insertOne(ACCOUNT)
+      await surveyCollection.insertOne(SURVEY)
+      const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
+      await accountCollection.updateOne(
+        { _id: result.insertedId }, { 
+          $set: { 
+            accessToken: token 
+          } 
+        }
+      )
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', token)
+        .expect(200)
+    })
   })
 })

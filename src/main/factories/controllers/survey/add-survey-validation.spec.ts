@@ -2,7 +2,7 @@ import { RequiredFieldValidation, ValidationComposite } from '@/presentation/hel
 import { Validation } from '@/presentation/protocols'
 import { createAddSurveyValidations } from "./add-survey-validation"
 
-jest.mock('../../../../presentation/helpers/validators/validation-composite')
+jest.mock('@/presentation/helpers/validators/validation-composite')
 
 describe('AddSurveyValidationFactory', () => { 
 

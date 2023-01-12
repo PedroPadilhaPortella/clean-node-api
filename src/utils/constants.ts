@@ -2,6 +2,7 @@ import { AccountModel } from '@/domain/models/account.model'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddSurveyModel } from '@/domain/usecases/add-survey.interface'
+import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.interface'
 
 export const SIGNUP = {
   name: 'pedro',
@@ -47,10 +48,11 @@ export const SURVEYS: SurveyModel[] = [
   }
 ]
 
-export const SURVEY_RESULT: SurveyResultModel = { 
-  id: '1',
+export const SAVE_SURVEY_RESULT: SaveSurveyResultModel = { 
   surveyId: 'surveyId1',
   accountId: 'accountId1',
   answer: 'answer',
   date: new Date()
 }
+
+export const SURVEY_RESULT: SurveyResultModel = { id: '1', ...SAVE_SURVEY_RESULT }

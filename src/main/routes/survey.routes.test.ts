@@ -5,7 +5,7 @@ import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
-import { ACCOUNT, SURVEY } from '@/utils/constants'
+import { ACCOUNT, ADD_SURVEY } from '@/utils/constants'
 
 let surveyCollection: Collection
 let accountCollection: Collection
@@ -44,7 +44,7 @@ describe('Survey Routes', () => {
     test('should return 403 if not authenticated', async () => {
       await request(app)
         .post('/api/surveys')
-        .send(SURVEY)
+        .send(ADD_SURVEY)
         .expect(403)
     })
 
@@ -55,7 +55,7 @@ describe('Survey Routes', () => {
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', token)
-        .send(SURVEY)
+        .send(ADD_SURVEY)
         .expect(204)
     })
   })
@@ -79,7 +79,7 @@ describe('Survey Routes', () => {
 
     test('should return 200 on load surveys with valid token', async () => {
       const result = await accountCollection.insertOne(ACCOUNT)
-      await surveyCollection.insertOne(SURVEY)
+      await surveyCollection.insertOne(ADD_SURVEY)
       const token = await makeAccessToken(result)
 
       await request(app)

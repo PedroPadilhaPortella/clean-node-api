@@ -1,4 +1,5 @@
 import { AccountModel } from '@/domain/models/account.model'
+import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddSurveyModel } from '@/domain/usecases/add-survey.interface'
 
@@ -48,3 +49,11 @@ export const SURVEYS: SurveyModel[] = [
     ]
   }
 ]
+
+export const SURVEY_RESULT: SurveyResultModel = { 
+  id: '1',
+  surveyId: 'surveyId1',
+  accountId: 'accountId1',
+  answer: 'answer',
+  date: new Date()
+}

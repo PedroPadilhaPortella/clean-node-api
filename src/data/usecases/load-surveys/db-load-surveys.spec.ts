@@ -10,7 +10,7 @@ const createLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
   return new LoadSurveysRepositoryStub()
 }
 
-interface SutTypes {
+type SutTypes = {
   sut: LoadSurveys
   loadSurveysRepositoryStub: LoadSurveysRepository
 }

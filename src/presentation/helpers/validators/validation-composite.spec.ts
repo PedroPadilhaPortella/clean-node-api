@@ -3,7 +3,7 @@ import { RequiredFieldValidation } from './required-field-validation'
 import { ValidationComposite } from "./validation-composite"
 import { Validation } from '@/presentation/protocols'
 
-interface SutTypes {
+type SutTypes = {
   sut: ValidationComposite
   validators: Validation[]
 }

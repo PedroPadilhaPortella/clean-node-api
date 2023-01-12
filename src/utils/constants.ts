@@ -1,6 +1,6 @@
-import { AccountModel } from './../domain/models/account.model'
-import { SurveyModel } from "../domain/models/survey.model"
-import { AddSurveyModel } from './../domain/usecases/add-survey.interface'
+import { AccountModel } from '@/domain/models/account.model'
+import { SurveyModel } from "@/domain/models/survey.model"
+import { AddSurveyModel } from '@/domain/usecases/add-survey.interface'
 
 export const SIGNUP = {
   name: 'pedro',

@@ -1,8 +1,8 @@
+import { CollectionsEnum } from '@/domain/enums/collections.enum'
+import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
+import env from "@/main/config/env"
+import { SURVEY } from "@/utils/constants"
 import { Collection } from "mongodb"
-import env from "../../../../main/config/env"
-import { SURVEY } from "../../../../utils/constants"
-import { MongoHelper } from "../helpers/mongo.helper"
-import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 
 const makeSut = (): SurveyMongoRepository => {

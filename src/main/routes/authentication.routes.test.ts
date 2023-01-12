@@ -1,11 +1,11 @@
+import { CollectionsEnum } from '@/domain/enums/collections.enum'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
+import { SIGNUP } from '@/utils/constants'
 import { hash } from 'bcrypt'
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
-import { SIGNUP } from '../../utils/constants'
 import app from '../config/app'
 import env from '../config/env'
-import { CollectionsEnum } from './../../domain/enums/collections.enum'
 
 describe('Authentication Routes', () => {
   let accountCollection: Collection

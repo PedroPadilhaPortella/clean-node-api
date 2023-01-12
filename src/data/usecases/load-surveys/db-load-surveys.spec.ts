@@ -1,8 +1,5 @@
 import { DbLoadSurveys } from './db-load-surveys'
-import { SurveyModel } from '../../../domain/models/survey.model'
-import { LoadSurveys } from './../../../domain/usecases/load-surveys.interface'
-import { LoadSurveysRepository } from './../../protocols/load-surveys-repository.interface'
-import { SURVEYS } from './../../../utils/constants'
+import { LoadSurveys, LoadSurveysRepository, SurveyModel, SURVEYS } from './db-load-surveys.protocols'
 
 const createLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {

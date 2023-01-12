@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import env from '../../main/config/env'
+import env from '@/main/config/env'
 import { BCryptAdapter } from './bcrypt.adapter'
 
 const password = 'pass'

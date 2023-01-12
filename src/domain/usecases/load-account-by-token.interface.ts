@@ -1,4 +1,4 @@
-import { AccountModel } from "../models/account.model"
+import { AccountModel } from "@/domain/models/account.model"
 
 export interface LoadAccountByToken {
   load: (token: string, role?: string) => Promise<AccountModel | null>

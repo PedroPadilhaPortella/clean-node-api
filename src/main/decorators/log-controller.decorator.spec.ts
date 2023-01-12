@@ -1,8 +1,8 @@
-import { LogErrorRepository } from "../../data/protocols/log-error-repository.interface"
-import { InternalServerError } from "../../presentation/errors"
-import { Ok, ServerError } from "../../presentation/helpers/http/http.helper"
-import { Controller, HttpRequest, HttpResponse } from "../../presentation/protocols"
-import { SIGNUP } from './../../utils/constants'
+import { LogErrorRepository } from "@/data/protocols/log-error-repository.interface"
+import { InternalServerError } from "@/presentation/errors"
+import { Ok, ServerError } from "@/presentation/helpers/http/http.helper"
+import { Controller, HttpRequest, HttpResponse } from "@/presentation/protocols"
+import { SIGNUP } from '@/utils/constants'
 import { LogControllerDecorator } from "./log-controller.decorator"
 
 const makeController = (): Controller => {

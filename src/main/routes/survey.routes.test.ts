@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
-import { CollectionsEnum } from './../../domain/enums/collections.enum'
-import { ACCOUNT, SURVEY } from './../../utils/constants'
+import { CollectionsEnum } from '@/domain/enums/collections.enum'
+import { ACCOUNT, SURVEY } from '@/utils/constants'
 
 let surveyCollection: Collection
 let accountCollection: Collection

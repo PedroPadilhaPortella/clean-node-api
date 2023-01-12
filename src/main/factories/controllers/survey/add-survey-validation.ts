@@ -1,5 +1,5 @@
-import { RequiredFieldValidation, ValidationComposite } from '../../../../presentation/helpers/validators'
-import { Validation } from '../../../../presentation/protocols'
+import { RequiredFieldValidation, ValidationComposite } from '@/presentation/helpers/validators'
+import { Validation } from '@/presentation/protocols'
 
 export const createAddSurveyValidations = (): ValidationComposite => {
   const fields = ['question', 'answers']

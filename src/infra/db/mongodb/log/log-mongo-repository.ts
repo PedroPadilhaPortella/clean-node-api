@@ -1,6 +1,6 @@
-import { LogErrorRepository } from "../../../../data/protocols/log-error-repository.interface"
-import { MongoHelper } from "../helpers/mongo.helper"
-import { CollectionsEnum } from './../../../../domain/enums/collections.enum'
+import { LogErrorRepository } from "@/data/protocols/log-error-repository.interface"
+import { CollectionsEnum } from '@/domain/enums/collections.enum'
+import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 
 export class LogMongoRepository implements LogErrorRepository {
 

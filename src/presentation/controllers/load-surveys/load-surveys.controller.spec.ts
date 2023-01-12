@@ -1,7 +1,6 @@
 import MockDate from 'mockdate'
-import { InternalServerError } from '../../errors'
 import { LoadSurveysController } from './load-surveys.controller'
-import { LoadSurveys, NoContent, Ok, ServerError, SurveyModel, SURVEYS } from './load-surveys.protocols'
+import { InternalServerError, LoadSurveys, NoContent, Ok, ServerError, SurveyModel, SURVEYS } from './load-surveys.protocols'
 
 const createLoadSurveysStub = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {

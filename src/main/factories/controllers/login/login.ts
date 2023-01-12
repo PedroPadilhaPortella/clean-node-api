@@ -1,7 +1,7 @@
-import { LoginController } from "../../../../presentation/controllers/login/login.controller"
-import { Controller } from "../../../../presentation/protocols"
-import { createDbAuthenticationFactory } from "../../usecases/db-authentication.factory"
-import { createLogControllerDecoratorFactory } from "../../usecases/log-controller.factory"
+import { createDbAuthenticationFactory } from "@/main/factories/usecases/db-authentication.factory"
+import { createLogControllerDecoratorFactory } from "@/main/factories/usecases/log-controller.factory"
+import { LoginController } from "@/presentation/controllers/login/login.controller"
+import { Controller } from "@/presentation/protocols"
 import { createLoginValidations } from "./login-validation"
 
 export const LoginControllerFactory = (): Controller => {

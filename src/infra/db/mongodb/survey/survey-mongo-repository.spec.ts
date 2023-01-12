@@ -1,7 +1,7 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { SURVEY } from "@/utils/constants"
+import { ADD_SURVEY } from "@/utils/constants"
 import { Collection } from "mongodb"
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 
@@ -27,14 +27,14 @@ describe('Survey Mongo Repository', () => {
 
   it('should save the survey on add success', async () => {
     const sut = makeSut()
-    await sut.add(SURVEY)
-    const surveyDb = await surveyCollection.findOne({ question: SURVEY.question })
+    await sut.add(ADD_SURVEY)
+    const surveyDb = await surveyCollection.findOne({ question: ADD_SURVEY.question })
     expect(surveyDb).toBeTruthy()
   })
   
   it('should load surveys from repository', async () => {
     const sut = makeSut()
-    await sut.add(SURVEY)
+    await sut.add(ADD_SURVEY)
     const surveys = await sut.loadAll()
     expect(surveys.length).toBe(1)
   })

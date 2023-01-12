@@ -1,11 +1,11 @@
 import MockDate from 'mockdate'
 import { DbLoadSurveyById } from './db-load-survey-by-id'
-import { LoadSurveyByIdRepository, SurveyResultModel, SURVEY_RESULT } from './db-load-survey-by-id.protocols'
+import { LoadSurveyByIdRepository, SurveyModel, SURVEY } from './db-load-survey-by-id.protocols'
 
 const createLoadSurveyByIdRepositoryStub = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (id: string): Promise<SurveyResultModel> {
-      return SURVEY_RESULT
+    async loadById (id: string): Promise<SurveyModel> {
+      return SURVEY
     }
   }
   return new LoadSurveyByIdRepositoryStub()
@@ -37,6 +37,12 @@ describe('DbLoadSurveyById', () => {
     const loadSpy = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
     await sut.loadById('id_123')
     expect(loadSpy).toHaveBeenCalledWith('id_123')
+  })
+
+  it('should return a survey on success', async () => {
+    const { sut } = makeSut()
+    const survey = await sut.loadById('id_123')
+    expect(survey).toEqual(SURVEY)
   })
 
   it('should throw if loadSurveysRepository throws', async () => {

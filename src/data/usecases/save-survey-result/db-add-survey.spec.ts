@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { DbAddSurvey } from './db-add-survey'
-import { AddSurveyModel, AddSurveyRepository, SURVEY } from './db-add-survey.protocols'
+import { AddSurveyModel, AddSurveyRepository, ADD_SURVEY } from './db-add-survey.protocols'
 
 const createAddSurveyRepositoryStub = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
@@ -35,15 +35,15 @@ describe('DbAddSurvey', () => {
   it('should call AddSurveyRepository with correct values', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
     const surveySpy = jest.spyOn(addSurveyRepositoryStub, 'add')
-    await sut.add(SURVEY)
-    expect(surveySpy).toHaveBeenCalledWith(SURVEY)
+    await sut.add(ADD_SURVEY)
+    expect(surveySpy).toHaveBeenCalledWith(ADD_SURVEY)
   })
     
   it('should throw if AddSurveyRepository throws', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut()
     jest.spyOn(addSurveyRepositoryStub, 'add')
       .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
-    const response = sut.add(SURVEY)
+    const response = sut.add(ADD_SURVEY)
     await expect(response).rejects.toThrow()
   })
 })

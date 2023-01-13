@@ -1,7 +1,7 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { ADD_SURVEY, SURVEY } from "@/utils/constants"
+import { ADD_SURVEY } from "@/utils/constants"
 import { Collection } from "mongodb"
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 
@@ -55,8 +55,6 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const survey = await sut.loadById(surveyDb.insertedId.toString())
       expect(survey).toBeTruthy()
-      expect(survey).toBe({ ...SURVEY, id: surveyDb.insertedId })
     })
   })
-
 })

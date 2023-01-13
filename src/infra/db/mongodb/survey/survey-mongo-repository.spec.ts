@@ -1,7 +1,7 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { ADD_SURVEY } from "@/utils/constants"
+import { ADD_SURVEY, SURVEY } from "@/utils/constants"
 import { Collection } from "mongodb"
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 
@@ -25,23 +25,38 @@ describe('Survey Mongo Repository', () => {
     await surveyCollection.deleteMany({})
   })
 
-  it('should save the survey on add success', async () => {
-    const sut = makeSut()
-    await sut.add(ADD_SURVEY)
-    const surveyDb = await surveyCollection.findOne({ question: ADD_SURVEY.question })
-    expect(surveyDb).toBeTruthy()
+  describe('Save', () => {
+    it('should save the survey on add success', async () => {
+      const sut = makeSut()
+      await sut.add(ADD_SURVEY)
+      const surveyDb = await surveyCollection.findOne({ question: ADD_SURVEY.question })
+      expect(surveyDb).toBeTruthy()
+    })
   })
-  
-  it('should load surveys from repository', async () => {
-    const sut = makeSut()
-    await sut.add(ADD_SURVEY)
-    const surveys = await sut.loadAll()
-    expect(surveys.length).toBe(1)
+
+  describe('LoadAll', () => {
+    it('should load surveys from repository', async () => {
+      const sut = makeSut()
+      await sut.add(ADD_SURVEY)
+      const surveys = await sut.loadAll()
+      expect(surveys.length).toBe(1)
+    })
+
+    it('should return no surveys cause no surveys have been added', async () => {
+      const sut = makeSut()
+      const surveys = await sut.loadAll()
+      expect(surveys.length).toBe(0)
+    })
   })
-  
-  it('should return no surveys cause no surveys have been added', async () => {
-    const sut = makeSut()
-    const surveys = await sut.loadAll()
-    expect(surveys.length).toBe(0)
+
+  describe('LoadById', () => {
+    it('should load survey by id from repository', async () => {
+      const surveyDb = await surveyCollection.insertOne(ADD_SURVEY)
+      const sut = makeSut()
+      const survey = await sut.loadById(surveyDb.insertedId.toString())
+      expect(survey).toBeTruthy()
+      expect(survey).toBe({ ...SURVEY, id: surveyDb.insertedId })
+    })
   })
+
 })

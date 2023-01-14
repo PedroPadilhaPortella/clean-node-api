@@ -31,6 +31,7 @@ describe('Survey Mongo Repository', () => {
       await sut.add(ADD_SURVEY)
       const surveyDb = await surveyCollection.findOne({ question: ADD_SURVEY.question })
       expect(surveyDb).toBeTruthy()
+      expect(surveyDb._id).toBeTruthy()
     })
   })
 
@@ -40,6 +41,7 @@ describe('Survey Mongo Repository', () => {
       await sut.add(ADD_SURVEY)
       const surveys = await sut.loadAll()
       expect(surveys.length).toBe(1)
+      expect(surveys[0].id).toBeTruthy()
     })
 
     it('should return no surveys cause no surveys have been added', async () => {
@@ -55,6 +57,7 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut()
       const survey = await sut.loadById(surveyDb.insertedId.toString())
       expect(survey).toBeTruthy()
+      expect(survey.id).toBeTruthy()
     })
   })
 })

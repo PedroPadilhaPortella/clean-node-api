@@ -17,7 +17,19 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository 
   
   async loadAll (): Promise<SurveyModel[]> {
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
-    return await surveyCollection.find().toArray() as unknown as SurveyModel[]
+    const results = await surveyCollection.find().toArray()
+
+    if (results) {
+      return results.map((result) => {
+        return { 
+          id: result._id.toString(),
+          question: result.question,
+          answers: result.answers,
+          date: result.date
+        }
+      })
+    }
+    return null
   }
   
   async loadById (id: string): Promise<SurveyModel | null> {

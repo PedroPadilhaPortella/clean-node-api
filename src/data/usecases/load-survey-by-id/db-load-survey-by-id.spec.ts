@@ -4,7 +4,7 @@ import { LoadSurveyByIdRepository, SurveyModel, SURVEY } from './db-load-survey-
 
 const createLoadSurveyByIdRepositoryStub = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    async loadById (id: string): Promise<SurveyModel> {
+    async loadById (id: string): Promise<SurveyModel | null> {
       return SURVEY
     }
   }

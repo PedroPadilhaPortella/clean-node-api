@@ -17,13 +17,21 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository 
   
   async loadAll (): Promise<SurveyModel[]> {
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
-    return await surveyCollection
-      .find().toArray() as unknown as SurveyModel[]
+    return await surveyCollection.find().toArray() as unknown as SurveyModel[]
   }
   
-  async loadById (id: string): Promise<SurveyModel> {
+  async loadById (id: string): Promise<SurveyModel | null> {
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
-    return await surveyCollection
-      .findOne({ _id: new ObjectId(id) }) as unknown as SurveyModel
+    const result = await surveyCollection.findOne({ _id: new ObjectId(id) })
+
+    if (result) {
+      return { 
+        id: result._id.toString(),
+        question: result.question,
+        answers: result.answers,
+        date: result.date
+      }
+    }
+    return null
   }
 }

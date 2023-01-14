@@ -1,5 +1,7 @@
+import { ObjectId } from "mongodb"
+
 export type SurveyModel = {
-  id: string
+  id: ObjectId | string
   question: string
   answers: SurveyAnswer[]
   date: Date

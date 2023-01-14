@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { Forbidden, HttpRequest, InvalidParamError, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
+import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
 
 const createLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
@@ -64,7 +64,16 @@ describe('SaveSurveyResultController', () => {
     jest.spyOn(loadSurveyByIdStub, 'loadById')
       .mockReturnValue(new Promise(resolve => resolve(null)))
     const httpRequest = makeFakeRequest()
-    const response = await sut.handle(httpRequest)
-    expect(response).toEqual(Forbidden(new InvalidParamError('surveyId')))
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(Forbidden(new InvalidParamError('surveyId')))
+  })
+
+  it('should return 500 if LoadSurveyById throws', async () => {
+    const { sut, loadSurveyByIdStub } = makeSut()
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(
+      new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
   })
 })

@@ -49,9 +49,9 @@ export const SURVEYS: SurveyModel[] = [
 ]
 
 export const SAVE_SURVEY_RESULT: SaveSurveyResultModel = { 
-  surveyId: 'surveyId1',
-  accountId: 'accountId1',
-  answer: 'answer',
+  surveyId: '1',
+  accountId: '1',
+  answer: 'answer1',
   date: new Date()
 }
 

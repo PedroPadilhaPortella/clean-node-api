@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { ACCOUNT, AccountModel, Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadAccountByToken, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
+import { ACCOUNT, AccountModel, Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadAccountByToken, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, SAVE_SURVEY_RESULT, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
 
 const createLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
@@ -96,10 +96,10 @@ describe('SaveSurveyResultController', () => {
   })
   
   it('should call SaveSurveyResult with correct values', async () => {
-    const { sut, loadSurveyByIdStub } = makeSut()
-    const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
+    const { sut, saveSurveyResultStub } = makeSut()
+    const saveSpy = jest.spyOn(saveSurveyResultStub, 'save')
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(loadByIdSpy).toHaveBeenCalledWith(httpRequest.params.surveyId)
+    expect(saveSpy).toHaveBeenCalledWith({ ...SAVE_SURVEY_RESULT, date: new Date() })
   })
 })

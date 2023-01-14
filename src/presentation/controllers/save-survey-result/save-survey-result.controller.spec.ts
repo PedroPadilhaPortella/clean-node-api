@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { ACCOUNT, AccountModel, Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadAccountByToken, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, SAVE_SURVEY_RESULT, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
+import { ACCOUNT, AccountModel, Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadAccountByToken, LoadSurveyById, Ok, SaveSurveyResult, SaveSurveyResultModel, SAVE_SURVEY_RESULT, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
 
 const createLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
@@ -110,5 +110,12 @@ describe('SaveSurveyResultController', () => {
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+  })
+
+  it('should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpRequest = makeFakeRequest()
+    const httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse).toEqual(Ok(SURVEY_RESULT))
   })
 })

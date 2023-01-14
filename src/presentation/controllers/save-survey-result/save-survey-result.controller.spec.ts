@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
+import { ACCOUNT, AccountModel, Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadAccountByToken, LoadSurveyById, SaveSurveyResult, SaveSurveyResultModel, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
 
 const createLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
@@ -9,6 +9,15 @@ const createLoadSurveyByIdStub = (): LoadSurveyById => {
     }
   }
   return new LoadSurveyByIdStub()
+}
+
+const createLoadAccountByTokenStub = (): LoadAccountByToken => {
+  class LoadAccountByTokenStub implements LoadAccountByToken {
+    async load (token: string, role?: string | undefined): Promise<AccountModel | null> {
+      return ACCOUNT
+    }
+  }
+  return new LoadAccountByTokenStub()
 }
 
 const createSaveSurveyResultStub = (): SaveSurveyResult => {
@@ -23,14 +32,16 @@ const createSaveSurveyResultStub = (): SaveSurveyResult => {
 type SutTypes = {
   sut: SaveSurveyResultController
   loadSurveyByIdStub: LoadSurveyById
+  loadAccountByToken: LoadAccountByToken
   saveSurveyResultStub: SaveSurveyResult
 }
 
 const makeSut = (): SutTypes => {
   const saveSurveyResultStub = createSaveSurveyResultStub()
+  const loadAccountByToken = createLoadAccountByTokenStub()
   const loadSurveyByIdStub = createLoadSurveyByIdStub()
-  const sut = new SaveSurveyResultController(loadSurveyByIdStub, saveSurveyResultStub)
-  return { sut, loadSurveyByIdStub, saveSurveyResultStub }
+  const sut = new SaveSurveyResultController(loadSurveyByIdStub, loadAccountByToken, saveSurveyResultStub)
+  return { sut, loadSurveyByIdStub, loadAccountByToken, saveSurveyResultStub }
 }
 
 const makeFakeRequest = (): HttpRequest => {
@@ -75,5 +86,13 @@ describe('SaveSurveyResultController', () => {
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+  })
+  
+  it('should call SaveSurveyResult with correct values', async () => {
+    const { sut, loadSurveyByIdStub } = makeSut()
+    const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(loadByIdSpy).toHaveBeenCalledWith(httpRequest.params.surveyId)
   })
 })

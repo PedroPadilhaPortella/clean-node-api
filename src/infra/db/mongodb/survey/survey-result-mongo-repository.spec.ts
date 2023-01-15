@@ -19,13 +19,12 @@ const createAccountAndSurvey = async (): Promise<SaveSurveyResultModel> => {
   const survey = await surveyCollection.insertOne(ADD_SURVEY)
   const addSurveyResult: SaveSurveyResultModel = { 
     ...SAVE_SURVEY_RESULT, 
-    accountId: account.insertedId.toString(), 
-    surveyId: survey.insertedId.toString()
+    accountId: account.insertedId, 
+    surveyId: survey.insertedId
   }
   return addSurveyResult
 }
 
-// TODO: Revisar essa classe, porque ela não está nem criando, nem atualizando os survey_results
 describe('Survey Result Mongo Repository', () => {
 
   beforeAll(async () => {
@@ -55,19 +54,14 @@ describe('Survey Result Mongo Repository', () => {
       expect(surveyResult.id).toBeTruthy()
     })
 
-    // it('should update a surveyResult on success when its not a new surveyResult', async () => {
-    //   const sut = makeSut()
-    //   const addSurveyResult = await createAccountAndSurvey()
-
-    //   await surveyCollection.insertOne(addSurveyResult)
-    //   await sut.save({ ...addSurveyResult, answer: 'answer2' })
-
-    //   const surveyResult = await surveyCollection
-    //     .findOne({ surveyId: addSurveyResult.surveyId, accountId: addSurveyResult.accountId }) as unknown as SurveyResultModel
-
-    //   expect(true).toBeTruthy()
-    //   expect(surveyResult).toBeTruthy()
-    //   expect(surveyResult.answer).toEqual('answer2')
-    // })
+    it('should update a surveyResult on success when its not a new surveyResult', async () => {
+      const sut = makeSut()
+      const addSurveyResult = await createAccountAndSurvey()
+      
+      let surveyResult = await sut.save({ ...addSurveyResult, answer: 'answer1' })
+      expect(surveyResult.answer).toEqual('answer1')
+      surveyResult = await sut.save({ ...addSurveyResult, answer: 'answer2' })
+      expect(surveyResult.answer).toEqual('answer2')
+    })
   })
 })

@@ -5,7 +5,6 @@ import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.inte
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import { ObjectId } from 'mongodb'
 
-// TODO: Revisar essa classe, porque ela não está nem criando, nem atualizando os survey_results
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
 
   async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {

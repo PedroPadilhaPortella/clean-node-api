@@ -9,6 +9,7 @@
         "@typescript-eslint/consistent-type-definitions": "off",
         "@typescript-eslint/quotes": "off",
         "comma-dangle": "off",
+        "no-debugger": "off",
         "eol-last": "off",
         "no-trailing-spaces": "off",
         "padded-blocks": "off"

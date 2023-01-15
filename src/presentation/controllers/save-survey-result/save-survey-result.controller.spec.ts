@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { ACCOUNT, AccountModel, Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadAccountByToken, LoadSurveyById, Ok, SaveSurveyResult, SaveSurveyResultModel, SAVE_SURVEY_RESULT, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
+import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, Ok, SaveSurveyResult, SaveSurveyResultModel, SAVE_SURVEY_RESULT, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
 
 const createLoadSurveyByIdStub = (): LoadSurveyById => {
   class LoadSurveyByIdStub implements LoadSurveyById {
@@ -9,15 +9,6 @@ const createLoadSurveyByIdStub = (): LoadSurveyById => {
     }
   }
   return new LoadSurveyByIdStub()
-}
-
-const createLoadAccountByTokenStub = (): LoadAccountByToken => {
-  class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load (token: string, role?: string | undefined): Promise<AccountModel | null> {
-      return ACCOUNT
-    }
-  }
-  return new LoadAccountByTokenStub()
 }
 
 const createSaveSurveyResultStub = (): SaveSurveyResult => {
@@ -32,22 +23,20 @@ const createSaveSurveyResultStub = (): SaveSurveyResult => {
 type SutTypes = {
   sut: SaveSurveyResultController
   loadSurveyByIdStub: LoadSurveyById
-  loadAccountByToken: LoadAccountByToken
   saveSurveyResultStub: SaveSurveyResult
 }
 
 const makeSut = (): SutTypes => {
   const saveSurveyResultStub = createSaveSurveyResultStub()
-  const loadAccountByToken = createLoadAccountByTokenStub()
   const loadSurveyByIdStub = createLoadSurveyByIdStub()
-  const sut = new SaveSurveyResultController(loadSurveyByIdStub, loadAccountByToken, saveSurveyResultStub)
-  return { sut, loadSurveyByIdStub, loadAccountByToken, saveSurveyResultStub }
+  const sut = new SaveSurveyResultController(loadSurveyByIdStub, saveSurveyResultStub)
+  return { sut, loadSurveyByIdStub, saveSurveyResultStub }
 }
 
 const makeFakeRequest = (): HttpRequest => {
   return { 
     body: { answer: 'answer1' },
-    headers: { },
+    accountId: '1',
     params: { surveyId: '1' }
   }
 }

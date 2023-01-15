@@ -9,9 +9,9 @@ export class SaveSurveyResultController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
+      const { accountId } = httpRequest
       const { surveyId } = httpRequest.params
       const { answer } = httpRequest.body
-      const accountId = httpRequest.accountId
 
       const survey = await this.loadSurveyById.loadById(surveyId)
 
@@ -27,7 +27,7 @@ export class SaveSurveyResultController implements Controller {
       const saveSurveyResult: SaveSurveyResultModel = {
         accountId,
         surveyId,
-        answer: httpRequest.body.answer,
+        answer,
         date: new Date()
       }
 

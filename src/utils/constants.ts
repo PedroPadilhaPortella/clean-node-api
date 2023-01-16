@@ -1,6 +1,7 @@
 import { AccountModel } from '@/domain/models/account.model'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SurveyModel } from "@/domain/models/survey.model"
+import { AddAccountModel } from '@/domain/usecases/add-account.interface'
 import { AddSurveyModel } from '@/domain/usecases/add-survey.interface'
 import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.interface'
 
@@ -11,7 +12,9 @@ export const SIGNUP = {
   passwordConfirmation: 'pedro123'
 }
 
-export const ACCOUNT: AccountModel = { id: '1', ...SIGNUP }
+export const ADD_ACCOUNT: AddAccountModel = SIGNUP
+
+export const ACCOUNT: AccountModel = { id: '1', ...ADD_ACCOUNT }
 
 export const ADD_SURVEY: AddSurveyModel = {
   question: 'question',

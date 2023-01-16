@@ -20,6 +20,7 @@ import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.inte
 import { LoadSurveyById } from "@/domain/usecases/load-survey-by-id.interface"
 import { LoadSurveys } from "@/domain/usecases/load-surveys.interface"
 import { SaveSurveyResult, SaveSurveyResultParams } from "@/domain/usecases/save-survey-result.interface"
+import { InternalServerError } from "@/presentation/errors"
 import { Controller, EmailValidator, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
 import { ObjectId } from 'mongodb'
 import { ACCOUNT, SURVEY, SURVEYS, SURVEY_RESULT } from "./constants.mock"
@@ -229,4 +230,13 @@ export const mockController = (): Controller => {
     }
   }
   return new ControllerStub()
+}
+
+/* Errors */
+export const throwError = (): never => {
+  throw new Error()
+}
+
+export const throwInternalServerError = (): never => {
+  throw new InternalServerError('Error')
 }

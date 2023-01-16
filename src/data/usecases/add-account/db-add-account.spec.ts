@@ -1,4 +1,4 @@
-import { ADD_ACCOUNT, mockAddAccountRepository, mockHasher } from "@/utils"
+import { ADD_ACCOUNT, mockAddAccountRepository, mockHasher, throwError } from "@/utils"
 import { DbAddAccount } from "./db-add-account"
 import { AccountModel, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from "./db-add-account.protocols"
 
@@ -37,8 +37,7 @@ describe('DbAddAccount', () => {
 
   it('should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut()
-    jest.spyOn(hasherStub, 'hash')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(hasherStub, 'hash').mockImplementationOnce(throwError)
     const response = sut.add(ADD_ACCOUNT)
     await expect(response).rejects.toThrow()
   })
@@ -47,14 +46,12 @@ describe('DbAddAccount', () => {
     const { sut, addAccountRepositoryStub } = makeSut()
     const addAccountRepositorySpy = jest.spyOn(addAccountRepositoryStub, 'add')
     await sut.add(ADD_ACCOUNT)
-    expect(addAccountRepositorySpy)
-      .toHaveBeenCalledWith({ ...ADD_ACCOUNT, password: 'hash' })
+    expect(addAccountRepositorySpy).toHaveBeenCalledWith({ ...ADD_ACCOUNT, password: 'hash' })
   })
   
   it('should throw if addAccountRepository throws', async () => {
     const { sut, addAccountRepositoryStub } = makeSut()
-    jest.spyOn(addAccountRepositoryStub, 'add')
-      .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(addAccountRepositoryStub, 'add').mockImplementationOnce(throwError)
     const response = sut.add(ADD_ACCOUNT)
     await expect(response).rejects.toThrow()
   })

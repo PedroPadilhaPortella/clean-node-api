@@ -1,4 +1,4 @@
-import { mockAuthentication, mockValidation } from '@/utils'
+import { mockAuthentication, mockValidation, throwInternalServerError } from '@/utils'
 import { LoginController } from './login.controller'
 import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './login.protocols'
 
@@ -44,10 +44,10 @@ describe('Login Controller', () => {
   it('should return 500 if authenticate throws', async () => {
     const { sut, authenticationStub } = makeSut()
     jest.spyOn(authenticationStub, 'authenticate')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+      .mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should call validation with correct body', async () => {

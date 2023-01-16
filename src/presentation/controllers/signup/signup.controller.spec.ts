@@ -1,4 +1,4 @@
-import { mockAddAccount, mockAuthentication, mockValidation } from '@/utils'
+import { mockAddAccount, mockAuthentication, mockValidation, throwInternalServerError } from '@/utils'
 import { SignUpController } from './signup.controller'
 import { ACCOUNT, AddAccount, Authentication, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
@@ -37,12 +37,10 @@ describe('SignUp Controller', () => {
 
   it('should return 500 if AddAccount throws', async () => {
     const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockImplementation(async () => {
-      return await new Promise((resolve, reject) => reject(new InternalServerError('Erro')))
-    })
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
   
   it('should call validation with correct body', async () => {
@@ -89,10 +87,10 @@ describe('SignUp Controller', () => {
   it('should return 500 if authenticate throws', async () => {
     const { sut, authenticationStub } = makeSut()
     jest.spyOn(authenticationStub, 'authenticate')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+      .mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should return 200 when all fields are provided', async () => {

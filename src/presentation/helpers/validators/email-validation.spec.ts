@@ -1,6 +1,6 @@
-import { InternalServerError, InvalidParamError } from '@/presentation/errors'
+import { InvalidParamError } from '@/presentation/errors'
 import { EmailValidator } from '@/presentation/protocols'
-import { mockEmailValidator } from '@/utils'
+import { mockEmailValidator, throwInternalServerError } from '@/utils'
 import { EmailValidation } from './email-validation'
 
 type SutTypes = {
@@ -32,9 +32,7 @@ describe('EmailValidation', () => {
   
   it('should throw if EmailValidator throws', () => {
     const { sut, emailValidatorStub } = makeSut()
-    jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(() => {
-      throw new InternalServerError('Erro')
-    })
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementation(throwInternalServerError)
     expect(sut.validate).toThrow()
   })
 })

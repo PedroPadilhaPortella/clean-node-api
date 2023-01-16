@@ -1,32 +1,14 @@
-import { ADD_ACCOUNT } from "@/utils/constants"
+import { ADD_ACCOUNT, mockAddAccountRepository, mockHasher } from "@/utils"
 import { DbAddAccount } from "./db-add-account"
-import { AccountModel, AddAccountParams, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from "./db-add-account.protocols"
+import { AccountModel, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from "./db-add-account.protocols"
 
-const createLoadAccount = (): LoadAccountByEmailRepository => {
+export const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
     async loadByEmail (email: string): Promise<AccountModel | null> {
       return null
     }
   }
   return new LoadAccountByEmailRepositoryStub()
-}
-
-const createHasherStub = (): Hasher => {
-  class HasherStub implements Hasher {
-    async hash (value: string): Promise<string> {
-      return await new Promise(resolve => resolve('hash'))
-    }
-  }
-  return new HasherStub()
-}
-
-const createAddAccountRepositoryStub = (): AddAccountRepository => {
-  class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (account: AddAccountParams): Promise<AccountModel> {
-      return await new Promise(resolve => resolve({ ...account, id: '1', password: 'hash' }))
-    }
-  }
-  return new AddAccountRepositoryStub()
 }
 
 type SutTypes = {
@@ -37,9 +19,9 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const hasherStub = createHasherStub()
-  const addAccountRepositoryStub = createAddAccountRepositoryStub()
-  const loadAccountByEmailRepositoryStub = createLoadAccount()
+  const hasherStub = mockHasher()
+  const addAccountRepositoryStub = mockAddAccountRepository()
+  const loadAccountByEmailRepositoryStub = mockLoadAccountByEmail()
   const sut = new DbAddAccount(addAccountRepositoryStub, loadAccountByEmailRepositoryStub, hasherStub)
   return { sut, hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub }
 }
@@ -56,7 +38,7 @@ describe('DbAddAccount', () => {
   it('should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut()
     jest.spyOn(hasherStub, 'hash')
-      .mockResolvedValueOnce(new Promise((resolve, reject) => reject(new Error())))
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const response = sut.add(ADD_ACCOUNT)
     await expect(response).rejects.toThrow()
   })

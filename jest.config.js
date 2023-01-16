@@ -9,6 +9,7 @@ module.exports = {
     "test-config",
     ".interface.ts",
     ".protocols.ts",
+    ".mock.ts",
     ".model.ts",
     ".d.ts",
     "index.ts",

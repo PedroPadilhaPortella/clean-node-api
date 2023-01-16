@@ -5,6 +5,11 @@ import { AddAccountParams } from '@/domain/usecases/add-account.interface'
 import { AddSurveyParams } from '@/domain/usecases/add-survey.interface'
 import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 
+export const LOGIN = {
+  email: 'pedro@gmail.com',
+  password: 'pedro123'
+}
+
 export const SIGNUP = {
   name: 'pedro',
   email: 'pedro@gmail.com',

@@ -1,23 +1,6 @@
+import { mockAuthentication, mockValidation } from '@/utils'
 import { LoginController } from './login.controller'
-import { Authentication, AuthenticationParams, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './login.protocols'
-
-const createAuthenticationStub = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async authenticate (authentication: AuthenticationParams): Promise<string> {
-      return 'login_token'
-    }
-  }
-  return new AuthenticationStub()
-}
-
-const createValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error | null {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
+import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './login.protocols'
 
 type SutTypes = {
   sut: LoginController
@@ -26,8 +9,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const authenticationStub = createAuthenticationStub()
-  const validationStub = createValidation()
+  const authenticationStub = mockAuthentication()
+  const validationStub = mockValidation()
   const sut = new LoginController(authenticationStub, validationStub)
   return { sut, validationStub, authenticationStub }
 }

@@ -5,7 +5,7 @@ import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
-import { ACCOUNT, ADD_SURVEY } from '@/utils/constants'
+import { ACCOUNT, ADD_SURVEY } from '@/utils/tests/constants.mock'
 
 let surveyCollection: Collection
 let accountCollection: Collection
@@ -14,12 +14,9 @@ const makeAccessToken = async (result: any): Promise<string> => {
   const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
   await accountCollection.updateOne(
     { _id: result.insertedId }, { 
-      $set: { 
-        accessToken: token 
-      } 
+      $set: { accessToken: token }
     }
   )
-
   return token
 }
 

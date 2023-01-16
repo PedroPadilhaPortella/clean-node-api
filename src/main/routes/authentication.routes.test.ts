@@ -1,6 +1,6 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
-import { SIGNUP } from '@/utils/constants'
+import { SIGNUP } from '@/utils/tests/constants.mock'
 import { hash } from 'bcrypt'
 import { Collection } from 'mongodb'
 import request from 'supertest'

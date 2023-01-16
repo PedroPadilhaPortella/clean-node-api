@@ -1,6 +1,5 @@
-import { ADD_ACCOUNT, mockAddAccountRepository, mockHasher, throwError } from "@/utils"
 import { DbAddAccount } from "./db-add-account"
-import { AccountModel, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from "./db-add-account.protocols"
+import { AccountModel, AddAccountRepository, Hasher, LoadAccountByEmailRepository, ADD_ACCOUNT, mockAddAccountRepository, mockHasher, throwError } from "./db-add-account.protocols"
 
 export const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {

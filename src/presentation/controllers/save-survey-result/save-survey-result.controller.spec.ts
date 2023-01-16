@@ -1,7 +1,6 @@
-import { mockLoadSurveyById, mockSaveSurveyResult, throwInternalServerError } from '@/utils'
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, Ok, SaveSurveyResult, SAVE_SURVEY_RESULT, ServerError, SURVEY_RESULT } from './save-survey-result.protocols'
+import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, mockLoadSurveyById, mockSaveSurveyResult, Ok, SaveSurveyResult, SAVE_SURVEY_RESULT, ServerError, SURVEY_RESULT, throwInternalServerError } from './save-survey-result.protocols'
 
 type SutTypes = {
   sut: SaveSurveyResultController

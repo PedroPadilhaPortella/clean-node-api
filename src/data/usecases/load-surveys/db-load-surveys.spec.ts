@@ -1,6 +1,5 @@
-import { mockLoadSurveysRepository, throwError } from '@/utils'
 import { DbLoadSurveys } from './db-load-surveys'
-import { LoadSurveys, LoadSurveysRepository, SURVEYS } from './db-load-surveys.protocols'
+import { LoadSurveys, LoadSurveysRepository, SURVEYS, mockLoadSurveysRepository, throwError } from './db-load-surveys.protocols'
 
 type SutTypes = {
   sut: LoadSurveys

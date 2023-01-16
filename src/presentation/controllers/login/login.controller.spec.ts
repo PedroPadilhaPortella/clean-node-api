@@ -1,6 +1,5 @@
-import { mockAuthentication, mockValidation, throwInternalServerError } from '@/utils'
 import { LoginController } from './login.controller'
-import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './login.protocols'
+import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation, mockAuthentication, mockValidation, throwInternalServerError } from './login.protocols'
 
 type SutTypes = {
   sut: LoginController

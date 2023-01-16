@@ -1,11 +1,11 @@
+import { CollectionsEnum } from '@/domain/enums/collections.enum'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
+import { ACCOUNT, ADD_SURVEY } from '@/utils'
 import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
-import { CollectionsEnum } from '@/domain/enums/collections.enum'
-import { ACCOUNT, ADD_SURVEY } from '@/utils/tests/constants.mock'
 
 let surveyCollection: Collection
 let accountCollection: Collection

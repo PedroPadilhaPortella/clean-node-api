@@ -2,7 +2,7 @@ import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { ADD_SURVEY, SAVE_SURVEY_RESULT, SIGNUP } from '@/utils/tests/constants.mock'
+import { ADD_SURVEY, SAVE_SURVEY_RESULT, SIGNUP } from '@/utils'
 import { Collection } from "mongodb"
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
 

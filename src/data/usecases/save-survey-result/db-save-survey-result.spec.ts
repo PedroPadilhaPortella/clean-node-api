@@ -1,7 +1,6 @@
-import { mockSaveSurveyResultRepository, throwError } from '@/utils'
 import MockDate from 'mockdate'
 import { DbSaveSurveyResult } from './db-save-survey-result'
-import { SaveSurveyResultRepository, SAVE_SURVEY_RESULT, SURVEY_RESULT } from './db-save-survey-result.protocols'
+import { mockSaveSurveyResultRepository, SaveSurveyResultRepository, SAVE_SURVEY_RESULT, SURVEY_RESULT, throwError } from './db-save-survey-result.protocols'
 
 type SutTypes = {
   sut: DbSaveSurveyResult

@@ -1,7 +1,6 @@
-import { mockLoadSurveys, throwInternalServerError } from '@/utils'
 import MockDate from 'mockdate'
 import { LoadSurveysController } from './load-surveys.controller'
-import { InternalServerError, LoadSurveys, NoContent, Ok, ServerError, SURVEYS } from './load-surveys.protocols'
+import { InternalServerError, LoadSurveys, mockLoadSurveys, NoContent, Ok, ServerError, SURVEYS, throwInternalServerError } from './load-surveys.protocols'
 
 type SutTypes = {
   sut: LoadSurveysController

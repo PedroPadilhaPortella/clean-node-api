@@ -2,8 +2,7 @@ import { LogErrorRepository } from "@/data/protocols/log-error-repository.interf
 import { InternalServerError } from "@/presentation/errors"
 import { Ok, ServerError } from "@/presentation/helpers/http/http.helper"
 import { Controller, HttpRequest } from "@/presentation/protocols"
-import { createLogErrorRepository, mockController } from "@/utils"
-import { SIGNUP } from '@/utils/tests/constants.mock'
+import { createLogErrorRepository, mockController, SIGNUP } from "@/utils"
 import { LogControllerDecorator } from "./log-controller.decorator"
 
 type SutTypes = {

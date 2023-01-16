@@ -1,7 +1,6 @@
-import { mockAddSurvey, mockValidation, throwInternalServerError } from '@/utils'
 import MockDate from 'mockdate'
 import { AddSurveyController } from './add-survey.controller'
-import { AddSurvey, ADD_SURVEY, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation } from './add-survey.protocols'
+import { AddSurvey, ADD_SURVEY, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation, mockAddSurvey, mockValidation, throwInternalServerError } from './add-survey.protocols'
 
 type SutTypes = {
   sut: AddSurveyController

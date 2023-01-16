@@ -1,6 +1,5 @@
-import { mockAddAccount, mockAuthentication, mockValidation, throwInternalServerError } from '@/utils'
 import { SignUpController } from './signup.controller'
-import { ACCOUNT, AddAccount, Authentication, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
+import { ACCOUNT, AddAccount, Authentication, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, mockAddAccount, mockAuthentication, mockValidation, Ok, ServerError, throwInternalServerError, Unauthorized, Validation } from './signup.protocols'
 
 type SutTypes = {
   sut: SignUpController

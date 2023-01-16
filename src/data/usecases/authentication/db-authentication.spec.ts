@@ -1,6 +1,5 @@
-import { ACCOUNT, LOGIN, mockEncrypter, mockHashCompare, mockUpdateAccessTokenRepository, throwError } from '@/utils'
 import { DbAuthentication } from './db-authentication'
-import { AccountModel, Authentication, Encrypter, HashComparer, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from './db-authentication.protocols'
+import { AccountModel, Authentication, Encrypter, HashComparer, LoadAccountByEmailRepository, UpdateAccessTokenRepository, ACCOUNT, LOGIN, mockEncrypter, mockHashCompare, mockUpdateAccessTokenRepository, throwError } from './db-authentication.protocols'
 
 export const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {

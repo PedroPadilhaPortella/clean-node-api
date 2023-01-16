@@ -1,10 +1,10 @@
 import MockDate from 'mockdate'
 import { DbSaveSurveyResult } from './db-save-survey-result'
-import { SaveSurveyResultModel, SaveSurveyResultRepository, SurveyResultModel, SURVEY_RESULT, SAVE_SURVEY_RESULT } from './db-save-survey-result.protocols'
+import { SaveSurveyResultParams, SaveSurveyResultRepository, SurveyResultModel, SURVEY_RESULT, SAVE_SURVEY_RESULT } from './db-save-survey-result.protocols'
 
 const createSaveSurveyResultRepositoryStub = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
       return SURVEY_RESULT
     }
   }

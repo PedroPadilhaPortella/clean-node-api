@@ -1,10 +1,10 @@
 import MockDate from 'mockdate'
 import { DbAddSurvey } from './db-add-survey'
-import { AddSurveyModel, AddSurveyRepository, ADD_SURVEY } from './db-add-survey.protocols'
+import { AddSurveyParams, AddSurveyRepository, ADD_SURVEY } from './db-add-survey.protocols'
 
 const createAddSurveyRepositoryStub = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (account: AddSurveyModel): Promise<void> {
+    async add (account: AddSurveyParams): Promise<void> {
       return await new Promise(resolve => resolve())
     }
   }

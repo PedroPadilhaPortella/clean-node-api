@@ -1,5 +1,5 @@
 import { SignUpController } from './signup.controller'
-import { ACCOUNT, AccountModel, AddAccount, AddAccountModel, Authentication, AuthenticationModel, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
+import { ACCOUNT, AccountModel, AddAccount, AddAccountParams, Authentication, AuthenticationParams, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
 type SutTypes = {
   sut: SignUpController
@@ -18,7 +18,7 @@ const makeSut = (): SutTypes => {
 
 const createAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountModel): Promise<AccountModel | null> {
+    async add (account: AddAccountParams): Promise<AccountModel | null> {
       return await new Promise(resolve => resolve(ACCOUNT))
     }
   }
@@ -36,7 +36,7 @@ const createValidation = (): Validation => {
 
 const createAuthenticationStub = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async authenticate (authentication: AuthenticationModel): Promise<string> {
+    async authenticate (authentication: AuthenticationParams): Promise<string> {
       return 'login_token'
     }
   }

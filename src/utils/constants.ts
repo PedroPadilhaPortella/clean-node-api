@@ -1,9 +1,9 @@
 import { AccountModel } from '@/domain/models/account.model'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SurveyModel } from "@/domain/models/survey.model"
-import { AddAccountModel } from '@/domain/usecases/add-account.interface'
-import { AddSurveyModel } from '@/domain/usecases/add-survey.interface'
-import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.interface'
+import { AddAccountParams } from '@/domain/usecases/add-account.interface'
+import { AddSurveyParams } from '@/domain/usecases/add-survey.interface'
+import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 
 export const SIGNUP = {
   name: 'pedro',
@@ -12,11 +12,11 @@ export const SIGNUP = {
   passwordConfirmation: 'pedro123'
 }
 
-export const ADD_ACCOUNT: AddAccountModel = SIGNUP
+export const ADD_ACCOUNT: AddAccountParams = SIGNUP
 
 export const ACCOUNT: AccountModel = { id: '1', ...ADD_ACCOUNT }
 
-export const ADD_SURVEY: AddSurveyModel = {
+export const ADD_SURVEY: AddSurveyParams = {
   question: 'question',
   answers: [
     { answer: 'answer1', image: 'image1' },
@@ -51,7 +51,7 @@ export const SURVEYS: SurveyModel[] = [
   }
 ]
 
-export const SAVE_SURVEY_RESULT: SaveSurveyResultModel = { 
+export const SAVE_SURVEY_RESULT: SaveSurveyResultParams = { 
   surveyId: '1',
   accountId: '1',
   answer: 'answer1',

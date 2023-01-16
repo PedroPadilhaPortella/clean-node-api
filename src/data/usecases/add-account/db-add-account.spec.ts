@@ -1,6 +1,6 @@
 import { ADD_ACCOUNT } from "@/utils/constants"
 import { DbAddAccount } from "./db-add-account"
-import { AccountModel, AddAccountModel, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from "./db-add-account.protocols"
+import { AccountModel, AddAccountParams, AddAccountRepository, Hasher, LoadAccountByEmailRepository } from "./db-add-account.protocols"
 
 const createLoadAccount = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
@@ -22,7 +22,7 @@ const createHasherStub = (): Hasher => {
 
 const createAddAccountRepositoryStub = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (account: AddAccountModel): Promise<AccountModel> {
+    async add (account: AddAccountParams): Promise<AccountModel> {
       return await new Promise(resolve => resolve({ ...account, id: '1', password: 'hash' }))
     }
   }

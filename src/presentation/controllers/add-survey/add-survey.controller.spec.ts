@@ -1,10 +1,10 @@
 import MockDate from 'mockdate'
 import { AddSurveyController } from './add-survey.controller'
-import { AddSurvey, AddSurveyModel, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation, ADD_SURVEY } from './add-survey.protocols'
+import { AddSurvey, AddSurveyParams, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation, ADD_SURVEY } from './add-survey.protocols'
 
 const createAddSurveyStub = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add (data: AddSurveyModel): Promise<void> {
+    async add (data: AddSurveyParams): Promise<void> {
       return await new Promise(resolve => resolve())
     }
   }

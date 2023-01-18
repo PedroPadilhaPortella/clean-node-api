@@ -1,6 +1,6 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
-import { ADD_SURVEY, SIGNUP } from '@/utils'
+import { ADD_SURVEY, SIGNUP } from '@/utils/tests'
 import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'

@@ -1,6 +1,6 @@
 import { InvalidParamError } from '@/presentation/errors'
 import { EmailValidator } from '@/presentation/protocols'
-import { mockEmailValidator, throwInternalServerError } from '@/utils'
+import { mockEmailValidator, throwInternalServerError } from '@/utils/tests'
 import { EmailValidation } from './email-validation'
 
 type SutTypes = {

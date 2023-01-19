@@ -4,6 +4,7 @@ import { Decrypter } from "@/data/protocols/decrypter.interface"
 import { Encrypter } from '@/data/protocols/encrypter.interface'
 import { HashComparer } from '@/data/protocols/hash-comparer.interface'
 import { Hasher } from "@/data/protocols/hasher.interface"
+import { LoadAccountByEmailRepository } from "@/data/protocols/load-account-by-email-repository.interface"
 import { LoadAccountByTokenRepository } from "@/data/protocols/load-account-by-token-repository.interface"
 import { LoadSurveyByIdRepository } from "@/data/protocols/load-survey-by-id-repository.interface"
 import { LoadSurveysRepository } from "@/data/protocols/load-surveys-repository.interface"
@@ -37,6 +38,15 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
     }
   }
   return new AddAccountRepositoryStub()
+}
+
+export const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
+  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
+    async loadByEmail (email: string): Promise<AccountModel | null> {
+      return ACCOUNT
+    }
+  }
+  return new LoadAccountByEmailRepositoryStub()
 }
 
 export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {

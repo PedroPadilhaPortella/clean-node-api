@@ -1,23 +1,5 @@
 import { LoginController } from './login.controller'
-import { Authentication, AuthenticationModel, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation } from './login.protocols'
-
-const createAuthenticationStub = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    async authenticate (authentication: AuthenticationModel): Promise<string> {
-      return 'login_token'
-    }
-  }
-  return new AuthenticationStub()
-}
-
-const createValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error | null {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
+import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation, mockAuthentication, mockValidation, throwInternalServerError } from './login.protocols'
 
 type SutTypes = {
   sut: LoginController
@@ -26,8 +8,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const authenticationStub = createAuthenticationStub()
-  const validationStub = createValidation()
+  const authenticationStub = mockAuthentication()
+  const validationStub = mockValidation()
   const sut = new LoginController(authenticationStub, validationStub)
   return { sut, validationStub, authenticationStub }
 }
@@ -61,10 +43,10 @@ describe('Login Controller', () => {
   it('should return 500 if authenticate throws', async () => {
     const { sut, authenticationStub } = makeSut()
     jest.spyOn(authenticationStub, 'authenticate')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+      .mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should call validation with correct body', async () => {

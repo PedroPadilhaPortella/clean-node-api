@@ -1,14 +1,5 @@
 import { DbLoadSurveys } from './db-load-surveys'
-import { LoadSurveys, LoadSurveysRepository, SurveyModel, SURVEYS } from './db-load-surveys.protocols'
-
-const createLoadSurveysRepositoryStub = (): LoadSurveysRepository => {
-  class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    async loadAll (): Promise<SurveyModel[]> {
-      return SURVEYS
-    }
-  }
-  return new LoadSurveysRepositoryStub()
-}
+import { LoadSurveys, LoadSurveysRepository, SURVEYS, mockLoadSurveysRepository, throwError } from './db-load-surveys.protocols'
 
 type SutTypes = {
   sut: LoadSurveys
@@ -16,7 +7,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadSurveysRepositoryStub = createLoadSurveysRepositoryStub()
+  const loadSurveysRepositoryStub = mockLoadSurveysRepository()
   const sut = new DbLoadSurveys(loadSurveysRepositoryStub)
   return { sut, loadSurveysRepositoryStub }
 }
@@ -38,8 +29,7 @@ describe('DbLoadSurveys', () => {
 
   it('should throw if loadSurveysRepository throws', async () => {
     const { sut, loadSurveysRepositoryStub } = makeSut()
-    jest.spyOn(loadSurveysRepositoryStub, 'loadAll')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(loadSurveysRepositoryStub, 'loadAll').mockImplementationOnce(throwError)
     const response = sut.load()
     await expect(response).rejects.toThrow()
   })

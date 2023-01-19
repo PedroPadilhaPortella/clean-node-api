@@ -1,6 +1,6 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
-import { ADD_SURVEY, SIGNUP } from '@/utils/constants'
+import { ADD_SURVEY, SIGNUP } from '@/utils/tests'
 import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
@@ -14,9 +14,7 @@ const makeAccessToken = async (result: any): Promise<string> => {
   const token = jwt.sign({ id: result.insertedId.toString() }, env.jwtSecret)
   await accountCollection.updateOne(
     { _id: result.insertedId }, { 
-      $set: { 
-        accessToken: token 
-      } 
+      $set: { accessToken: token } 
     }
   )
   return token

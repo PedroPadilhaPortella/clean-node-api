@@ -4,13 +4,13 @@ import { LoadAccountByTokenRepository } from '@/data/protocols/load-account-by-t
 import { UpdateAccessTokenRepository } from '@/data/protocols/update-access-token-repository.interface'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { AccountModel } from '@/domain/models/account.model'
-import { AddAccountModel } from '@/domain/usecases/add-account.interface'
+import { AddAccountParams } from '@/domain/usecases/add-account.interface'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { ObjectId } from 'mongodb'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository {
   
-  async add (account: AddAccountModel): Promise<AccountModel> {
+  async add (account: AddAccountParams): Promise<AccountModel> {
     const accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     const result = await accountCollection.insertOne(account)
     return { id: result.insertedId, ...account }

@@ -1,7 +1,7 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { ADD_SURVEY } from "@/utils/constants"
+import { ADD_SURVEY } from "@/utils/tests"
 import { Collection } from "mongodb"
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 

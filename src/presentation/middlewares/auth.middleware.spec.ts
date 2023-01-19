@@ -1,16 +1,7 @@
 import { AuthMiddleware } from './auth.middleware'
-import { AccessDeniedError, AccountModel, Forbidden, HttpRequest, LoadAccountByToken, ACCOUNT } from "./middlewares.protocols"
+import { AccessDeniedError, Forbidden, HttpRequest, LoadAccountByToken, mockLoadAccountByToken, throwError } from "./middlewares.protocols"
 
 const fakeRequest: HttpRequest = { headers: { 'x-access-token': '_token_' }, body: {} }
-
-const createLoadAccountByTokenStub = (): LoadAccountByToken => {
-  class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load (token: string, role?: string | undefined): Promise<AccountModel | null> {
-      return ACCOUNT
-    }
-  }
-  return new LoadAccountByTokenStub()
-}
 
 type SutTypes = {
   sut: AuthMiddleware
@@ -18,7 +9,7 @@ type SutTypes = {
 }
 
 const makeSut = (role?: string): SutTypes => {
-  const loadAccountByTokenStub = createLoadAccountByTokenStub()
+  const loadAccountByTokenStub = mockLoadAccountByToken()
   const sut = new AuthMiddleware(loadAccountByTokenStub, role)
   return { sut, loadAccountByTokenStub }
 }
@@ -54,8 +45,7 @@ describe('Auth Middleware', () => {
 
   it('should return 500 if loadAccountByToken throws', async () => {
     const { sut, loadAccountByTokenStub } = makeSut()
-    jest.spyOn(loadAccountByTokenStub, 'load')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    jest.spyOn(loadAccountByTokenStub, 'load').mockImplementationOnce(throwError)
     const response = await sut.handle(fakeRequest)
     expect(response.statusCode).toEqual(500)
   })

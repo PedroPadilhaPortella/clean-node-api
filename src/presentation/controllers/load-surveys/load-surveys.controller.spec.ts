@@ -1,15 +1,6 @@
 import MockDate from 'mockdate'
 import { LoadSurveysController } from './load-surveys.controller'
-import { InternalServerError, LoadSurveys, NoContent, Ok, ServerError, SurveyModel, SURVEYS } from './load-surveys.protocols'
-
-const createLoadSurveysStub = (): LoadSurveys => {
-  class LoadSurveysStub implements LoadSurveys {
-    async load (): Promise<SurveyModel[]> {
-      return await new Promise(resolve => resolve(SURVEYS))
-    }
-  }
-  return new LoadSurveysStub()
-}
+import { InternalServerError, LoadSurveys, mockLoadSurveys, NoContent, Ok, ServerError, SURVEYS, throwInternalServerError } from './load-surveys.protocols'
 
 type SutTypes = {
   sut: LoadSurveysController
@@ -17,7 +8,7 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const loadSurveysStub = createLoadSurveysStub()
+  const loadSurveysStub = mockLoadSurveys()
   const sut = new LoadSurveysController(loadSurveysStub)
   return { sut, loadSurveysStub }
 }
@@ -47,10 +38,9 @@ describe('LoadSurveysController', () => {
   
   it('should return 500 on fails', async () => {
     const { sut, loadSurveysStub } = makeSut()
-    jest.spyOn(loadSurveysStub, 'load')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+    jest.spyOn(loadSurveysStub, 'load').mockImplementationOnce(throwInternalServerError)
     const response = await sut.handle({})
-    expect(response).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(response).toEqual(ServerError(new InternalServerError('Error')))
   })
   
   it('should return 204 if there is no surveys to show', async () => {

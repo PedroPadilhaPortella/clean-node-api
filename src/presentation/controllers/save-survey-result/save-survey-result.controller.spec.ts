@@ -1,24 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, Ok, SaveSurveyResult, SaveSurveyResultModel, SAVE_SURVEY_RESULT, ServerError, SURVEY, SurveyModel, SurveyResultModel, SURVEY_RESULT } from './save-survey-result.protocols'
-
-const createLoadSurveyByIdStub = (): LoadSurveyById => {
-  class LoadSurveyByIdStub implements LoadSurveyById {
-    async loadById (id: string): Promise<SurveyModel> {
-      return SURVEY
-    }
-  }
-  return new LoadSurveyByIdStub()
-}
-
-const createSaveSurveyResultStub = (): SaveSurveyResult => {
-  class SaveSurveyResult implements SaveSurveyResult {
-    async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
-      return SURVEY_RESULT
-    }
-  }
-  return new SaveSurveyResult()
-}
+import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, mockLoadSurveyById, mockSaveSurveyResult, Ok, SaveSurveyResult, SAVE_SURVEY_RESULT, ServerError, SURVEY_RESULT, throwInternalServerError } from './save-survey-result.protocols'
 
 type SutTypes = {
   sut: SaveSurveyResultController
@@ -27,8 +9,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const saveSurveyResultStub = createSaveSurveyResultStub()
-  const loadSurveyByIdStub = createLoadSurveyByIdStub()
+  const saveSurveyResultStub = mockSaveSurveyResult()
+  const loadSurveyByIdStub = mockLoadSurveyById()
   const sut = new SaveSurveyResultController(loadSurveyByIdStub, saveSurveyResultStub)
   return { sut, loadSurveyByIdStub, saveSurveyResultStub }
 }
@@ -70,11 +52,10 @@ describe('SaveSurveyResultController', () => {
 
   it('should return 500 if LoadSurveyById throws', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
-    jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValueOnce(
-      new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should return 403 if an invalid answer is provided', async () => {
@@ -94,11 +75,10 @@ describe('SaveSurveyResultController', () => {
 
   it('should return 500 if LoadSurveSaveSurveyResultyById throws', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
-    jest.spyOn(saveSurveyResultStub, 'save').mockReturnValueOnce(
-      new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+    jest.spyOn(saveSurveyResultStub, 'save').mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should return 200 on success', async () => {

@@ -1,24 +1,6 @@
 import MockDate from 'mockdate'
 import { AddSurveyController } from './add-survey.controller'
-import { AddSurvey, AddSurveyModel, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation, ADD_SURVEY } from './add-survey.protocols'
-
-const createAddSurveyStub = (): AddSurvey => {
-  class AddSurveyStub implements AddSurvey {
-    async add (data: AddSurveyModel): Promise<void> {
-      return await new Promise(resolve => resolve())
-    }
-  }
-  return new AddSurveyStub()
-}
-
-const createValidationStub = (): Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error | null {
-      return null
-    }
-  }
-  return new ValidationStub()
-}
+import { AddSurvey, ADD_SURVEY, BadRequest, HttpRequest, InternalServerError, MissingParamError, NoContent, ServerError, Validation, mockAddSurvey, mockValidation, throwInternalServerError } from './add-survey.protocols'
 
 type SutTypes = {
   sut: AddSurveyController
@@ -27,8 +9,8 @@ type SutTypes = {
 }
 
 const makeSut = (): SutTypes => {
-  const addSurveyStub = createAddSurveyStub()
-  const validationStub = createValidationStub()
+  const addSurveyStub = mockAddSurvey()
+  const validationStub = mockValidation()
   const sut = new AddSurveyController(addSurveyStub, validationStub)
   return { sut, validationStub, addSurveyStub }
 }
@@ -73,11 +55,10 @@ describe('AddSurveyController', () => {
   
   it('should return 500 if authenticate throws', async () => {
     const { sut, addSurveyStub } = makeSut()
-    jest.spyOn(addSurveyStub, 'add')
-      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new InternalServerError('Erro'))))
+    jest.spyOn(addSurveyStub, 'add').mockImplementationOnce(throwInternalServerError)
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(ServerError(new InternalServerError('Erro')))
+    expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should return 204 when valid fields are provided', async () => {

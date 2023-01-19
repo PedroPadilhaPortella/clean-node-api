@@ -1,13 +1,13 @@
 import { SaveSurveyResultRepository } from '@/data/protocols/save-survey-result.repository'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { SurveyResultModel } from '@/domain/models/survey-result'
-import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.interface'
+import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import { ObjectId } from 'mongodb'
 
 export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
 
-  async save (data: SaveSurveyResultModel): Promise<SurveyResultModel> {
+  async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
     const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULTS)
     const { accountId, surveyId, answer, date } = data
     

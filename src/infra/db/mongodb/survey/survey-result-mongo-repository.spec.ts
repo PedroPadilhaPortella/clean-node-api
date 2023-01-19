@@ -1,8 +1,8 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
-import { SaveSurveyResultModel } from '@/domain/usecases/save-survey-result.interface'
+import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { ADD_SURVEY, SAVE_SURVEY_RESULT, SIGNUP } from '@/utils/constants'
+import { ADD_SURVEY, SAVE_SURVEY_RESULT, SIGNUP } from '@/utils/tests'
 import { Collection } from "mongodb"
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository'
 
@@ -14,10 +14,10 @@ const makeSut = (): SurveyResultMongoRepository => {
   return new SurveyResultMongoRepository()
 }
 
-const createAccountAndSurvey = async (): Promise<SaveSurveyResultModel> => {
+const createAccountAndSurvey = async (): Promise<SaveSurveyResultParams> => {
   const account = await accountCollection.insertOne(SIGNUP)
   const survey = await surveyCollection.insertOne(ADD_SURVEY)
-  const addSurveyResult: SaveSurveyResultModel = { 
+  const addSurveyResult: SaveSurveyResultParams = { 
     ...SAVE_SURVEY_RESULT, 
     accountId: account.insertedId, 
     surveyId: survey.insertedId

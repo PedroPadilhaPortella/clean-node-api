@@ -34,7 +34,7 @@ import { ACCOUNT, SURVEY, SURVEYS, SURVEY_RESULT } from "./constants.mock"
 export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add (account: AddAccountParams): Promise<AccountModel> {
-      return await new Promise(resolve => resolve({ ...account, id: '1', password: 'hash' }))
+      return await Promise.resolve({ ...account, id: '1', password: 'hash' })
     }
   }
   return new AddAccountRepositoryStub()
@@ -61,7 +61,7 @@ export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
     async add (account: AddSurveyParams): Promise<void> {
-      return await new Promise(resolve => resolve())
+      return await Promise.resolve()
     }
   }
   return new AddSurveyRepositoryStub()
@@ -70,7 +70,7 @@ export const mockAddSurveyRepository = (): AddSurveyRepository => {
 export const mockUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
   class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
     async updateToken (id: ObjectId | string, token: string): Promise<void> {
-      return await new Promise(resolve => resolve())
+      return await Promise.resolve()
     }
   }
   return new UpdateAccessTokenRepositoryStub()
@@ -106,7 +106,7 @@ export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => 
 export const createLogErrorRepository = (): LogErrorRepository => {
   class LogErrorRepositoryStub implements LogErrorRepository {
     async logError (stackError: string): Promise<void> {
-      return await new Promise(resolve => resolve())
+      return await Promise.resolve()
     }
   }
   return new LogErrorRepositoryStub()
@@ -116,7 +116,7 @@ export const createLogErrorRepository = (): LogErrorRepository => {
 export const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add (account: AddAccountParams): Promise<AccountModel | null> {
-      return await new Promise(resolve => resolve(ACCOUNT))
+      return await Promise.resolve(ACCOUNT)
     }
   }
   return new AddAccountStub()
@@ -143,7 +143,7 @@ export const mockAuthentication = (): Authentication => {
 export const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     async add (data: AddSurveyParams): Promise<void> {
-      return await new Promise(resolve => resolve())
+      return await Promise.resolve()
     }
   }
   return new AddSurveyStub()
@@ -152,7 +152,7 @@ export const mockAddSurvey = (): AddSurvey => {
 export const mockLoadSurveys = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {
     async load (): Promise<SurveyModel[]> {
-      return await new Promise(resolve => resolve(SURVEYS))
+      return await Promise.resolve(SURVEYS)
     }
   }
   return new LoadSurveysStub()
@@ -180,7 +180,7 @@ export const mockSaveSurveyResult = (): SaveSurveyResult => {
 export const mockHasher = (): Hasher => {
   class HasherStub implements Hasher {
     async hash (value: string): Promise<string> {
-      return await new Promise(resolve => resolve('hash'))
+      return await Promise.resolve('hash')
     }
   }
   return new HasherStub()
@@ -236,7 +236,7 @@ export const mockController = (): Controller => {
   class ControllerStub implements Controller {
     async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
       const httpResponse: HttpResponse = { body: {}, statusCode: 200 }
-      return await new Promise(resolve => resolve(httpResponse))
+      return await Promise.resolve(httpResponse)
     }
   }
   return new ControllerStub()

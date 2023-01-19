@@ -13,7 +13,7 @@ const makeSut = (): SutTypes => {
   const addAccountRepositoryStub = mockAddAccountRepository()
   const loadAccountByEmailRepositoryStub = mockLoadAccountByEmail()
   jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-    .mockReturnValue(new Promise(resolve => resolve(null)))
+    .mockReturnValue(Promise.resolve(null))
   const sut = new DbAddAccount(addAccountRepositoryStub, loadAccountByEmailRepositoryStub, hasherStub)
   return { sut, hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub }
 }
@@ -58,7 +58,7 @@ describe('DbAddAccount', () => {
   it('should return null if loadAccountByEmailRepository returns an account', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-      .mockReturnValueOnce(new Promise(resolve => resolve({ id: '1', ...ADD_ACCOUNT })))
+      .mockReturnValueOnce(Promise.resolve({ id: '1', ...ADD_ACCOUNT }))
     const response = await sut.add(ADD_ACCOUNT)
     expect(response).toBeNull()
   })

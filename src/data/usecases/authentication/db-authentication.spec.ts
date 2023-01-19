@@ -50,7 +50,7 @@ describe('DbAuthentication', () => {
   it('should return null if loadAccountByEmailRepository returns null', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut()
     jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
-      .mockReturnValue(new Promise(resolve => resolve(null)))
+      .mockReturnValue(Promise.resolve(null))
     const response = await sut.authenticate(LOGIN)
     expect(response).toBeNull()
   })
@@ -71,8 +71,7 @@ describe('DbAuthentication', () => {
 
   it('should return null if HashCompare returns false', async () => {
     const { sut, hashCompareStub } = makeSut()
-    jest.spyOn(hashCompareStub, 'compare')
-      .mockReturnValueOnce(new Promise(resolve => resolve(false)))
+    jest.spyOn(hashCompareStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
     const response = await sut.authenticate(LOGIN)
     expect(response).toBeNull()
   })

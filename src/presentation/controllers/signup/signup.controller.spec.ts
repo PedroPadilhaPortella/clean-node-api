@@ -69,7 +69,7 @@ describe('SignUp Controller', () => {
 
   it('should return 401 if invalid credentials provided', async () => {
     const { sut, authenticationStub } = makeSut()
-    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(new Promise(resolve => resolve('')))
+    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.resolve(''))
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(Unauthorized())
@@ -77,7 +77,7 @@ describe('SignUp Controller', () => {
 
   it('should return 403 if the email is already taken', async () => {
     const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(new Promise(resolve => resolve(null)))
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(Promise.resolve(null))
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(Forbidden(new EmailAlreadyTaken()))

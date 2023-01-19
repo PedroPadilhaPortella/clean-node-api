@@ -45,8 +45,7 @@ describe('LoadSurveysController', () => {
   
   it('should return 204 if there is no surveys to show', async () => {
     const { sut, loadSurveysStub } = makeSut()
-    jest.spyOn(loadSurveysStub, 'load')
-      .mockReturnValueOnce(new Promise(resolve => resolve([])))
+    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(Promise.resolve([]))
     const response = await sut.handle({})
     expect(response).toEqual(NoContent())
   })

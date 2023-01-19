@@ -7,10 +7,10 @@ const hashedPassword = 'hashed_pass'
 
 jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
-    return await new Promise(resolve => resolve(hashedPassword))
+    return await Promise.resolve(hashedPassword)
   },
   async compare (a: string, b: string): Promise<boolean> {
-    return await new Promise(resolve => resolve(a === b))
+    return await Promise.resolve(a === b)
   }
 }))
 

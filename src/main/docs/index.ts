@@ -1,6 +1,6 @@
-import { loginPath } from './paths/loginPath'
-import { AccountSchema } from './schemas/account.schema'
-import { LoginParamsSchema } from './schemas/login-params.schema'
+import { badRequest, notFound, serverError, unauthorized } from './components'
+import { loginPath, signupPath } from './paths'
+import { AccountSchema, ErrorSchema, LoginParamsSchema, SignUpSchema } from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -9,6 +9,10 @@ export default {
     description: 'API de enquetes entre programadores',
     version: '2.2.1'
   },
+  contact: {
+    name: 'Pedro Padilha Portella',
+    url: 'https://www.linkedin.com/in/pedro-padilha-portella-02a67318a/'
+  },
   servers: [
     { url: '/api' }
   ],
@@ -16,10 +20,19 @@ export default {
     { name: 'Login' }
   ],
   paths: {
-    '/login': loginPath
+    '/login': loginPath,
+    '/signup': signupPath
   },
   schemas: {
     Account: AccountSchema,
-    Login: LoginParamsSchema
+    SignUp: SignUpSchema,
+    Login: LoginParamsSchema,
+    Error: ErrorSchema
+  },
+  components: {
+    badRequest,
+    unauthorized,
+    serverError,
+    notFound
   }
 }

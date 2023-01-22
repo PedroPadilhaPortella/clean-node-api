@@ -1,7 +1,7 @@
-export const signupPath = {
+export const signUpPath = {
   post: {
-    tags: ['SignUp'],
-    summary: 'Cadastrar Usuário',
+    tags: ['Login'],
+    summary: 'Cadastrar conta de Usuário',
     requestBody: {
       content: {
         'application/json': {
@@ -25,8 +25,8 @@ export const signupPath = {
       400: {
         $ref: '#/components/badRequest'
       },
-      401: {
-        $ref: '#/components/unauthorized'
+      403: {
+        $ref: '#/components/forbidden'
       },
       404: {
         $ref: '#/components/notFound'

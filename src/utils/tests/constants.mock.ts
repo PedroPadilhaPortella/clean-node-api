@@ -56,11 +56,29 @@ export const SURVEYS: SurveyModel[] = [
   }
 ]
 
-export const SAVE_SURVEY_RESULT: SaveSurveyResultParams = { 
+export const SAVE_SURVEY_RESULT: SaveSurveyResultParams = {
   surveyId: '1',
   accountId: '1',
   answer: 'answer1',
   date: new Date()
 }
 
-export const SURVEY_RESULT: SurveyResultModel = { id: '1', ...SAVE_SURVEY_RESULT }
+export const SURVEY_RESULT: SurveyResultModel = {
+  surveyId: '1',
+  question: 'question',
+  answers: [
+    {
+      answer: 'answer1',
+      count: 1,
+      percent: 50, 
+      image: 'image1'
+    },
+    {
+      answer: 'answer2',
+      count: 1,
+      percent: 50, 
+      image: 'image2'
+    }
+  ],
+  date: new Date()
+}

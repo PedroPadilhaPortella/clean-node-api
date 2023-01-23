@@ -51,7 +51,9 @@ describe('Survey Result Mongo Repository', () => {
       const addSurveyResult = await createAccountAndSurvey()
       const surveyResult = await sut.save(addSurveyResult)
       expect(surveyResult).toBeTruthy()
-      expect(surveyResult.id).toBeTruthy()
+      expect(surveyResult.surveyId).toEqual(addSurveyResult.surveyId)
+      expect(surveyResult.answers[0].count).toEqual(1)
+      expect(surveyResult.answers[0].percent).toEqual(100)
     })
 
     it('should update a surveyResult on success when its not a new surveyResult', async () => {
@@ -59,9 +61,12 @@ describe('Survey Result Mongo Repository', () => {
       const addSurveyResult = await createAccountAndSurvey()
       
       let surveyResult = await sut.save({ ...addSurveyResult, answer: 'answer1' })
-      expect(surveyResult.answer).toEqual('answer1')
+      expect(surveyResult.answers[0].answer).toEqual('answer1')
+      expect(surveyResult.answers[0].percent).toEqual(100)
+
       surveyResult = await sut.save({ ...addSurveyResult, answer: 'answer2' })
-      expect(surveyResult.answer).toEqual('answer2')
+      expect(surveyResult.answers[0].answer).toEqual('answer2')
+      expect(surveyResult.answers[0].count).toEqual(1)
     })
   })
 })

@@ -29,7 +29,8 @@ export const SurveyAnswerSchema = {
     image: {
       type: 'string'
     }
-  }
+  },
+  required: ['answer']
 }
 
 export const AddSurveyParamsSchema = {

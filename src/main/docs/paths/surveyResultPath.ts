@@ -30,7 +30,7 @@ export const surveyResultPath = {
         content: {
           'application/json': {
             schema: {
-              $ref: '#/schemas/SaveSurveyResult'
+              $ref: '#/schemas/SurveyResult'
             }
           }
         }

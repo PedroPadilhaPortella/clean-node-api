@@ -54,6 +54,8 @@ describe('Survey Result Mongo Repository', () => {
       expect(surveyResult.surveyId).toEqual(addSurveyResult.surveyId)
       expect(surveyResult.answers[0].count).toEqual(1)
       expect(surveyResult.answers[0].percent).toEqual(100)
+      expect(surveyResult.answers[1].count).toEqual(0)
+      expect(surveyResult.answers[1].percent).toEqual(0)
     })
 
     it('should update a surveyResult on success when its not a new surveyResult', async () => {

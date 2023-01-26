@@ -69,15 +69,20 @@ export const SURVEY_RESULT: SurveyResultModel = {
   answers: [
     {
       answer: 'answer1',
-      count: 1,
-      percent: 50, 
+      count: 0,
+      percent: 0, 
       image: 'image1'
     },
     {
       answer: 'answer2',
-      count: 1,
-      percent: 50, 
+      count: 0,
+      percent: 0, 
       image: 'image2'
+    },
+    {
+      answer: 'answer3',
+      count: 0,
+      percent: 0
     }
   ],
   date: new Date()

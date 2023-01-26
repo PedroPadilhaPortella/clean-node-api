@@ -7,6 +7,7 @@ import { Hasher } from "@/data/protocols/hasher.interface"
 import { LoadAccountByEmailRepository } from "@/data/protocols/load-account-by-email-repository.interface"
 import { LoadAccountByTokenRepository } from "@/data/protocols/load-account-by-token-repository.interface"
 import { LoadSurveyByIdRepository } from "@/data/protocols/load-survey-by-id-repository.interface"
+import { LoadSurveyResultRepository } from "@/data/protocols/load-survey-result-repository.interface"
 import { LoadSurveysRepository } from "@/data/protocols/load-surveys-repository.interface"
 import { LogErrorRepository } from "@/data/protocols/log-error-repository.interface"
 import { SaveSurveyResultRepository } from "@/data/protocols/save-survey-result.repository"
@@ -19,6 +20,7 @@ import { AddSurvey, AddSurveyParams } from "@/domain/usecases/add-survey.interfa
 import { Authentication, AuthenticationParams } from "@/domain/usecases/authentication.interface"
 import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.interface"
 import { LoadSurveyById } from "@/domain/usecases/load-survey-by-id.interface"
+import { LoadSurveyResult } from '@/domain/usecases/load-survey-result.interface'
 import { LoadSurveys } from "@/domain/usecases/load-surveys.interface"
 import { SaveSurveyResult, SaveSurveyResultParams } from "@/domain/usecases/save-survey-result.interface"
 import { InternalServerError } from "@/presentation/errors"
@@ -103,6 +105,15 @@ export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => 
   return new SaveSurveyResultRepositoryStub()
 }
 
+export const mockLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
+  class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
+    async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
+      return SURVEY_RESULT
+    }
+  }
+  return new LoadSurveyResultRepositoryStub()
+}
+
 export const createLogErrorRepository = (): LogErrorRepository => {
   class LogErrorRepositoryStub implements LogErrorRepository {
     async logError (stackError: string): Promise<void> {
@@ -174,6 +185,15 @@ export const mockSaveSurveyResult = (): SaveSurveyResult => {
     }
   }
   return new SaveSurveyResultStub()
+}
+
+export const mockLoadSurveyResult = (): LoadSurveyResult => {
+  class LoadSurveyResultStub implements LoadSurveyResult {
+    async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
+      return SURVEY_RESULT
+    }
+  }
+  return new LoadSurveyResultStub()
 }
 
 /* Adapter */

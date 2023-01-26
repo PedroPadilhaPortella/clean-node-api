@@ -74,4 +74,22 @@ describe('Survey Result Mongo Repository', () => {
       expect(results).toHaveLength(1)
     })
   })
+
+  describe('LoadBySurveyId', () => {
+    it('should load a survey result', async () => {
+      const sut = makeSut()
+      const addSurveyResult = await createAccountAndSurvey()
+      await sut.save({ ...addSurveyResult, answer: 'answer1' })
+      
+      const result = await sut.loadBySurveyId(addSurveyResult.surveyId)
+      
+      expect(result.surveyId).toEqual(addSurveyResult.surveyId)
+      expect(result.answers[0].count).toEqual(1)
+      expect(result.answers[0].percent).toEqual(100)
+      expect(result.answers[1].count).toEqual(0)
+      expect(result.answers[1].percent).toEqual(0)
+      expect(result.answers[2].count).toEqual(0)
+      expect(result.answers[2].percent).toEqual(0)
+    })
+  })
 })

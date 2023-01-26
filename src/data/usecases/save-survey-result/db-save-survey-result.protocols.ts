@@ -1,5 +1,6 @@
 export * from '@/data/protocols/add-survey-repository.interface'
 export * from '@/data/protocols/load-survey-by-id-repository.interface'
+export * from '@/data/protocols/load-survey-result-repository.interface'
 export * from '@/data/protocols/save-survey-result.repository'
 export * from '@/domain/models/survey-result'
 export * from '@/domain/usecases/add-survey.interface'

@@ -9,7 +9,7 @@ import { ObjectId } from 'mongodb'
 export class SurveyResultMongoRepository 
 implements SaveSurveyResultRepository, LoadSurveyResultRepository {
 
-  async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
+  async save (data: SaveSurveyResultParams): Promise<void> {
     const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULTS)
     const { accountId, surveyId, answer, date } = data
 
@@ -18,9 +18,6 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
       { $set: { answer, date } },
       { upsert: true }
     )
-
-    const surveyResult = await this.loadBySurveyId(data.surveyId)
-    return surveyResult
   }
 
   async loadBySurveyId (surveyId: string | ObjectId): Promise<SurveyResultModel> {

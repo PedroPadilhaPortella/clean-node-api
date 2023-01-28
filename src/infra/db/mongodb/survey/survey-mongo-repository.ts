@@ -19,31 +19,25 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository 
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
     const results = await surveyCollection.find().toArray()
 
-    if (results) {
-      return results.map((result) => {
-        return { 
-          id: result._id.toString(),
-          question: result.question,
-          answers: result.answers,
-          date: result.date
-        }
-      })
-    }
-    return null
-  }
-  
-  async loadById (id: string): Promise<SurveyModel | null> {
-    const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
-    const result = await surveyCollection.findOne({ _id: new ObjectId(id) })
-
-    if (result) {
+    return results.map((result) => {
       return { 
         id: result._id.toString(),
         question: result.question,
         answers: result.answers,
         date: result.date
       }
+    })
+  }
+  
+  async loadById (id: string): Promise<SurveyModel | null> {
+    const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
+    const result = await surveyCollection.findOne({ _id: new ObjectId(id) })
+
+    return { 
+      id: result._id.toString(),
+      question: result.question,
+      answers: result.answers,
+      date: result.date
     }
-    return null
   }
 }

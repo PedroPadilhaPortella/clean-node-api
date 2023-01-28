@@ -28,5 +28,5 @@ export const Forbidden = (error: Error): HttpResponse => ({
 
 export const ServerError = (error: Error): HttpResponse => ({
   statusCode: 500,
-  body: new InternalServerError(error.stack ?? 'Unknown Error')
+  body: new InternalServerError(error.stack)
 })

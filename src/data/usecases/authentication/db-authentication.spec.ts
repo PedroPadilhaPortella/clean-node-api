@@ -1,5 +1,5 @@
 import { DbAuthentication } from './db-authentication'
-import { Authentication, Encrypter, HashComparer, LoadAccountByEmailRepository, LOGIN, mockEncrypter, mockHashCompare, mockLoadAccountByEmail, mockUpdateAccessTokenRepository, throwError, UpdateAccessTokenRepository } from './db-authentication.protocols'
+import { ACCOUNT, Authentication, Encrypter, HashComparer, LoadAccountByEmailRepository, LOGIN, mockEncrypter, mockHashCompare, mockLoadAccountByEmail, mockUpdateAccessTokenRepository, throwError, UpdateAccessTokenRepository } from './db-authentication.protocols'
 
 type SutTypes = {
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
@@ -89,12 +89,6 @@ describe('DbAuthentication', () => {
     const response = sut.authenticate(LOGIN)
     await expect(response).rejects.toThrow()
   })
-
-  it('should return the token generated on success', async () => {
-    const { sut } = makeSut()
-    const response = await sut.authenticate(LOGIN)
-    expect(response).toBe('token')
-  })
   
   it('should call UpdateAccessTokenRepository with correct values', async () => {
     const { sut, updateAccessTokenRepositoryStub } = makeSut()
@@ -108,5 +102,11 @@ describe('DbAuthentication', () => {
     jest.spyOn(updateAccessTokenRepositoryStub, 'updateToken').mockImplementationOnce(throwError)
     const response = sut.authenticate(LOGIN)
     await expect(response).rejects.toThrow()
+  })
+  
+  it('should return an authenticationModel on success', async () => {
+    const { sut } = makeSut()
+    const response = await sut.authenticate(LOGIN)
+    expect(response).toEqual({ accessToken: 'token', name: ACCOUNT.name })
   })
 })

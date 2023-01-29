@@ -13,6 +13,7 @@ import { LogErrorRepository } from "@/data/protocols/log-error-repository.interf
 import { SaveSurveyResultRepository } from "@/data/protocols/save-survey-result.repository"
 import { UpdateAccessTokenRepository } from "@/data/protocols/update-access-token-repository.interface"
 import { AccountModel } from "@/domain/models/account.model"
+import { AuthenticationModel } from "@/domain/models/authentication.model"
 import { SurveyResultModel } from "@/domain/models/survey-result"
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddAccount, AddAccountParams } from "@/domain/usecases/add-account.interface"
@@ -26,7 +27,7 @@ import { SaveSurveyResult, SaveSurveyResultParams } from "@/domain/usecases/save
 import { InternalServerError } from "@/presentation/errors"
 import { Controller, EmailValidator, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
 import { ObjectId } from 'mongodb'
-import { ACCOUNT, SURVEY, SURVEYS, SURVEY_RESULT } from "./constants.mock"
+import { ACCOUNT, AUTHENTICATION, SURVEY, SURVEYS, SURVEY_RESULT } from "./constants.mock"
 
 /**
  * Classe Dedicada à criar mockFactories para diversas implementações de classes
@@ -142,8 +143,8 @@ export const mockLoadAccountByToken = (): LoadAccountByToken => {
 
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async authenticate (authentication: AuthenticationParams): Promise<string> {
-      return 'login_token'
+    async authenticate (authentication: AuthenticationParams): Promise<AuthenticationModel> {
+      return AUTHENTICATION
     }
   }
   return new AuthenticationStub()

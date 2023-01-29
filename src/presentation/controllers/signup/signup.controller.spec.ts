@@ -1,5 +1,5 @@
 import { SignUpController } from './signup.controller'
-import { ACCOUNT, AddAccount, Authentication, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, mockAddAccount, mockAuthentication, mockValidation, Ok, ServerError, throwInternalServerError, Unauthorized, Validation } from './signup.protocols'
+import { ACCOUNT, AddAccount, AUTHENTICATION, Authentication, BadRequest, EmailAlreadyTaken, Forbidden, HttpRequest, InternalServerError, MissingParamError, mockAddAccount, mockAuthentication, mockValidation, Ok, ServerError, throwInternalServerError, Unauthorized, Validation } from './signup.protocols'
 
 type SutTypes = {
   sut: SignUpController
@@ -69,7 +69,7 @@ describe('SignUp Controller', () => {
 
   it('should return 401 if invalid credentials provided', async () => {
     const { sut, authenticationStub } = makeSut()
-    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.resolve(''))
+    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.resolve(null))
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(Unauthorized())
@@ -96,6 +96,6 @@ describe('SignUp Controller', () => {
     const { sut } = makeSut()
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(Ok({ accessToken: 'login_token' }))
+    expect(httpResponse).toEqual(Ok(AUTHENTICATION))
   })
 })

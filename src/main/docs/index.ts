@@ -3,11 +3,11 @@ import { loginPath, signUpPath, surveyPath, surveyResultPath } from './paths'
 import { AccountSchema, AddSurveyParamsSchema, ApiKeyAuthSchema, ErrorSchema, LoginParamsSchema, SaveSurveyResultParamsSchema, SignUpSchema, SurveyAnswerSchema, SurveySchema, SurveysSchema, SurveyResultSchema, SurveyResultAnswerSchema } from './schemas'
 
 export default {
-  openapi: '2.4.1',
+  openapi: '3.0.0',
   info: {
     title: 'Clean Node API',
     description: 'API de enquetes entre programadores',
-    version: '2.3.0'
+    version: '2.4.1'
   },
   contact: {
     name: 'Pedro Padilha Portella',

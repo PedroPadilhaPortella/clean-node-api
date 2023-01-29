@@ -1,5 +1,5 @@
 import { LoginController } from './login.controller'
-import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation, mockAuthentication, mockValidation, throwInternalServerError } from './login.protocols'
+import { Authentication, BadRequest, HttpRequest, InternalServerError, MissingParamError, Ok, ServerError, Unauthorized, Validation, mockAuthentication, mockValidation, throwInternalServerError, AUTHENTICATION } from './login.protocols'
 
 type SutTypes = {
   sut: LoginController
@@ -34,7 +34,7 @@ describe('Login Controller', () => {
   
   it('should return 401 if invalid credentials provided', async () => {
     const { sut, authenticationStub } = makeSut()
-    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.resolve(''))
+    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.resolve(null))
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
     expect(httpResponse).toEqual(Unauthorized())
@@ -69,6 +69,6 @@ describe('Login Controller', () => {
     const { sut } = makeSut()
     const httpRequest = makeFakeRequest()
     const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse).toEqual(Ok({ accessToken: 'login_token' }))
+    expect(httpResponse).toEqual(Ok(AUTHENTICATION))
   })
 })

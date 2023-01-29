@@ -17,6 +17,8 @@ export const SIGNUP = {
   passwordConfirmation: 'pedro123'
 }
 
+export const AUTHENTICATION = { accessToken: 'login_token', name: SIGNUP.name }
+
 export const ADD_ACCOUNT: AddAccountParams = SIGNUP
 
 export const ACCOUNT: AccountModel = { id: '1', ...ADD_ACCOUNT }

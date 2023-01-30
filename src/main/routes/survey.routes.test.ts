@@ -33,6 +33,7 @@ describe('Survey Routes', () => {
   beforeEach(async () => {
     surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
     accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
+    
     await surveyCollection.deleteMany({})
     await accountCollection.deleteMany({})
   })

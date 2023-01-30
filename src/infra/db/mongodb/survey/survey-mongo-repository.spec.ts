@@ -1,16 +1,34 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import env from "@/main/config/env"
-import { ADD_SURVEY } from "@/utils/tests"
-import { Collection } from "mongodb"
+import { ADD_SURVEY, SAVE_SURVEY_RESULT, SIGNUP } from "@/utils/tests"
+import { Collection, ObjectId } from "mongodb"
 import { SurveyMongoRepository } from "./survey-mongo-repository"
 
 const makeSut = (): SurveyMongoRepository => {
   return new SurveyMongoRepository()
 }
 
+let accountCollection: Collection
+let surveyCollection: Collection
+let surveyResultCollection: Collection
+
+const insertAccount = async (): Promise<ObjectId> => {
+  const account = await accountCollection.insertOne(SIGNUP)
+  return account.insertedId
+}
+
+const insertSurvey = async (): Promise<ObjectId> => {
+  const survey = await surveyCollection.insertOne(ADD_SURVEY)
+  return survey.insertedId
+}
+const insertSurveyResult = async (accountId: ObjectId, surveyId: ObjectId): Promise<ObjectId> => {
+  const surveyResult = await surveyResultCollection
+    .insertOne({ ...SAVE_SURVEY_RESULT, accountId, surveyId })
+  return surveyResult.insertedId
+}
+
 describe('Survey Mongo Repository', () => {
-  let surveyCollection: Collection
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrlTest)
@@ -21,8 +39,13 @@ describe('Survey Mongo Repository', () => {
   })
 
   beforeEach(async () => {
+    accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
+    surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULT)
+
+    await accountCollection.deleteMany({})
     await surveyCollection.deleteMany({})
+    await surveyResultCollection.deleteMany({})
   })
 
   describe('Save', () => {
@@ -38,16 +61,24 @@ describe('Survey Mongo Repository', () => {
   describe('LoadAll', () => {
     it('should load surveys from repository', async () => {
       const sut = makeSut()
-      await sut.add(ADD_SURVEY)
-      const surveys = await sut.loadAll()
-      expect(surveys.length).toBe(1)
+      const accountId = await insertAccount()
+      const surveyId = await insertSurvey()
+      await insertSurveyResult(accountId, surveyId)
+      
+      const surveys = await sut.loadAll(accountId.toString())
+
+      console.warn(surveys)
+
+      expect(surveys.length).toEqual(1)
       expect(surveys[0].id).toBeTruthy()
+      expect(surveys[0].didAnswer).toBe(true)
     })
 
     it('should return no surveys cause no surveys have been added', async () => {
       const sut = makeSut()
-      const surveys = await sut.loadAll()
-      expect(surveys.length).toBe(0)
+      const accountId = await insertAccount()
+      const surveys = await sut.loadAll(accountId.toString())
+      expect(surveys.length).toEqual(0)
     })
   })
 

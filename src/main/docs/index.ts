@@ -7,7 +7,7 @@ export default {
   info: {
     title: 'Clean Node API',
     description: 'API de enquetes entre programadores',
-    version: '2.4.4'
+    version: '2.4.5'
   },
   contact: {
     name: 'Pedro Padilha Portella',

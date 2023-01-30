@@ -24,7 +24,7 @@ export const ADD_ACCOUNT: AddAccountParams = SIGNUP
 export const ACCOUNT: AccountModel = { id: '1', ...ADD_ACCOUNT }
 
 export const ADD_SURVEY: AddSurveyParams = {
-  question: 'question',
+  question: 'question1',
   answers: [
     { answer: 'answer1', image: 'image1' },
     { answer: 'answer2', image: 'image2' },
@@ -67,7 +67,7 @@ export const SAVE_SURVEY_RESULT: SaveSurveyResultParams = {
 
 export const SURVEY_RESULT: SurveyResultModel = {
   surveyId: '1',
-  question: 'question',
+  question: 'question1',
   answers: [
     {
       answer: 'answer1',

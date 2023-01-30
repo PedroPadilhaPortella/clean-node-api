@@ -16,7 +16,7 @@ const makeSut = (): SutTypes => {
 }
 
 const makeFakeRequest = (): HttpRequest => {
-  return { params: { surveyId: '1' } }
+  return { params: { surveyId: '1' }, accountId: '1' }
 }
 
 describe('LoadSurveyResultController', () => {
@@ -58,7 +58,7 @@ describe('LoadSurveyResultController', () => {
     const loadSurveyResultSpy = jest.spyOn(loadSurveyResultStub, 'loadBySurveyId')
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(loadSurveyResultSpy).toHaveBeenCalledWith(httpRequest.params.surveyId)
+    expect(loadSurveyResultSpy).toHaveBeenCalledWith(httpRequest.params.surveyId, httpRequest.accountId)
   })
 
   it('should return 500 if LoadSurveyResult throws', async () => {

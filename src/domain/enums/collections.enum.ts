@@ -1,6 +1,6 @@
 export enum CollectionsEnum {
   ACCOUNTS = 'accounts',
   SURVEYS = 'surveys',
-  SURVEY_RESULTS = 'surveys_result',
+  SURVEY_RESULT = 'surveys_result',
   ERRORS = 'errors',
 }

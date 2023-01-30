@@ -37,7 +37,8 @@ describe('DbSaveSurveyResult', () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     const loadSurveySpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
     await sut.save(SAVE_SURVEY_RESULT)
-    expect(loadSurveySpy).toHaveBeenCalledWith(SAVE_SURVEY_RESULT.surveyId)
+    expect(loadSurveySpy)
+      .toHaveBeenCalledWith(SAVE_SURVEY_RESULT.surveyId, SAVE_SURVEY_RESULT.accountId)
   })
 
   it('should throw if SaveSurveyResultRepository throws', async () => {

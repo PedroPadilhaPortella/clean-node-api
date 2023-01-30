@@ -28,20 +28,20 @@ describe('DbLoadSurveyResult', () => {
   it('should call loadSurveyResultRepository with correct id', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     const loadSpy = jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
-    await sut.loadBySurveyId('id_123')
-    expect(loadSpy).toHaveBeenCalledWith('id_123')
+    await sut.loadBySurveyId('id_123', 'id_456')
+    expect(loadSpy).toHaveBeenCalledWith('id_123', 'id_456')
   })
 
   it('should throw if loadSurveysRepository throws', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockImplementationOnce(throwError)
-    const response = sut.loadBySurveyId('id_123')
+    const response = sut.loadBySurveyId('id_123', 'id_456')
     await expect(response).rejects.toThrow()
   })
   
   it('should return a surveyResult on success', async () => {
     const { sut } = makeSut()
-    const survey = await sut.loadBySurveyId('id_123')
+    const survey = await sut.loadBySurveyId('id_123', 'id_456')
     expect(survey).toEqual(SURVEY_RESULT)
   })
 
@@ -49,14 +49,14 @@ describe('DbLoadSurveyResult', () => {
     const { sut, loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockReturnValueOnce(null)
     const loadByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById')
-    await sut.loadBySurveyId('id_123')
+    await sut.loadBySurveyId('id_123', 'id_456')
     expect(loadByIdSpy).toHaveBeenCalledWith('id_123')
   })
 
   it('should return a surveyResult with count 0 if loadSurveyResultRepository returns null', async () => {
     const { sut, loadSurveyResultRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockReturnValueOnce(null)
-    const survey = await sut.loadBySurveyId('id_123')
+    const survey = await sut.loadBySurveyId('id_123', 'id_456')
     expect(survey.surveyId).toEqual(SURVEY_RESULT.surveyId)
     expect(survey.question).toEqual(SURVEY_RESULT.question)
     expect(survey.answers).toEqual(SURVEY_RESULT.answers)
@@ -66,7 +66,7 @@ describe('DbLoadSurveyResult', () => {
     const { sut, loadSurveyByIdRepositoryStub, loadSurveyResultRepositoryStub } = makeSut()
     jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockReturnValueOnce(null)
     jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById').mockImplementationOnce(throwError)
-    const response = sut.loadBySurveyId('id_123')
+    const response = sut.loadBySurveyId('id_123', 'id_456')
     await expect(response).rejects.toThrow()
   })
 })

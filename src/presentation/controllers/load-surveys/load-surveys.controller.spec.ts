@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { LoadSurveysController } from './load-surveys.controller'
-import { InternalServerError, LoadSurveys, mockLoadSurveys, NoContent, Ok, ServerError, SURVEYS, throwInternalServerError } from './load-surveys.protocols'
+import { InternalServerError, LoadSurveys, mockLoadSurveys, NoContent, Ok, ServerError, SURVEYS, throwInternalServerError, ACCOUNT, HttpRequest } from './load-surveys.protocols'
 
 type SutTypes = {
   sut: LoadSurveysController
@@ -13,6 +13,8 @@ const makeSut = (): SutTypes => {
   return { sut, loadSurveysStub }
 }
 
+const request: HttpRequest = { accountId: ACCOUNT.id }
+
 describe('LoadSurveysController', () => {
 
   beforeAll(() => {
@@ -23,30 +25,30 @@ describe('LoadSurveysController', () => {
     MockDate.reset()
   })
 
-  it('should call LoadSurveys', async () => {
+  it('should call LoadSurveys with correct values', async () => {
     const { sut, loadSurveysStub } = makeSut()
     const loadSpy = jest.spyOn(loadSurveysStub, 'load')
-    await sut.handle({})
-    expect(loadSpy).toHaveBeenCalled()
+    await sut.handle(request)
+    expect(loadSpy).toHaveBeenCalledWith(request.accountId)
   })
   
   it('should return 200 on success', async () => {
     const { sut } = makeSut()
-    const response = await sut.handle({})
+    const response = await sut.handle(request)
     expect(response).toEqual(Ok(SURVEYS))
   })
   
   it('should return 500 on fails', async () => {
     const { sut, loadSurveysStub } = makeSut()
     jest.spyOn(loadSurveysStub, 'load').mockImplementationOnce(throwInternalServerError)
-    const response = await sut.handle({})
+    const response = await sut.handle(request)
     expect(response).toEqual(ServerError(new InternalServerError('Error')))
   })
   
   it('should return 204 if there is no surveys to show', async () => {
     const { sut, loadSurveysStub } = makeSut()
     jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(Promise.resolve([]))
-    const response = await sut.handle({})
+    const response = await sut.handle(request)
     expect(response).toEqual(NoContent())
   })
 })

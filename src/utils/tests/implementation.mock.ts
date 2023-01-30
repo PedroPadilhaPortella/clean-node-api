@@ -81,7 +81,7 @@ export const mockUpdateAccessTokenRepository = (): UpdateAccessTokenRepository =
 
 export const mockLoadSurveysRepository = (): LoadSurveysRepository => {
   class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    async loadAll (): Promise<SurveyModel[]> {
+    async loadAll (accountId: string): Promise<SurveyModel[]> {
       return SURVEYS
     }
   }
@@ -106,7 +106,7 @@ export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => 
 
 export const mockLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
   class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
-    async loadBySurveyId (surveyId: string): Promise<SurveyResultModel> {
+    async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> {
       return SURVEY_RESULT
     }
   }
@@ -161,7 +161,7 @@ export const mockAddSurvey = (): AddSurvey => {
 
 export const mockLoadSurveys = (): LoadSurveys => {
   class LoadSurveysStub implements LoadSurveys {
-    async load (): Promise<SurveyModel[]> {
+    async load (accountId: string): Promise<SurveyModel[]> {
       return await Promise.resolve(SURVEYS)
     }
   }

@@ -10,7 +10,7 @@ export class SurveyResultMongoRepository
 implements SaveSurveyResultRepository, LoadSurveyResultRepository {
 
   async save (data: SaveSurveyResultParams): Promise<void> {
-    const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULTS)
+    const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULT)
     const { accountId, surveyId, answer, date } = data
 
     await surveyResultCollection.findOneAndUpdate(
@@ -20,8 +20,8 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
     )
   }
 
-  async loadBySurveyId (surveyId: string | ObjectId): Promise<SurveyResultModel> {
-    const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULTS)
+  async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> {
+    const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULT)
     const query = surveyResultCollection.aggregate([
       {
         $match: {
@@ -69,6 +69,15 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
           },
           count: {
             $sum: 1
+          },
+          currentAccountAnswer: {
+            $push: {
+              $cond: [
+                { $eq: ['$data.accountId', new ObjectId(accountId)] },
+                '$data.answer',
+                '$invalid'
+              ]
+            }
           }
         }
       },

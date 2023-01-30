@@ -1,6 +1,6 @@
 {
   "name": "clean-node-api",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "NodeJs, Typescript, TDD, DDD, Clean Architecture e SOLID",
   "author": "Pedro Padilha Portella",
   "repository": "github:PedroPadilhaPortella/clean-node-api",

@@ -67,8 +67,6 @@ describe('Survey Mongo Repository', () => {
       
       const surveys = await sut.loadAll(accountId.toString())
 
-      console.warn(surveys)
-
       expect(surveys.length).toEqual(1)
       expect(surveys[0].id).toBeTruthy()
       expect(surveys[0].didAnswer).toBe(true)

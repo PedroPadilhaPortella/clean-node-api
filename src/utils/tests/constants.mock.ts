@@ -73,18 +73,21 @@ export const SURVEY_RESULT: SurveyResultModel = {
       answer: 'answer1',
       count: 0,
       percent: 0, 
-      image: 'image1'
+      image: 'image1',
+      isCurrentAccountAnswer: false
     },
     {
       answer: 'answer2',
       count: 0,
       percent: 0, 
-      image: 'image2'
+      image: 'image2',
+      isCurrentAccountAnswer: false
     },
     {
       answer: 'answer3',
       count: 0,
-      percent: 0
+      percent: 0,
+      isCurrentAccountAnswer: false
     }
   ],
   date: new Date()

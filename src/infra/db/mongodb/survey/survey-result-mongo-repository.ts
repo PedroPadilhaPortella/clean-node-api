@@ -5,6 +5,7 @@ import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import { ObjectId } from 'mongodb'
+import round from 'mongo-round'
 
 export class SurveyResultMongoRepository 
 implements SaveSurveyResultRepository, LoadSurveyResultRepository {
@@ -191,8 +192,8 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
           answer: {
             answer: '$_id.answer',
             image: '$_id.image',
-            count: '$count',
-            percent: '$percent',
+            count: round('$count'),
+            percent: round('$percent'),
             isCurrentAccountAnswer: '$_id.isCurrentAccountAnswer'
           }
         }

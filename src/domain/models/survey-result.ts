@@ -12,5 +12,5 @@ export type SurveyResultAnswer = {
   image?: string
   count: number
   percent: number
-  isCurrentAccountAnswer?: boolean
+  isCurrentAccountAnswer: boolean
 }

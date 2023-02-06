@@ -13,7 +13,6 @@ import { LoadSurveysRepository } from "@/data/protocols/load-surveys-repository.
 import { LogErrorRepository } from "@/data/protocols/log-error-repository.interface"
 import { SaveSurveyResultRepository } from "@/data/protocols/save-survey-result.repository"
 import { UpdateAccessTokenRepository } from "@/data/protocols/update-access-token-repository.interface"
-import { AccountModel } from "@/domain/models/account.model"
 import { SurveyResultModel } from "@/domain/models/survey-result"
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddAccount } from "@/domain/usecases/add-account.interface"
@@ -37,7 +36,7 @@ import { ACCOUNT, AUTHENTICATION, SURVEY, SURVEYS, SURVEY_RESULT } from "./const
 export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
     async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
-      return await Promise.resolve({ ...account, id: '1', password: 'hash' })
+      return await Promise.resolve(true)
     }
   }
   return new AddAccountRepositoryStub()
@@ -45,7 +44,7 @@ export const mockAddAccountRepository = (): AddAccountRepository => {
 
 export const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async loadByEmail (email: string): Promise<AccountModel | null> {
+    async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
       return ACCOUNT
     }
   }

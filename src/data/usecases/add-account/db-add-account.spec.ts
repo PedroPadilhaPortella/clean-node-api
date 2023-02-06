@@ -47,6 +47,13 @@ describe('DbAddAccount', () => {
     const response = sut.add(ADD_ACCOUNT)
     await expect(response).rejects.toThrow()
   })
+  
+  it('should return false if addAccountRepository returns false', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut()
+    jest.spyOn(addAccountRepositoryStub, 'add').mockReturnValueOnce(Promise.resolve(false))
+    const response = await sut.add(ADD_ACCOUNT)
+    expect(response).toBeFalsy()
+  })
     
   it('should call AddAccountRepository with correct email', async () => {
     const { sut, checkAccountByEmailRepositoryStub } = makeSut()

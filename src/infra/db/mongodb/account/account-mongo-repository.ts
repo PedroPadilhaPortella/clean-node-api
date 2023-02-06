@@ -4,7 +4,6 @@ import { LoadAccountByEmailRepository } from '@/data/protocols/load-account-by-e
 import { LoadAccountByTokenRepository } from '@/data/protocols/load-account-by-token-repository.interface'
 import { UpdateAccessTokenRepository } from '@/data/protocols/update-access-token-repository.interface'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
-import { AccountModel } from '@/domain/models/account.model'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { ObjectId } from 'mongodb'
 
@@ -13,10 +12,10 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
   async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
     const accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     const result = await accountCollection.insertOne(account)
-    return { id: result.insertedId, ...account }
+    return result.insertedId !== null
   }
   
-  async loadByEmail (email: string): Promise<AccountModel | null> {
+  async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
     const accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     const result = await accountCollection.findOne({ email })
 

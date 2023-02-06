@@ -32,10 +32,6 @@ describe('Account Mongo Repository', () => {
       const accountDb = await sut.add(account)
 
       expect(accountDb).toBeTruthy()
-      expect(accountDb.id).toBeTruthy()
-      expect(accountDb.name).toBe('pedro')
-      expect(accountDb.email).toBe('email@mail.com')
-      expect(accountDb.password).toBe('pass123')
     })
   })
 

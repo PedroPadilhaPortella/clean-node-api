@@ -55,17 +55,17 @@ describe('DbAddAccount', () => {
     expect(loadSpy).toBeCalledWith(ADD_ACCOUNT.email)
   })
   
-  it('should return null if loadAccountByEmailRepository returns true', async () => {
+  it('should return false if checkAccountByEmailRepository returns true', async () => {
     const { sut, checkAccountByEmailRepositoryStub } = makeSut()
     jest.spyOn(checkAccountByEmailRepositoryStub, 'checkByEmail')
       .mockReturnValueOnce(Promise.resolve(true))
     const response = await sut.add(ADD_ACCOUNT)
-    expect(response).toBeNull()
+    expect(response).toBeFalsy()
   })
     
   it('should return an account on success', async () => {
     const { sut } = makeSut()
     const response = await sut.add(ADD_ACCOUNT)
-    expect(response).toEqual({ id: '1', ...ADD_ACCOUNT, password: 'hash' })
+    expect(response).toEqual(true)
   })
 })

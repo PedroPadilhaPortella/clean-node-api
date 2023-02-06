@@ -17,7 +17,7 @@ import { AccountModel } from "@/domain/models/account.model"
 import { AuthenticationModel } from "@/domain/models/authentication.model"
 import { SurveyResultModel } from "@/domain/models/survey-result"
 import { SurveyModel } from "@/domain/models/survey.model"
-import { AddAccount, AddAccountParams } from "@/domain/usecases/add-account.interface"
+import { AddAccount } from "@/domain/usecases/add-account.interface"
 import { AddSurvey, AddSurveyParams } from "@/domain/usecases/add-survey.interface"
 import { Authentication, AuthenticationParams } from "@/domain/usecases/authentication.interface"
 import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.interface"
@@ -37,7 +37,7 @@ import { ACCOUNT, AUTHENTICATION, SURVEY, SURVEYS, SURVEY_RESULT } from "./const
 /* Mock Repositories */
 export const mockAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async add (account: AddAccountParams): Promise<AccountModel> {
+    async add (account: AddAccountRepository.Params): Promise<AddAccountRepository.Result> {
       return await Promise.resolve({ ...account, id: '1', password: 'hash' })
     }
   }
@@ -135,8 +135,8 @@ export const createLogErrorRepository = (): LogErrorRepository => {
 /* Data Usecases */
 export const mockAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add (account: AddAccountParams): Promise<AccountModel | null> {
-      return await Promise.resolve(ACCOUNT)
+    async add (account: AddAccount.Params): Promise<AddAccount.Result> {
+      return await Promise.resolve(true)
     }
   }
   return new AddAccountStub()

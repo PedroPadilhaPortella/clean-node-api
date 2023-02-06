@@ -75,7 +75,7 @@ describe('SignUp Controller', () => {
 
   it('should return 403 if the email is already taken', async () => {
     const { sut, addAccountStub } = makeSut()
-    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(Promise.resolve(null))
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(Promise.resolve(false))
     const request = makeFakeRequest()
     const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(Forbidden(new EmailAlreadyTaken()))

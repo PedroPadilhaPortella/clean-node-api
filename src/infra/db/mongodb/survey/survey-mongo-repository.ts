@@ -1,4 +1,5 @@
 import { AddSurveyRepository } from '@/data/protocols/add-survey-repository.interface'
+import { CheckSurveyByIdRepository } from '@/data/protocols/check-survey-by-id.repository'
 import { LoadSurveyByIdRepository } from '@/data/protocols/load-survey-by-id-repository.interface'
 import { LoadSurveysRepository } from '@/data/protocols/load-surveys-repository.interface'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
@@ -7,7 +8,7 @@ import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { ObjectId } from 'mongodb'
 
 export class SurveyMongoRepository
-implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository {
+implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository, CheckSurveyByIdRepository {
 
   async add (survey: AddSurveyRepository.Params): Promise<void> {
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
@@ -75,5 +76,15 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository 
       answers: result.answers,
       date: result.date
     }
+  }
+
+  async checkById (id: string): Promise<CheckSurveyByIdRepository.Result> {
+    const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
+    const result = await surveyCollection.findOne(
+      { _id: new ObjectId(id) },
+      { projection: { _id: 1 } }
+    )
+
+    return result !== null
   }
 }

@@ -1,6 +1,7 @@
 import { AddAccountRepository } from "@/data/protocols/add-account-repository.interface"
 import { AddSurveyRepository } from "@/data/protocols/add-survey-repository.interface"
 import { CheckAccountByEmailRepository } from "@/data/protocols/check-account-by-email-repository.interface"
+import { CheckSurveyByIdRepository } from "@/data/protocols/check-survey-by-id.repository"
 import { Decrypter } from "@/data/protocols/decrypter.interface"
 import { Encrypter } from '@/data/protocols/encrypter.interface'
 import { HashComparer } from '@/data/protocols/hash-comparer.interface'
@@ -18,6 +19,7 @@ import { SurveyModel } from "@/domain/models/survey.model"
 import { AddAccount } from "@/domain/usecases/add-account.interface"
 import { AddSurvey } from "@/domain/usecases/add-survey.interface"
 import { Authentication } from "@/domain/usecases/authentication.interface"
+import { CheckSurveyById } from "@/domain/usecases/check-survey-by-id.interface"
 import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.interface"
 import { LoadSurveyById } from "@/domain/usecases/load-survey-by-id.interface"
 import { LoadSurveyResult } from '@/domain/usecases/load-survey-result.interface'
@@ -105,6 +107,15 @@ export const mockLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   return new LoadSurveyByIdRepositoryStub()
 }
 
+export const mockCheckSurveyByIdRepository = (): CheckSurveyByIdRepository => {
+  class CheckSurveyByIdRepositoryStub implements CheckSurveyByIdRepository {
+    async checkById (id: string): Promise<CheckSurveyByIdRepository.Result> {
+      return true
+    }
+  }
+  return new CheckSurveyByIdRepositoryStub()
+}
+
 export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
     async save (data: SaveSurveyResultParams): Promise<void> { }
@@ -183,6 +194,15 @@ export const mockLoadSurveyById = (): LoadSurveyById => {
     }
   }
   return new LoadSurveyByIdStub()
+}
+
+export const mockCheckSurveyById = (): CheckSurveyById => {
+  class CheckSurveyByIdStub implements CheckSurveyById {
+    async checkById (id: string): Promise<boolean> {
+      return true
+    }
+  }
+  return new CheckSurveyByIdStub()
 }
 
 export const mockSaveSurveyResult = (): SaveSurveyResult => {

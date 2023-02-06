@@ -1,6 +1,7 @@
 export * from "@/data/protocols/add-account-repository.interface"
 export * from "@/data/protocols/hasher.interface"
 export * from "@/data/protocols/load-account-by-email-repository.interface"
+export * from "@/data/protocols/check-account-by-email-repository.interface"
 export * from "@/domain/models/account.model"
 export * from "@/domain/usecases/add-account.interface"
 export * from "@/utils/tests"

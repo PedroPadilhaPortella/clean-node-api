@@ -1,5 +1,6 @@
 import { AddAccountRepository } from "@/data/protocols/add-account-repository.interface"
 import { AddSurveyRepository } from "@/data/protocols/add-survey-repository.interface"
+import { CheckAccountByEmailRepository } from "@/data/protocols/check-account-by-email-repository.interface"
 import { Decrypter } from "@/data/protocols/decrypter.interface"
 import { Encrypter } from '@/data/protocols/encrypter.interface'
 import { HashComparer } from '@/data/protocols/hash-comparer.interface'
@@ -50,6 +51,15 @@ export const mockLoadAccountByEmail = (): LoadAccountByEmailRepository => {
     }
   }
   return new LoadAccountByEmailRepositoryStub()
+}
+
+export const mockCheckAccountByEmail = (): CheckAccountByEmailRepository => {
+  class CheckAccountByEmailRepositoryStub implements CheckAccountByEmailRepository {
+    async checkByEmail (email: string): Promise<boolean> {
+      return true
+    }
+  }
+  return new CheckAccountByEmailRepositoryStub()
 }
 
 export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {

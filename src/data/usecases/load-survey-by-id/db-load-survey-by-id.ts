@@ -1,4 +1,4 @@
-import { LoadSurveyById, LoadSurveyByIdRepository, SurveyModel } from "./db-load-survey-by-id.protocols"
+import { LoadSurveyById, LoadSurveyByIdRepository } from "./db-load-survey-by-id.protocols"
 
 export class DbLoadSurveyById implements LoadSurveyById {
 
@@ -6,7 +6,7 @@ export class DbLoadSurveyById implements LoadSurveyById {
     private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository
   ) {}
 
-  async loadById (id: string): Promise<SurveyModel | null> { 
+  async loadById (id: string): Promise<LoadSurveyById.Result> { 
     return await this.loadSurveyByIdRepository.loadById(id)
   }
 }

@@ -65,7 +65,7 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository 
     })
   }
 
-  async loadById (id: string): Promise<SurveyModel | null> {
+  async loadById (id: string): Promise<LoadSurveyByIdRepository.Result> {
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
     const result = await surveyCollection.findOne({ _id: new ObjectId(id) })
 

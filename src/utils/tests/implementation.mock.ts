@@ -18,7 +18,7 @@ import { AuthenticationModel } from "@/domain/models/authentication.model"
 import { SurveyResultModel } from "@/domain/models/survey-result"
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddAccount } from "@/domain/usecases/add-account.interface"
-import { AddSurvey, AddSurveyParams } from "@/domain/usecases/add-survey.interface"
+import { AddSurvey } from "@/domain/usecases/add-survey.interface"
 import { Authentication, AuthenticationParams } from "@/domain/usecases/authentication.interface"
 import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.interface"
 import { LoadSurveyById } from "@/domain/usecases/load-survey-by-id.interface"
@@ -73,7 +73,7 @@ export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository
 
 export const mockAddSurveyRepository = (): AddSurveyRepository => {
   class AddSurveyRepositoryStub implements AddSurveyRepository {
-    async add (account: AddSurveyParams): Promise<void> {
+    async add (account: AddSurveyRepository.Params): Promise<void> {
       return await Promise.resolve()
     }
   }
@@ -162,7 +162,7 @@ export const mockAuthentication = (): Authentication => {
 
 export const mockAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    async add (data: AddSurveyParams): Promise<void> {
+    async add (data: AddSurvey.Params): Promise<void> {
       return await Promise.resolve()
     }
   }

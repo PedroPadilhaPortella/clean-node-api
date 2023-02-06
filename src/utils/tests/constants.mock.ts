@@ -1,7 +1,6 @@
 import { AccountModel } from '@/domain/models/account.model'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SurveyModel } from "@/domain/models/survey.model"
-import { AddSurveyParams } from '@/domain/usecases/add-survey.interface'
 import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 
 export const LOGIN = {
@@ -22,7 +21,7 @@ export const ADD_ACCOUNT: Omit<AccountModel, 'id'> = SIGNUP
 
 export const ACCOUNT: AccountModel = { id: '1', ...ADD_ACCOUNT }
 
-export const ADD_SURVEY: AddSurveyParams = {
+export const ADD_SURVEY: Omit<SurveyModel, 'id'> = {
   question: 'question1',
   answers: [
     { answer: 'answer1', image: 'image1' },

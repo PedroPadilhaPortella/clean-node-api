@@ -55,7 +55,7 @@ describe('DbLoadAccountByToken', () => {
   it('should return an account on success', async () => {
     const { sut } = makeSut()
     const response = await sut.load('token', 'role')
-    expect(response).toEqual(ACCOUNT)
+    expect(response).toEqual({ id: ACCOUNT.id })
   })
   
   it('should throw if loadAccountByTokenRepository throws', async () => {

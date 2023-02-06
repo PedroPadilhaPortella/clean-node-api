@@ -63,8 +63,8 @@ export const mockCheckAccountByEmail = (): CheckAccountByEmailRepository => {
 
 export const mockLoadAccountByTokenRepository = (): LoadAccountByTokenRepository => {
   class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-    async loadByToken (token: string, role?: string): Promise<AccountModel> {
-      return ACCOUNT
+    async loadByToken (token: string, role?: string): Promise<LoadAccountByTokenRepository.Result> {
+      return { id: ACCOUNT.id.toString() }
     }
   }
   return new LoadAccountByTokenRepositoryStub()
@@ -143,8 +143,8 @@ export const mockAddAccount = (): AddAccount => {
 
 export const mockLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
-    async load (token: string, role?: string | undefined): Promise<AccountModel | null> {
-      return ACCOUNT
+    async load (token: string, role?: string | undefined): Promise<LoadAccountByToken.Result> {
+      return { id: ACCOUNT.id.toString() }
     }
   }
   return new LoadAccountByTokenStub()

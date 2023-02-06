@@ -84,9 +84,6 @@ describe('Account Mongo Repository', () => {
 
       expect(accountDb).toBeTruthy()
       expect(accountDb?.id).toBeTruthy()
-      expect(accountDb?.name).toBe('pedro')
-      expect(accountDb?.email).toBe('email@mail.com')
-      expect(accountDb?.password).toBe('pass123')
     })
     
     it('should return an account on loadByToken success without role', async () => {
@@ -97,9 +94,6 @@ describe('Account Mongo Repository', () => {
 
       expect(accountDb).toBeTruthy()
       expect(accountDb?.id).toBeTruthy()
-      expect(accountDb?.name).toBe('pedro')
-      expect(accountDb?.email).toBe('email@mail.com')
-      expect(accountDb?.password).toBe('pass123')
     })
 
     it('should return null if loadByToken fails', async () => {

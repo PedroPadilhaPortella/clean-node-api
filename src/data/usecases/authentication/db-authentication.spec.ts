@@ -104,7 +104,7 @@ describe('DbAuthentication', () => {
     await expect(response).rejects.toThrow()
   })
   
-  it('should return an authenticationModel on success', async () => {
+  it('should return an accessToken and the name on success', async () => {
     const { sut } = makeSut()
     const response = await sut.authenticate(LOGIN)
     expect(response).toEqual({ accessToken: 'token', name: ACCOUNT.name })

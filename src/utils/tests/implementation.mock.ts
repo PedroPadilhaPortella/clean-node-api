@@ -14,12 +14,11 @@ import { LogErrorRepository } from "@/data/protocols/log-error-repository.interf
 import { SaveSurveyResultRepository } from "@/data/protocols/save-survey-result.repository"
 import { UpdateAccessTokenRepository } from "@/data/protocols/update-access-token-repository.interface"
 import { AccountModel } from "@/domain/models/account.model"
-import { AuthenticationModel } from "@/domain/models/authentication.model"
 import { SurveyResultModel } from "@/domain/models/survey-result"
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddAccount } from "@/domain/usecases/add-account.interface"
 import { AddSurvey } from "@/domain/usecases/add-survey.interface"
-import { Authentication, AuthenticationParams } from "@/domain/usecases/authentication.interface"
+import { Authentication } from "@/domain/usecases/authentication.interface"
 import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.interface"
 import { LoadSurveyById } from "@/domain/usecases/load-survey-by-id.interface"
 import { LoadSurveyResult } from '@/domain/usecases/load-survey-result.interface'
@@ -153,7 +152,7 @@ export const mockLoadAccountByToken = (): LoadAccountByToken => {
 
 export const mockAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async authenticate (authentication: AuthenticationParams): Promise<AuthenticationModel> {
+    async authenticate (authentication: Authentication.Params): Promise<Authentication.Result> {
       return AUTHENTICATION
     }
   }

@@ -1,4 +1,4 @@
-import { AddAccount, Authentication, BadRequest, Controller, EmailAlreadyTaken, Forbidden, HttpRequest, HttpResponse, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
+import { AddAccount, Authentication, BadRequest, Controller, EmailAlreadyTaken, Forbidden, HttpResponse, Ok, ServerError, Unauthorized, Validation } from './signup.protocols'
 
 export class SignUpController implements Controller {
   
@@ -8,14 +8,14 @@ export class SignUpController implements Controller {
     private readonly authentication: Authentication
   ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle (request: SignUpController.Request): Promise<HttpResponse> {
     try {
-      const error = this.validation.validate(httpRequest.body)
+      const error = this.validation.validate(request)
       if (error) {
         return BadRequest(error)
       }
       
-      const { name, email, password } = httpRequest.body
+      const { name, email, password } = request
       const account = await this.addAccount.add({ name, email, password })
       if (!account) {
         return Forbidden(new EmailAlreadyTaken())
@@ -31,5 +31,14 @@ export class SignUpController implements Controller {
     } catch (error) {
       return ServerError(error)
     }
+  }
+}
+
+export namespace SignUpController {
+  export type Request = {
+    email: string
+    name: string
+    password: string
+    passwordConfirmation: string
   }
 }

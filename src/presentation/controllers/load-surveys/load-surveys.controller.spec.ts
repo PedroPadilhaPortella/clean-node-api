@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { LoadSurveysController } from './load-surveys.controller'
-import { InternalServerError, LoadSurveys, mockLoadSurveys, NoContent, Ok, ServerError, SURVEYS, throwInternalServerError, ACCOUNT, HttpRequest } from './load-surveys.protocols'
+import { InternalServerError, LoadSurveys, mockLoadSurveys, NoContent, Ok, ServerError, SURVEYS, throwInternalServerError, ACCOUNT } from './load-surveys.protocols'
 
 type SutTypes = {
   sut: LoadSurveysController
@@ -13,7 +13,7 @@ const makeSut = (): SutTypes => {
   return { sut, loadSurveysStub }
 }
 
-const request: HttpRequest = { accountId: ACCOUNT.id }
+const request: LoadSurveysController.Request = { accountId: ACCOUNT.id.toString() }
 
 describe('LoadSurveysController', () => {
 

@@ -1,4 +1,4 @@
-import { Controller, Forbidden, HttpRequest, HttpResponse, InvalidParamError, LoadSurveyById, Ok, SaveSurveyResult, SaveSurveyResultParams, ServerError } from './save-survey-result.protocols'
+import { Controller, Forbidden, HttpResponse, InvalidParamError, LoadSurveyById, Ok, SaveSurveyResult, SaveSurveyResultParams, ServerError } from './save-survey-result.protocols'
 
 export class SaveSurveyResultController implements Controller {
 
@@ -7,11 +7,9 @@ export class SaveSurveyResultController implements Controller {
     private readonly saveSurveyResult: SaveSurveyResult
   ) { }
 
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+  async handle (request: SaveSurveyResultController.Request): Promise<HttpResponse> {
     try {
-      const { accountId } = httpRequest
-      const { surveyId } = httpRequest.params
-      const { answer } = httpRequest.body
+      const { accountId, surveyId, answer } = request
 
       const survey = await this.loadSurveyById.loadById(surveyId)
 
@@ -38,5 +36,13 @@ export class SaveSurveyResultController implements Controller {
     } catch (error) {
       return ServerError(error)
     }
+  }
+}
+
+export namespace SaveSurveyResultController {
+  export type Request = {
+    accountId: string
+    surveyId: string
+    answer: string
   }
 }

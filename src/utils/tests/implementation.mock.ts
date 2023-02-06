@@ -26,7 +26,7 @@ import { LoadSurveyResult } from '@/domain/usecases/load-survey-result.interface
 import { LoadSurveys } from "@/domain/usecases/load-surveys.interface"
 import { SaveSurveyResult, SaveSurveyResultParams } from "@/domain/usecases/save-survey-result.interface"
 import { InternalServerError } from "@/presentation/errors"
-import { Controller, EmailValidator, HttpRequest, HttpResponse, Validation } from "@/presentation/protocols"
+import { Controller, EmailValidator, HttpResponse, Validation } from "@/presentation/protocols"
 import { ObjectId } from 'mongodb'
 import { ACCOUNT, AUTHENTICATION, SURVEY, SURVEYS, SURVEY_RESULT } from "./constants.mock"
 
@@ -263,7 +263,7 @@ export const mockValidation = (): Validation => {
 /* Controllers */
 export const mockController = (): Controller => {
   class ControllerStub implements Controller {
-    async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle (request: any): Promise<HttpResponse> {
       const httpResponse: HttpResponse = { body: {}, statusCode: 200 }
       return await Promise.resolve(httpResponse)
     }

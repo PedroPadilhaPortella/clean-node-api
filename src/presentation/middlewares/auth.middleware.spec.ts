@@ -1,7 +1,7 @@
 import { AuthMiddleware } from './auth.middleware'
-import { AccessDeniedError, Forbidden, HttpRequest, LoadAccountByToken, mockLoadAccountByToken, throwError } from "./middlewares.protocols"
+import { AccessDeniedError, Forbidden, LoadAccountByToken, mockLoadAccountByToken, throwError } from "./middlewares.protocols"
 
-const fakeRequest: HttpRequest = { headers: { 'x-access-token': '_token_' }, body: {} }
+const fakeRequest: AuthMiddleware.Request = { accessToken: '_token_' }
 
 type SutTypes = {
   sut: AuthMiddleware

@@ -1,6 +1,6 @@
 import MockDate from 'mockdate'
 import { SaveSurveyResultController } from './save-survey-result.controller'
-import { Forbidden, HttpRequest, InternalServerError, InvalidParamError, LoadSurveyById, mockLoadSurveyById, mockSaveSurveyResult, Ok, SaveSurveyResult, SAVE_SURVEY_RESULT, ServerError, SURVEY_RESULT, throwInternalServerError } from './save-survey-result.protocols'
+import { Forbidden, InternalServerError, InvalidParamError, LoadSurveyById, mockLoadSurveyById, mockSaveSurveyResult, Ok, SaveSurveyResult, SAVE_SURVEY_RESULT, ServerError, SURVEY_RESULT, throwInternalServerError } from './save-survey-result.protocols'
 
 type SutTypes = {
   sut: SaveSurveyResultController
@@ -15,11 +15,11 @@ const makeSut = (): SutTypes => {
   return { sut, loadSurveyByIdStub, saveSurveyResultStub }
 }
 
-const makeFakeRequest = (): HttpRequest => {
+const makeFakeRequest = (): SaveSurveyResultController.Request => {
   return { 
-    body: { answer: 'answer1' },
+    surveyId: '1',
     accountId: '1',
-    params: { surveyId: '1' }
+    answer: 'answer1'
   }
 }
 
@@ -36,54 +36,54 @@ describe('SaveSurveyResultController', () => {
   it('should call LoadSurveyById with correct values', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     const loadByIdSpy = jest.spyOn(loadSurveyByIdStub, 'loadById')
-    const httpRequest = makeFakeRequest()
-    await sut.handle(httpRequest)
-    expect(loadByIdSpy).toHaveBeenCalledWith(httpRequest.params.surveyId)
+    const request = makeFakeRequest()
+    await sut.handle(request)
+    expect(loadByIdSpy).toHaveBeenCalledWith(request.surveyId)
   })
 
   it('should return 403 if LoadSurveyById returns null', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest.spyOn(loadSurveyByIdStub, 'loadById').mockReturnValue(Promise.resolve(null))
-    const httpRequest = makeFakeRequest()
-    const httpResponse = await sut.handle(httpRequest)
+    const request = makeFakeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(Forbidden(new InvalidParamError('surveyId')))
   })
 
   it('should return 500 if LoadSurveyById throws', async () => {
     const { sut, loadSurveyByIdStub } = makeSut()
     jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(throwInternalServerError)
-    const httpRequest = makeFakeRequest()
-    const httpResponse = await sut.handle(httpRequest)
+    const request = makeFakeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should return 403 if an invalid answer is provided', async () => {
     const { sut } = makeSut()
-    const httpRequest = makeFakeRequest()
-    const httpResponse = await sut.handle({ ...httpRequest, body: { answer: 'invalid answer' } })
+    const request = makeFakeRequest()
+    const httpResponse = await sut.handle({ ...request, answer: 'invalid answer' })
     expect(httpResponse).toEqual(Forbidden(new InvalidParamError('answer')))
   })
   
   it('should call SaveSurveyResult with correct values', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
     const saveSpy = jest.spyOn(saveSurveyResultStub, 'save')
-    const httpRequest = makeFakeRequest()
-    await sut.handle(httpRequest)
+    const request = makeFakeRequest()
+    await sut.handle(request)
     expect(saveSpy).toHaveBeenCalledWith({ ...SAVE_SURVEY_RESULT, date: new Date() })
   })
 
   it('should return 500 if LoadSurveSaveSurveyResultyById throws', async () => {
     const { sut, saveSurveyResultStub } = makeSut()
     jest.spyOn(saveSurveyResultStub, 'save').mockImplementationOnce(throwInternalServerError)
-    const httpRequest = makeFakeRequest()
-    const httpResponse = await sut.handle(httpRequest)
+    const request = makeFakeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(ServerError(new InternalServerError('Error')))
   })
 
   it('should return 200 on success', async () => {
     const { sut } = makeSut()
-    const httpRequest = makeFakeRequest()
-    const httpResponse = await sut.handle(httpRequest)
+    const request = makeFakeRequest()
+    const httpResponse = await sut.handle(request)
     expect(httpResponse).toEqual(Ok(SURVEY_RESULT))
   })
 })

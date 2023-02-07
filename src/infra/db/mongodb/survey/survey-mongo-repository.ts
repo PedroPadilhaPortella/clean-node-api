@@ -3,7 +3,6 @@ import { CheckSurveyByIdRepository } from '@/data/protocols/check-survey-by-id.r
 import { LoadSurveyByIdRepository } from '@/data/protocols/load-survey-by-id-repository.interface'
 import { LoadSurveysRepository } from '@/data/protocols/load-surveys-repository.interface'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
-import { SurveyModel } from '@/domain/models/survey.model'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { ObjectId } from 'mongodb'
 
@@ -15,7 +14,7 @@ implements AddSurveyRepository, LoadSurveysRepository, LoadSurveyByIdRepository,
     await surveyCollection.insertOne(survey)
   }
 
-  async loadAll (accountId: string): Promise<SurveyModel[]> {
+  async loadAll (accountId: string): Promise<LoadSurveysRepository.Result> {
     const surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
 
     const query = surveyCollection.aggregate([

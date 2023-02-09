@@ -2,7 +2,6 @@ import { LoadSurveyResultRepository } from '@/data/protocols/load-survey-result-
 import { SaveSurveyResultRepository } from '@/data/protocols/save-survey-result.repository'
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { SurveyResultModel } from '@/domain/models/survey-result'
-import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
 import { MongoHelper } from "@/infra/db/mongodb/helpers/mongo.helper"
 import { ObjectId } from 'mongodb'
 import round from 'mongo-round'
@@ -10,7 +9,7 @@ import round from 'mongo-round'
 export class SurveyResultMongoRepository 
 implements SaveSurveyResultRepository, LoadSurveyResultRepository {
 
-  async save (data: SaveSurveyResultParams): Promise<void> {
+  async save (data: SaveSurveyResultRepository.Params): Promise<void> {
     const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULT)
     const { accountId, surveyId, answer, date } = data
 
@@ -21,7 +20,7 @@ implements SaveSurveyResultRepository, LoadSurveyResultRepository {
     )
   }
 
-  async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> {
+  async loadBySurveyId (surveyId: string, accountId: string): Promise<LoadSurveyResultRepository.Result> {
     const surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULT)
     const query = surveyResultCollection.aggregate([
       {

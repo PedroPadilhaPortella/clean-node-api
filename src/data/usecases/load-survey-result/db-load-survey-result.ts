@@ -1,4 +1,4 @@
-import { SurveyResultModel, LoadSurveyResult, LoadSurveyResultRepository, LoadSurveyByIdRepository } from "./db-load-survey-result.protocols"
+import { LoadSurveyByIdRepository, LoadSurveyResult, LoadSurveyResultRepository } from "./db-load-survey-result.protocols"
 
 export class DbLoadSurveyResult implements LoadSurveyResult {
 
@@ -7,7 +7,7 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
     private readonly loadSurveyByIdRepository: LoadSurveyByIdRepository
   ) {}
 
-  async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> { 
+  async loadBySurveyId (surveyId: string, accountId: string): Promise<LoadSurveyResultRepository.Result> { 
     let surveyResult = await this.loadSurveyResultRepository.loadBySurveyId(surveyId, accountId)
 
     if (!surveyResult) {

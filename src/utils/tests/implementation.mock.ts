@@ -14,7 +14,6 @@ import { LoadSurveysRepository } from "@/data/protocols/load-surveys-repository.
 import { LogErrorRepository } from "@/data/protocols/log-error-repository.interface"
 import { SaveSurveyResultRepository } from "@/data/protocols/save-survey-result.repository"
 import { UpdateAccessTokenRepository } from "@/data/protocols/update-access-token-repository.interface"
-import { SurveyResultModel } from "@/domain/models/survey-result"
 import { SurveyModel } from "@/domain/models/survey.model"
 import { AddAccount } from "@/domain/usecases/add-account.interface"
 import { AddSurvey } from "@/domain/usecases/add-survey.interface"
@@ -24,7 +23,7 @@ import { LoadAccountByToken } from "@/domain/usecases/load-account-by-token.inte
 import { LoadSurveyById } from "@/domain/usecases/load-survey-by-id.interface"
 import { LoadSurveyResult } from '@/domain/usecases/load-survey-result.interface'
 import { LoadSurveys } from "@/domain/usecases/load-surveys.interface"
-import { SaveSurveyResult, SaveSurveyResultParams } from "@/domain/usecases/save-survey-result.interface"
+import { SaveSurveyResult } from "@/domain/usecases/save-survey-result.interface"
 import { InternalServerError } from "@/presentation/errors"
 import { Controller, EmailValidator, HttpResponse, Validation } from "@/presentation/protocols"
 import { ObjectId } from 'mongodb'
@@ -118,14 +117,14 @@ export const mockCheckSurveyByIdRepository = (): CheckSurveyByIdRepository => {
 
 export const mockSaveSurveyResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurveyResultRepositoryStub implements SaveSurveyResultRepository {
-    async save (data: SaveSurveyResultParams): Promise<void> { }
+    async save (data: SaveSurveyResultRepository.Params): Promise<void> { }
   }
   return new SaveSurveyResultRepositoryStub()
 }
 
 export const mockLoadSurveyResultRepository = (): LoadSurveyResultRepository => {
   class LoadSurveyResultRepositoryStub implements LoadSurveyResultRepository {
-    async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> {
+    async loadBySurveyId (surveyId: string, accountId: string): Promise<LoadSurveyResultRepository.Result> {
       return SURVEY_RESULT
     }
   }
@@ -207,7 +206,7 @@ export const mockCheckSurveyById = (): CheckSurveyById => {
 
 export const mockSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    async save (data: SaveSurveyResultParams): Promise<SurveyResultModel> {
+    async save (data: SaveSurveyResult.Params): Promise<SaveSurveyResult.Result> {
       return SURVEY_RESULT
     }
   }
@@ -216,7 +215,7 @@ export const mockSaveSurveyResult = (): SaveSurveyResult => {
 
 export const mockLoadSurveyResult = (): LoadSurveyResult => {
   class LoadSurveyResultStub implements LoadSurveyResult {
-    async loadBySurveyId (surveyId: string, accountId: string): Promise<SurveyResultModel> {
+    async loadBySurveyId (surveyId: string, accountId: string): Promise<LoadSurveyResult.Result> {
       return SURVEY_RESULT
     }
   }

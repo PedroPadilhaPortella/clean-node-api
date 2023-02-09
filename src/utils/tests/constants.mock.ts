@@ -1,7 +1,7 @@
 import { AccountModel } from '@/domain/models/account.model'
 import { SurveyResultModel } from '@/domain/models/survey-result'
 import { SurveyModel } from "@/domain/models/survey.model"
-import { SaveSurveyResultParams } from '@/domain/usecases/save-survey-result.interface'
+import { SaveSurveyResult } from '@/domain/usecases/save-survey-result.interface'
 
 export const LOGIN = {
   email: 'pedro@gmail.com',
@@ -56,7 +56,7 @@ export const SURVEYS: SurveyModel[] = [
   }
 ]
 
-export const SAVE_SURVEY_RESULT: SaveSurveyResultParams = {
+export const SAVE_SURVEY_RESULT: SaveSurveyResult.Params = {
   surveyId: '1',
   accountId: '1',
   answer: 'answer1',

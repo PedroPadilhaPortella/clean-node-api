@@ -1,10 +1,11 @@
 import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { ADD_SURVEY, SIGNUP } from '@/utils/tests'
+import { Express } from 'express'
 import jwt from 'jsonwebtoken'
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import app from '../config/app'
+import { setupApp } from '../config/app'
 import env from '../config/env'
 
 let accountCollection: Collection
@@ -22,6 +23,7 @@ const makeAccessToken = async (result: any): Promise<string> => {
 }
 
 describe('Survey Routes', () => {
+  let app: Express
 
   beforeAll(async () => {
     await MongoHelper.connect(env.mongoUrlTest)
@@ -32,6 +34,7 @@ describe('Survey Routes', () => {
   })
 
   beforeEach(async () => {
+    app = await setupApp()
     accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     surveyCollection = MongoHelper.getCollection(CollectionsEnum.SURVEYS)
     surveyResultCollection = MongoHelper.getCollection(CollectionsEnum.SURVEY_RESULT)

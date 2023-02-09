@@ -2,12 +2,14 @@ import { CollectionsEnum } from '@/domain/enums/collections.enum'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { SIGNUP } from '@/utils/tests'
 import { hash } from 'bcrypt'
+import { Express } from 'express'
 import { Collection } from 'mongodb'
 import request from 'supertest'
-import app from '../config/app'
+import { setupApp } from '../config/app'
 import env from '../config/env'
 
 describe('Authentication Routes', () => {
+  let app: Express
   let accountCollection: Collection
 
   beforeAll(async () => {
@@ -19,6 +21,7 @@ describe('Authentication Routes', () => {
   })
 
   beforeEach(async () => {
+    app = await setupApp()
     accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
     await accountCollection.deleteMany({})
   })

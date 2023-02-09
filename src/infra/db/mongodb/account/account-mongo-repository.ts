@@ -1,4 +1,3 @@
-import { CheckAccountByEmailRepository } from './../../../../data/protocols/check-account-by-email-repository.interface'
 import { AddAccountRepository } from '@/data/protocols/add-account-repository.interface'
 import { LoadAccountByEmailRepository } from '@/data/protocols/load-account-by-email-repository.interface'
 import { LoadAccountByTokenRepository } from '@/data/protocols/load-account-by-token-repository.interface'
@@ -9,7 +8,7 @@ import { AddAccountParams } from '@/domain/usecases/add-account.interface'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo.helper'
 import { ObjectId } from 'mongodb'
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository, CheckAccountByEmailRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, LoadAccountByTokenRepository, UpdateAccessTokenRepository {
   
   async add (account: AddAccountParams): Promise<AccountModel> {
     const accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
@@ -30,12 +29,6 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
       }
     }
     return null
-  }
-
-  async checkByEmail (email: string): Promise<boolean> {
-    const accountCollection = MongoHelper.getCollection(CollectionsEnum.ACCOUNTS)
-    const result = await accountCollection.findOne({ email })
-    return result !== null
   }
 
   async loadByToken (token: string, role?: string): Promise<AccountModel> {

@@ -6,8 +6,11 @@ import { noCache } from './no-cache.middleware'
 describe('NoCache Middleware', () => {
   let app: Express
 
-  test('should disable cache', async () => {
+  beforeAll(async () => {
     app = await setupApp()
+  })
+
+  test('should disable cache', async () => {
     app.get('/test_no_cache', noCache, (req, res) => {
       res.end()
     })

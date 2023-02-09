@@ -5,8 +5,11 @@ import { setupApp } from '../config/app'
 describe('BodyParser Middleware', () => {
   let app: Express
 
-  test('should parse body as json', async () => {
+  beforeAll(async () => {
     app = await setupApp()
+  })
+
+  test('should parse body as json', async () => {
     app.post('/body_parser_test', (req, res) => {
       res.send(req.body)
     })

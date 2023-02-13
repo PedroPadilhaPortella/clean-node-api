@@ -7,6 +7,7 @@ import { GraphQLError } from 'graphql'
 export const setupApolloServer = (): ApolloServer => new ApolloServer({
   resolvers, 
   typeDefs,
+  context: ({ req }) => ({ req }),
   plugins: [{
     requestDidStart: async () => ({
       willSendResponse: async ({ response, errors }) => handleErrors(response, errors)
